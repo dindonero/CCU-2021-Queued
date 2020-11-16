@@ -1,6 +1,6 @@
 SET DBNAME=ccu_db
 SET USERNAME=ccu
-SET USERPASSWORD=ccusuicidesquad
+SET USERPASSWORD=ccu
 
 psql -h localhost -p 5432 -d postgres -U postgres -c "DROP DATABASE IF EXISTS \"%DBNAME%\";"
 psql -h localhost -p 5432 -d postgres -U postgres -c "DROP OWNED BY \"%USERNAME%\" CASCADE;"
