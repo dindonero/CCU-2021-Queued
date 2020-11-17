@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @Getter @Setter
 @ToString
-@JsonPropertyOrder({"id", "public-key", "firstName", "lastName", "email", "password", "dateOfBirth"})
+@JsonPropertyOrder({"id", "firstName", "lastName", "email", "password", "dateOfBirth"})
 public class UserAccountDto implements Serializable {
 
     @JsonProperty("id")
