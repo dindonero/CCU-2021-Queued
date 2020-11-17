@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pt.ist.ccu2021.queued.Server.Exception.DuplicateEmailException;
 import pt.ist.ccu2021.queued.Server.dto.UserAccountDto;
 import pt.ist.ccu2021.queued.Server.service.contract.IUserAccountService;
 
@@ -26,8 +27,12 @@ public class UserController {
         _logger.info(String.format("CreateNewUserAccount - FirstName:%s, LastName:%s, Email:%s, Password:%s, DateOfBirth:%s",
                 newUserAccount.getFirstName(), newUserAccount.getLastName(), newUserAccount.getEmail(),
                 newUserAccount.getPassword(), newUserAccount.getDateOfBirth().toString()));
-        int id = userAccountService.createNewUserAccount(newUserAccount.toDomain());
-        if (id == -1) return new ResponseEntity<>(-1, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(1, HttpStatus.CREATED);
+        try {
+            int id = userAccountService.createNewUserAccount(newUserAccount.toDomain());
+            return new ResponseEntity<>(1, HttpStatus.CREATED);
+        }
+        catch (DuplicateEmailException e){
+            return new ResponseEntity<>(-1, HttpStatus.ACCEPTED);
+        }
     }
 }
