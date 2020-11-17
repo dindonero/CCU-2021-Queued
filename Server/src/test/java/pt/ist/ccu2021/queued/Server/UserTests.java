@@ -39,7 +39,7 @@ public class UserTests {
     }
 
     @Test
-    void createDuplicateUserWithDuplicateEmailException_ReturnsNegativeOne(){
+    void createDuplicateUserWithDuplicateEmailException_ThrowsConflictException(){
         rest.postForObject(registerUrl, user, Integer.class);
         Assertions.assertThrows(HttpClientErrorException.Conflict.class, () -> rest.postForObject(registerUrl, user, Integer.class));
     }
@@ -49,5 +49,19 @@ public class UserTests {
         user.setId(rest.postForObject(registerUrl, user, Integer.class));
         LoginUserAccountDto loginUser = LoginUserAccountDto.builder().email(user.getEmail()).password(user.getPassword()).build();
         Assertions.assertEquals(user, rest.postForObject(loginUrl, loginUser, UserAccountDto.class));
+    }
+
+    @Test
+    void registerAndThenLoginWithWrongPassword_ThrowsConflictException(){
+        user.setId(rest.postForObject(registerUrl, user, Integer.class));
+        LoginUserAccountDto loginUser = LoginUserAccountDto.builder().email(user.getEmail()).password("WrongPassword").build();
+        Assertions.assertThrows(HttpClientErrorException.Forbidden.class, () -> rest.postForObject(loginUrl, loginUser, Integer.class));
+    }
+
+    @Test
+    void loginWithNonExistingEmail_ThrowsNotFoundException(){
+        user.setId(rest.postForObject(registerUrl, user, Integer.class));
+        LoginUserAccountDto loginUser = LoginUserAccountDto.builder().email("NonExistingEmail").password("MayBeRightPassword").build();
+        Assertions.assertThrows(HttpClientErrorException.NotFound.class, () -> rest.postForObject(loginUrl, loginUser, Integer.class));
     }
 }
