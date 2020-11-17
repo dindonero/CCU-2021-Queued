@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 import org.springframework.data.geo.Point;
+import pt.ist.ccu2021.queued.Server.domain.Schedule;
 import pt.ist.ccu2021.queued.Server.domain.Store;
 
 import javax.persistence.Column;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -30,18 +33,27 @@ public class StoreDto {
     @JsonProperty("mapCoords")
     private Point mapCoords;
 
-    @JsonProperty("categoryName")
-    private String categoryName;
+    @JsonProperty("categoryId")
+    private int categoryId;
 
     @JsonProperty("counters")
     private int counters;
 
-    public StoreDto(Store store){
+    @JsonProperty("schedules")
+    private List<ScheduleDto> schedules;
+
+    public StoreDto(Store store, List<Schedule> scheduleList){
         id = store.getId();
         name = store.getName();
         img = store.getImg();
         mapCoords = store.getMapCoords();
-        // missing categoryName for companies
+        categoryId = store.getCategoryId();
         counters = store.getCounters();
+        schedules = scheduleList.stream().map(ScheduleDto::new).collect(Collectors.toList());
+    }
+
+    public Store toDomain(int companyId){
+        return Store.builder().id(id).name(name).img(img).mapCoords(mapCoords).categoryId(categoryId).counters(counters)
+                .companyId(companyId).build();
     }
 }

@@ -12,11 +12,8 @@ import pt.ist.ccu2021.queued.Server.domain.Schedule;
 @Getter
 @Setter
 @ToString
-@JsonPropertyOrder({"storeId", "dayId", "openingTime", "closingTime"})
+@JsonPropertyOrder({"dayId", "openingTime", "closingTime"})
 public class ScheduleDto {
-
-    @JsonProperty("storeId")
-    private int storeId;
 
     @JsonProperty("day")
     private String day;
@@ -28,9 +25,12 @@ public class ScheduleDto {
     private String closingTime;
 
     public ScheduleDto(Schedule schedule){
-        storeId = schedule.getStoreId();
         day = schedule.getDay();
         openingTime = schedule.getOpeningTime();
         closingTime = schedule.getClosingTime();
+    }
+
+    public Schedule toDomain(int storeId){
+        return Schedule.builder().storeId(storeId).openingTime(openingTime).closingTime(closingTime).build();
     }
 }
