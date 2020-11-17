@@ -14,17 +14,17 @@ import pt.ist.ccu2021.queued.Server.service.contract.IUserAccountService;
 public class UserAccountService implements IUserAccountService {
 
     @Autowired
-    private IUserAccountRepository userAccountRepository;
+    private IUserAccountRepository _userAccountRepository;
 
     @Override
     public int createNewUserAccount(UserAccount newUser) throws DuplicateEmailException {
-        if (userAccountRepository.findByEmail(newUser.getEmail()) != null) throw new DuplicateEmailException(newUser.getEmail());
-        return userAccountRepository.save(newUser).getId();
+        if (_userAccountRepository.findByEmail(newUser.getEmail()) != null) throw new DuplicateEmailException(newUser.getEmail());
+        return _userAccountRepository.save(newUser).getId();
     }
 
     @Override
     public UserAccount loginUser(UserAccount userLogin) throws UserEmailNotFoundException, WrongPasswordException {
-        UserAccount user = userAccountRepository.findByEmail(userLogin.getEmail());
+        UserAccount user = _userAccountRepository.findByEmail(userLogin.getEmail());
         if (user == null) throw new UserEmailNotFoundException(userLogin.getEmail());
         if (!user.getPassword().equals(userLogin.getPassword())) throw new WrongPasswordException(userLogin.getEmail(), userLogin.getPassword());
         return user;

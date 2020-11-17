@@ -21,9 +21,4 @@ class ServerApplicationTests {
 
 		return generatedString;
 	}
-
-	@Test
-	void contextLoads() {
-	}
-
 }

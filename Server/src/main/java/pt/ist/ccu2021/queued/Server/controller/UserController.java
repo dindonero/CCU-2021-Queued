@@ -24,7 +24,7 @@ public class UserController {
     private static final Logger _logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    private IUserAccountService userAccountService;
+    private IUserAccountService _userAccountService;
 
     @PostMapping(value = "/register")
     public ResponseEntity<Integer> createNewUserAccount(@RequestBody UserAccountDto newUserAccountDto){
@@ -32,7 +32,7 @@ public class UserController {
                 newUserAccountDto.getFirstName(), newUserAccountDto.getLastName(), newUserAccountDto.getEmail(),
                 newUserAccountDto.getPassword(), newUserAccountDto.getDateOfBirth().toString()));
         try {
-            int id = userAccountService.createNewUserAccount(newUserAccountDto.toDomain());
+            int id = _userAccountService.createNewUserAccount(newUserAccountDto.toDomain());
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
         catch (DuplicateEmailException e){
@@ -47,7 +47,7 @@ public class UserController {
                 userAccountDto.getEmail(), userAccountDto.getPassword()));
 
         try {
-            UserAccount user = userAccountService.loginUser(userAccountDto.toDomain());
+            UserAccount user = _userAccountService.loginUser(userAccountDto.toDomain());
             return new ResponseEntity<>(new UserAccountDto(user), HttpStatus.ACCEPTED);
         } catch (WrongPasswordException e) {
             _logger.error(e.getMessage());
