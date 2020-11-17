@@ -35,6 +35,16 @@ public class UserAccountDto implements Serializable {
     @JsonProperty("dateOfBirth")
     private Date dateOfBirth;
 
+    public UserAccountDto(UserAccount user){
+        id = user.getId();
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        email = user.getEmail();
+        password = user.getPassword();
+        dateOfBirth = user.getDateOfBirth();
+
+    }
+
     public UserAccount toDomain(){
         return UserAccount.builder().id(id).firstName(firstName).lastName(lastName).email(email)
                 .password(password).dateOfBirth(dateOfBirth).build();

@@ -1,7 +1,6 @@
 package pt.ist.ccu2021.queued.Server.domain;
 
 import lombok.*;
-import pt.ist.ccu2021.queued.Server.dto.UserAccountDto;
 
 import javax.persistence.*;
 import java.util.Date;
