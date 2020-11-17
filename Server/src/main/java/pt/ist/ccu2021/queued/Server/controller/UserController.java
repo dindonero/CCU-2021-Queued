@@ -43,7 +43,7 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<UserAccountDto> loginUser(@RequestBody LoginUserAccountDto userAccountDto) {
-        _logger.info(String.format("CreateNewUserAccount - Email:%s, Password:%s",
+        _logger.info(String.format("LoginUserAccount - Email:%s, Password:%s",
                 userAccountDto.getEmail(), userAccountDto.getPassword()));
 
         try {
