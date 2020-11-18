@@ -1,10 +1,9 @@
 package pt.ist.ccu2021.queued.Server.service.implementation;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.ist.ccu2021.queued.Server.Exception.DuplicateEmailException;
-import pt.ist.ccu2021.queued.Server.Exception.UserEmailNotFoundException;
+import pt.ist.ccu2021.queued.Server.Exception.EmailNotFoundException;
 import pt.ist.ccu2021.queued.Server.Exception.WrongPasswordException;
 import pt.ist.ccu2021.queued.Server.domain.UserAccount;
 import pt.ist.ccu2021.queued.Server.repository.contract.IUserAccountRepository;
@@ -23,9 +22,9 @@ public class UserAccountService implements IUserAccountService {
     }
 
     @Override
-    public UserAccount loginUser(UserAccount userLogin) throws UserEmailNotFoundException, WrongPasswordException {
+    public UserAccount loginUser(UserAccount userLogin) throws EmailNotFoundException, WrongPasswordException {
         UserAccount user = _userAccountRepository.findByEmail(userLogin.getEmail());
-        if (user == null) throw new UserEmailNotFoundException(userLogin.getEmail());
+        if (user == null) throw new EmailNotFoundException(userLogin.getEmail());
         if (!user.getPassword().equals(userLogin.getPassword())) throw new WrongPasswordException(userLogin.getEmail(), userLogin.getPassword());
         return user;
     }

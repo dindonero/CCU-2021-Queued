@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pt.ist.ccu2021.queued.Server.Exception.DuplicateEmailException;
-import pt.ist.ccu2021.queued.Server.Exception.UserEmailNotFoundException;
+import pt.ist.ccu2021.queued.Server.Exception.EmailNotFoundException;
 import pt.ist.ccu2021.queued.Server.Exception.WrongPasswordException;
 import pt.ist.ccu2021.queued.Server.domain.UserAccount;
 import pt.ist.ccu2021.queued.Server.dto.LoginUserAccountDto;
@@ -52,7 +52,7 @@ public class UserController {
         } catch (WrongPasswordException e) {
             _logger.error(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-        } catch (UserEmailNotFoundException e) {
+        } catch (EmailNotFoundException e) {
             _logger.error(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

@@ -1,9 +1,9 @@
 package pt.ist.ccu2021.queued.Server.domain;
 
 import lombok.*;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
+import java.awt.*;
 
 @Builder
 @Setter

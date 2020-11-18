@@ -3,11 +3,11 @@ package pt.ist.ccu2021.queued.Server.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
-import org.springframework.data.geo.Point;
 import pt.ist.ccu2021.queued.Server.domain.Schedule;
 import pt.ist.ccu2021.queued.Server.domain.Store;
 
 import javax.persistence.Column;
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 

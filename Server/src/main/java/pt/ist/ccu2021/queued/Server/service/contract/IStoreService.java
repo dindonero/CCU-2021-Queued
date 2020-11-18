@@ -1,6 +1,5 @@
 package pt.ist.ccu2021.queued.Server.service.contract;
 
-import pt.ist.ccu2021.queued.Server.dto.ScheduleDto;
 import pt.ist.ccu2021.queued.Server.dto.StoreDto;
 
 import java.util.List;
