@@ -11,7 +11,7 @@ class ServerApplicationTests {
 	public static String generateRandomString(){
 		int leftLimit = 97; // letter 'a'
 		int rightLimit = 122; // letter 'z'
-		int targetStringLength = 10;
+		int targetStringLength = 20;
 		Random random = new Random();
 
 		String generatedString = random.ints(leftLimit, rightLimit + 1)

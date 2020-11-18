@@ -18,9 +18,10 @@ public class StoreTests {
 
     private List<ScheduleDto> scheduleDtos = new ArrayList<>();
     private StoreDto storeDto = StoreDto.builder().categoryId(1).counters(12).img("aaa".getBytes()).schedules(scheduleDtos)
-            .mapCoords(new Point(35,71)).name("loja1").build();
+            .address("Rua Manuel Vaccines 31").name(ServerApplicationTests.generateRandomString()).build();
     private RestTemplate rest = new RestTemplate();
     private String url = "http://localhost:8080/company/1/store/register";
+    private String url2 = "/category/1/store";
     private CompanyAccountDto company = CompanyAccountDto.builder().email(ServerApplicationTests.generateRandomString()).name(ServerApplicationTests.generateRandomString()).password("asdasdasd").build();
 
 
@@ -33,5 +34,12 @@ public class StoreTests {
     public void whenInsertingStore_ReturnsStoreId(){
         int id = rest.postForEntity(url, storeDto, Integer.class).getBody();
         Assertions.assertNotEquals(-1, id);
+    }
+
+    @Test
+    public void whenReadingStore_ReturnsSameAsInserted(){
+        int id = rest.postForEntity(url, storeDto, Integer.class).getBody();
+        storeDto.setId(id);
+        Assertions.assertEquals(storeDto, rest.postForEntity());
     }
 }

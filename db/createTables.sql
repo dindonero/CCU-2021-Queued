@@ -33,7 +33,7 @@ CREATE TABLE Store (
 	id SERIAL,
 	name VARCHAR(255) UNIQUE NOT NULL,
 	img BYTEA NOT NULL,
-	mapCoords POINT NOT NULL,
+	address VARCHAR(255) NOT NULL,
 	categoryId INT NOT NULL,
 	counters INT NOT NULL,
 	companyId INT NOT NULL,

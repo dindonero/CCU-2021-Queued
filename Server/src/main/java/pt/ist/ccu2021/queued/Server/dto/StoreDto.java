@@ -6,8 +6,6 @@ import lombok.*;
 import pt.ist.ccu2021.queued.Server.domain.Schedule;
 import pt.ist.ccu2021.queued.Server.domain.Store;
 
-import javax.persistence.Column;
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
-@JsonPropertyOrder({"id", "name", "img", "mapCoords", "categoryId", "counters", "companyId"})
+@JsonPropertyOrder({"id", "name", "img", "address", "categoryId", "counters", "companyId"})
 public class StoreDto {
 
     @JsonProperty("id")
@@ -30,8 +28,8 @@ public class StoreDto {
     @JsonProperty("img")
     private byte[] img;
 
-    @JsonProperty("mapCoords")
-    private Point mapCoords;
+    @JsonProperty("address")
+    private String address;
 
     @JsonProperty("categoryId")
     private int categoryId;
@@ -46,14 +44,14 @@ public class StoreDto {
         id = store.getId();
         name = store.getName();
         img = store.getImg();
-        mapCoords = store.getMapCoords();
+        address = store.getAddress();
         categoryId = store.getCategoryId();
         counters = store.getCounters();
         schedules = scheduleList.stream().map(ScheduleDto::new).collect(Collectors.toList());
     }
 
     public Store toDomain(int companyId){
-        return Store.builder().id(id).name(name).img(img).mapCoords(mapCoords).categoryId(categoryId).counters(counters)
+        return Store.builder().id(id).name(name).img(img).address(address).categoryId(categoryId).counters(counters)
                 .companyId(companyId).build();
     }
 }

@@ -3,7 +3,6 @@ package pt.ist.ccu2021.queued.Server.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.awt.*;
 
 @Builder
 @Setter
@@ -25,8 +24,8 @@ public class Store {
     @Column(name = "img")
     private byte[] img;
 
-    @Column(name = "mapcoords")
-    private Point mapCoords;
+    @Column(name = "address")
+    private String address;
 
     @Column(name = "categoryid")
     private int categoryId;
