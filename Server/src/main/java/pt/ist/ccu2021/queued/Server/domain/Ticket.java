@@ -20,13 +20,16 @@ public class Ticket {
     private int id;
 
     @Column(name = "storeid")
-    private int storeid;
+    private int storeId;
+
+    @Column(name = "counterid")
+    private int counterId;
 
     @Column(name = "userid")
     private int userId;
 
-    @Column(name = "inline")
-    private boolean inline;
+    @Column(name = "canceled")
+    private boolean canceled;
 
     @Column(name = "enteringtime")
     private Time enteringTime;

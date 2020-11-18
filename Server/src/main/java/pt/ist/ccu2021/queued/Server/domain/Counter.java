@@ -10,8 +10,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "store")
-public class Store {
+@Table(name = "counter")
+public class Counter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,15 +21,10 @@ public class Store {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "img")
-    private byte[] img;
+    @Column(name = "storeid")
+    private int storeid;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "hasstaff")
+    private boolean hasStaff;
 
-    @Column(name = "categoryid")
-    private int categoryId;
-
-    @Column(name = "companyid")
-    private int companyId;
 }

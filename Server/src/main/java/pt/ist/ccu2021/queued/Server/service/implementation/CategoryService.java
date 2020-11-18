@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class CategoryService implements ICategoryService {
-
+// TODO change all dtos implementations to service layer
     @Autowired
     private ICategoryRepository _categoryRepository;
 
