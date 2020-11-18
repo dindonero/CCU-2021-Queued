@@ -3,6 +3,8 @@ package pt.ist.ccu2021.queued.Server.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
+import pt.ist.ccu2021.queued.Server.domain.CompanyAccount;
+import pt.ist.ccu2021.queued.Server.domain.UserAccount;
 
 @Data
 @NoArgsConstructor
@@ -28,4 +30,17 @@ public class CompanyAccountDto {
 
     @JsonProperty("secondaryEmail")
     private String secondaryEmail;
+
+    public CompanyAccountDto(CompanyAccount company){
+        id = company.getId();
+        name = company.getName();
+        email = company.getEmail();
+        password = company.getPassword();
+        secondaryEmail = company.getSecondaryEmail();
+
+    }
+    public CompanyAccount toDomain(){
+        return CompanyAccount.builder().id(id).name(name).email(email)
+                .password(password).secondaryEmail(secondaryEmail).build();
+    }
 }

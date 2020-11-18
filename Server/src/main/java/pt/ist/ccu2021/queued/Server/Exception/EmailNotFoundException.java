@@ -1,8 +1,8 @@
 package pt.ist.ccu2021.queued.Server.Exception;
 
-public class UserEmailNotFoundException extends Exception{
+public class EmailNotFoundException extends Exception{
 
-    public UserEmailNotFoundException(String email) {
+    public EmailNotFoundException(String email) {
         super("Email not found in Database - Email:" + email);
     }
 }
