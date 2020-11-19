@@ -1,19 +1,18 @@
 package pt.ist.ccu2021.queued.Server.controller;
 
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pt.ist.ccu2021.queued.Server.Exception.DuplicateEmailException;
 import pt.ist.ccu2021.queued.Server.Exception.EmailNotFoundException;
 import pt.ist.ccu2021.queued.Server.Exception.WrongPasswordException;
 import pt.ist.ccu2021.queued.Server.domain.CompanyAccount;
 import pt.ist.ccu2021.queued.Server.dto.CompanyAccountDto;
+import pt.ist.ccu2021.queued.Server.dto.CounterDto;
 import pt.ist.ccu2021.queued.Server.dto.LoginCompanyAccountDto;
 import pt.ist.ccu2021.queued.Server.service.contract.ICompanyAccountService;
 
@@ -32,7 +31,7 @@ public class CompanyController {
                 newCompanyAccountDto.getName(), newCompanyAccountDto.getEmail(),
                 newCompanyAccountDto.getPassword(), newCompanyAccountDto.getSecondaryEmail()));
         try {
-            int id = _companyAccountService.createNewCompanyAccount(newCompanyAccountDto.toDomain());
+            int id = _companyAccountService.createNewCompanyAccount(newCompanyAccountDto);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
         catch (DuplicateEmailException e){
@@ -47,14 +46,14 @@ public class CompanyController {
                 companyAccountDto.getEmail(), companyAccountDto.getPassword()));
 
         try {
-            CompanyAccount company = _companyAccountService.loginCompany(companyAccountDto.toDomain());
-            return new ResponseEntity<>(new CompanyAccountDto(company), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(_companyAccountService.loginCompany(companyAccountDto), HttpStatus.ACCEPTED);
         } catch (WrongPasswordException e) {
             _logger.error(e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } catch (EmailNotFoundException e) {
             _logger.error(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
 }

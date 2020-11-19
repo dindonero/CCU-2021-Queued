@@ -28,7 +28,7 @@ public class CategoryController {
         _logger.info("GetAllCategories");
 
         return new ResponseEntity<>(
-                _categoryService.getAllCategories().stream().map(CategoryDto::new).collect(Collectors.toList()),
+                _categoryService.getAllCategories(),
                 HttpStatus.OK);
     }
 }

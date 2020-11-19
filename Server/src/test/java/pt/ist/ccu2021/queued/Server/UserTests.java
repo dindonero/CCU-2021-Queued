@@ -55,7 +55,7 @@ public class UserTests {
     void registerAndThenLoginWithWrongPassword_ThrowsConflictException(){
         user.setId(rest.postForObject(registerUrl, user, Integer.class));
         LoginUserAccountDto loginUser = LoginUserAccountDto.builder().email(user.getEmail()).password("WrongPassword").build();
-        Assertions.assertThrows(HttpClientErrorException.Forbidden.class, () -> rest.postForObject(loginUrl, loginUser, Integer.class));
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class, () -> rest.postForObject(loginUrl, loginUser, Integer.class));
     }
 
     @Test

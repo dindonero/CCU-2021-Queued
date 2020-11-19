@@ -42,7 +42,7 @@ public class CompanyTests {
     void registerAndThenLoginWithWrongPassword_ThrowsConflictException(){
         company.setId(rest.postForObject(registerUrl, company, Integer.class));
         LoginCompanyAccountDto loginCompany = LoginCompanyAccountDto.builder().email(company.getEmail()).password("WrongPassword").build();
-        Assertions.assertThrows(HttpClientErrorException.Forbidden.class, () -> rest.postForObject(loginUrl, loginCompany, Integer.class));
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class, () -> rest.postForObject(loginUrl, loginCompany, Integer.class));
     }
 
     @Test

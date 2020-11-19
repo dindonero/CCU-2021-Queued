@@ -2,20 +2,21 @@ package pt.ist.ccu2021.queued.Server.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.ist.ccu2021.queued.Server.domain.Category;
+import pt.ist.ccu2021.queued.Server.dto.CategoryDto;
 import pt.ist.ccu2021.queued.Server.repository.contract.ICategoryRepository;
 import pt.ist.ccu2021.queued.Server.service.contract.ICategoryService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService implements ICategoryService {
-// TODO change all dtos implementations to service layer
+
     @Autowired
     private ICategoryRepository _categoryRepository;
 
     @Override
-    public List<Category> getAllCategories() {
-        return _categoryRepository.findAll();
+    public List<CategoryDto> getAllCategories() {
+        return _categoryRepository.findAll().stream().map(CategoryDto::new).collect(Collectors.toList());
     }
 }

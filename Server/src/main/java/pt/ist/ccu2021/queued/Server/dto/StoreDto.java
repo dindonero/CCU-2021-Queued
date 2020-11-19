@@ -41,13 +41,13 @@ public class StoreDto {
     @JsonProperty("schedules")
     private List<ScheduleDto> schedules;
 
-    public StoreDto(Store store, List<Counter> counterList, List<Schedule> scheduleList){
+    public StoreDto(Store store, List<CounterDto> counterList, List<Schedule> scheduleList){
         id = store.getId();
         name = store.getName();
         img = store.getImg();
         address = store.getAddress();
         categoryId = store.getCategoryId();
-        counters = counterList.stream().map(CounterDto::new).collect(Collectors.toList());
+        counters = counterList;
         schedules = scheduleList.stream().map(ScheduleDto::new).collect(Collectors.toList());
     }
 

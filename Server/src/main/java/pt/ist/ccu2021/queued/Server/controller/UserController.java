@@ -32,7 +32,7 @@ public class UserController {
                 newUserAccountDto.getFirstName(), newUserAccountDto.getLastName(), newUserAccountDto.getEmail(),
                 newUserAccountDto.getPassword(), newUserAccountDto.getDateOfBirth().toString()));
         try {
-            int id = _userAccountService.createNewUserAccount(newUserAccountDto.toDomain());
+            int id = _userAccountService.createNewUserAccount(newUserAccountDto);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
         catch (DuplicateEmailException e){
@@ -47,11 +47,10 @@ public class UserController {
                 userAccountDto.getEmail(), userAccountDto.getPassword()));
 
         try {
-            UserAccount user = _userAccountService.loginUser(userAccountDto.toDomain());
-            return new ResponseEntity<>(new UserAccountDto(user), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(_userAccountService.loginUser(userAccountDto), HttpStatus.ACCEPTED);
         } catch (WrongPasswordException e) {
             _logger.error(e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } catch (EmailNotFoundException e) {
             _logger.error(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

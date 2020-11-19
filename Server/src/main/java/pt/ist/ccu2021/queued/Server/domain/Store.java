@@ -32,4 +32,5 @@ public class Store {
 
     @Column(name = "companyid")
     private int companyId;
+
 }

@@ -6,6 +6,8 @@ import pt.ist.ccu2021.queued.Server.Exception.DuplicateEmailException;
 import pt.ist.ccu2021.queued.Server.Exception.EmailNotFoundException;
 import pt.ist.ccu2021.queued.Server.Exception.WrongPasswordException;
 import pt.ist.ccu2021.queued.Server.domain.CompanyAccount;
+import pt.ist.ccu2021.queued.Server.dto.CompanyAccountDto;
+import pt.ist.ccu2021.queued.Server.dto.LoginCompanyAccountDto;
 import pt.ist.ccu2021.queued.Server.repository.contract.ICompanyAccountRepository;
 import pt.ist.ccu2021.queued.Server.service.contract.ICompanyAccountService;
 
@@ -16,16 +18,16 @@ public class CompanyAccountService implements ICompanyAccountService {
     private ICompanyAccountRepository _companyAccountRespository;
 
     @Override
-    public int createNewCompanyAccount(CompanyAccount newCompany) throws DuplicateEmailException {
+    public int createNewCompanyAccount(CompanyAccountDto newCompany) throws DuplicateEmailException {
         if (_companyAccountRespository.findByEmail(newCompany.getEmail()) != null) throw new DuplicateEmailException(newCompany.getEmail());
-        return _companyAccountRespository.save(newCompany).getId();
+        return _companyAccountRespository.save(newCompany.toDomain()).getId();
     }
 
     @Override
-    public CompanyAccount loginCompany(CompanyAccount companyLogin) throws EmailNotFoundException, WrongPasswordException {
+    public CompanyAccountDto loginCompany(LoginCompanyAccountDto companyLogin) throws EmailNotFoundException, WrongPasswordException {
         CompanyAccount company = _companyAccountRespository.findByEmail(companyLogin.getEmail());
         if (company == null) throw new EmailNotFoundException(companyLogin.getEmail());
         if (!company.getPassword().equals(companyLogin.getPassword())) throw new WrongPasswordException(companyLogin.getEmail(), companyLogin.getPassword());
-        return company;
+        return new CompanyAccountDto(company);
     }
 }

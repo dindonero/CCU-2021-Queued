@@ -4,11 +4,13 @@ import pt.ist.ccu2021.queued.Server.Exception.DuplicateEmailException;
 import pt.ist.ccu2021.queued.Server.Exception.EmailNotFoundException;
 import pt.ist.ccu2021.queued.Server.Exception.WrongPasswordException;
 import pt.ist.ccu2021.queued.Server.domain.UserAccount;
+import pt.ist.ccu2021.queued.Server.dto.LoginUserAccountDto;
+import pt.ist.ccu2021.queued.Server.dto.UserAccountDto;
 
 public interface IUserAccountService {
 
-    int createNewUserAccount(UserAccount newUser) throws DuplicateEmailException;
+    int createNewUserAccount(UserAccountDto newUser) throws DuplicateEmailException;
 
-    UserAccount loginUser(UserAccount userLogin) throws EmailNotFoundException, WrongPasswordException;
+    UserAccountDto loginUser(LoginUserAccountDto userLogin) throws EmailNotFoundException, WrongPasswordException;
 
 }
