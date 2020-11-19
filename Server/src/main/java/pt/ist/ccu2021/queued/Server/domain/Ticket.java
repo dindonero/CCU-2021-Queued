@@ -3,6 +3,7 @@ package pt.ist.ccu2021.queued.Server.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Time;
 
 @Builder
@@ -20,17 +21,20 @@ public class Ticket {
     private int id;
 
     @Column(name = "storeid")
-    private int storeid;
+    private int storeId;
+
+    @Column(name = "counterid")
+    private int counterId;
 
     @Column(name = "userid")
     private int userId;
 
-    @Column(name = "inline")
-    private boolean inline;
+    @Column(name = "canceled")
+    private boolean canceled;
 
     @Column(name = "enteringtime")
-    private Time enteringTime;
+    private Date enteringTime;
 
     @Column(name = "leavingtime")
-    private Time leavingTime;
+    private Date leavingTime;
 }

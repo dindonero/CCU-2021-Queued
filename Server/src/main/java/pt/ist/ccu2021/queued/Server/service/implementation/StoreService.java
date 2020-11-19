@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.ist.ccu2021.queued.Server.domain.Store;
 import pt.ist.ccu2021.queued.Server.dto.StoreDto;
+import pt.ist.ccu2021.queued.Server.repository.contract.ICounterRepository;
 import pt.ist.ccu2021.queued.Server.repository.contract.IScheduleRepository;
 import pt.ist.ccu2021.queued.Server.repository.contract.IStoreRepository;
 import pt.ist.ccu2021.queued.Server.service.contract.IStoreService;
@@ -20,11 +21,16 @@ public class StoreService implements IStoreService {
     @Autowired
     private IScheduleRepository _scheduleRepository;
 
+    @Autowired
+    private ICounterRepository _counterRepository;
+
     @Override
     public List<StoreDto> getAllStoresFromCategory(int categoryId) {
         List<Store> stores = _storeRepository.findByCategoryId(categoryId);
         return stores.stream()
-                .map(store -> new StoreDto(store, _scheduleRepository.findByStoreId(store.getId())))
+                .map(store -> new StoreDto(store,
+                        _counterRepository.findByStoreid(store.getId()),
+                        _scheduleRepository.findByStoreId(store.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -32,7 +38,9 @@ public class StoreService implements IStoreService {
     public List<StoreDto> getAllStoresFromName(String name) {
         List<Store> stores = _storeRepository.findByName(name);
         return stores.stream()
-                .map(store -> new StoreDto(store, _scheduleRepository.findByStoreId(store.getId())))
+                .map(store -> new StoreDto(store,
+                        _counterRepository.findByStoreid(store.getId()),
+                        _scheduleRepository.findByStoreId(store.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -40,6 +48,7 @@ public class StoreService implements IStoreService {
     public int insertNewStore(StoreDto store, int companyId) {
         int id = _storeRepository.save(store.toDomain(companyId)).getId();
         store.getSchedules().forEach(scheduleDto -> _scheduleRepository.save(scheduleDto.toDomain(id)));
+        store.getCounters().forEach(counterDto -> _counterRepository.save(counterDto.toDomain()));
         return id;
     }
 }

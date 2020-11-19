@@ -46,7 +46,7 @@ public class UserAccountDto implements Serializable {
     }
 
     public UserAccount toDomain(){
-        return UserAccount.builder().id(id).firstName(firstName).lastName(lastName).email(email)
+        return UserAccount.builder().firstName(firstName).lastName(lastName).email(email)
                 .password(password).dateOfBirth(dateOfBirth).build();
     }
 }

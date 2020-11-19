@@ -40,7 +40,7 @@ public class CompanyAccountDto {
 
     }
     public CompanyAccount toDomain(){
-        return CompanyAccount.builder().id(id).name(name).email(email)
+        return CompanyAccount.builder().name(name).email(email)
                 .password(password).secondaryEmail(secondaryEmail).build();
     }
 }
