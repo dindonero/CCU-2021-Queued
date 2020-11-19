@@ -25,7 +25,8 @@ public class TicketService implements ITicketService {
 
     @Override
     public List<UserTicketDto> getAllUserTickets(int userId) {
-        return null;
+        List<Ticket> tickets = _ticketRepository.findByUserId(userId);
+        return tickets.stream().map(ticket -> getUserTicket(ticket.getId())).collect(Collectors.toList());
     }
 
     @Override

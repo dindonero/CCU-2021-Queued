@@ -17,5 +17,6 @@ public class TicketController {
 
     private static final Logger _logger = LoggerFactory.getLogger(TicketController.class);
 
-    //TODO
+    //@GetMapping(value = "/user/{userid}")
+    //public
 }
