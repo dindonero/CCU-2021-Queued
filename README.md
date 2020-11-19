@@ -1,9 +1,9 @@
 # Instalar software -> App
 https://flutter.dev/docs/get-started/install
 
-### 1) Adicionar o Flutter path na PATH environment variable
+#### 1) Adicionar o Flutter path na PATH environment variable
 
-### 2) Configurar o pub get no projeto:
+#### 2) Configurar o pub get no projeto:
 #### Primeira maneira
   1) cd Client/
   2) flutter pub get
@@ -12,24 +12,24 @@ https://flutter.dev/docs/get-started/install
   1) Abrir o projeto no Android Studio
   2) Configurar o pub get quando a mensagem de erro aparecer
     
-### 3) Criar generated folders
+#### 3) Criar generated folders
   1) cd Client/
   2) flutter create .
 
 # Executar a App
-### Executar o main.dart no Android Studio
+#### Executar o main.dart no Android Studio
 
 
 # Instalar software -> Server
-### Install PgAdmin (optional)
-### Install Postgres (IMPORTANTE: lembrar da password definida no user postgres)
+#### Install PgAdmin (optional)
+#### Install Postgres (IMPORTANTE: lembrar da password definida no user postgres)
 
-### 1) Ir à pasta Server/src/main/resources
-### 2) Copiar o ficheiro application.properties.example
-### 3) Remover ".example" ao nome do ficheiro copiado
+#### 1) Ir à pasta Server/src/main/resources
+#### 2) Copiar o ficheiro application.properties.example
+#### 3) Remover ".example" ao nome do ficheiro copiado
 
 ## Criação da Base de Dados
-### 1) Executar o ficheiro db/createDB.bat
+#### 1) Executar o ficheiro db/createDB.bat
 
 ## Executar o Server
 #### Primeira maneira
