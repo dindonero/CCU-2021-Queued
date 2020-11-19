@@ -50,7 +50,13 @@ application.properties
 **/.DS_Store
 
 # App Files #
-Client/build/
+Client/.gitignore
 Client/.dart_tool/
-Client/android/.gradle
+Client/README.md
+Client/.metadata
+Client/pubspec.lock
+Client/android/
+Client/ios/
+Client/build/
+Client/test/
 Client/.packages
