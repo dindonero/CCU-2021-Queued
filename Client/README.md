@@ -1,7 +1,7 @@
 # Instalar software -> App
 https://flutter.dev/docs/get-started/install
 
-### 1) Adicionar o Flutter path como environment variable
+### 1) Adicionar o Flutter path na PATH environment variable
 
 ### 2) Configurar o pub get no projeto:
 #### Primeira maneira
