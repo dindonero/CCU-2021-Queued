@@ -28,10 +28,10 @@ https://flutter.dev/docs/get-started/install
 ### 2) Copiar o ficheiro application.properties.example
 ### 3) Remover ".example" ao nome do ficheiro copiado
 
-# Criação da Base de Dados
+## Criação da Base de Dados
 ### 1) Executar o ficheiro db/createDB.bat
 
-# Executar o Server
+## Executar o Server
 #### Primeira maneira
   1) cd Server/
   2) mvn compile spring-boot:run
