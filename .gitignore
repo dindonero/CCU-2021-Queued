@@ -48,3 +48,9 @@ application.properties
 *.key
 
 **/.DS_Store
+
+# App Files #
+Client/build/
+Client/.dart_tool/
+Client/android/.gradle
+Client/.packages
