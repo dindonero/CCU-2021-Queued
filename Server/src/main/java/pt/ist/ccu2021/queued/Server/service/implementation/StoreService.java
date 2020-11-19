@@ -29,7 +29,7 @@ public class StoreService implements IStoreService {
         List<Store> stores = _storeRepository.findByCategoryId(categoryId);
         return stores.stream()
                 .map(store -> new StoreDto(store,
-                        _counterRepository.findByStoreId(store.getId()),
+                        _counterRepository.findByStoreid(store.getId()),
                         _scheduleRepository.findByStoreId(store.getId())))
                 .collect(Collectors.toList());
     }
@@ -39,7 +39,7 @@ public class StoreService implements IStoreService {
         List<Store> stores = _storeRepository.findByName(name);
         return stores.stream()
                 .map(store -> new StoreDto(store,
-                        _counterRepository.findByStoreId(store.getId()),
+                        _counterRepository.findByStoreid(store.getId()),
                         _scheduleRepository.findByStoreId(store.getId())))
                 .collect(Collectors.toList());
     }

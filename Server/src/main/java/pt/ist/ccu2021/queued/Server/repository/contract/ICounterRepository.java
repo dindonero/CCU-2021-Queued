@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface ICounterRepository extends JpaRepository<Counter, Long> {
 
-    List<Counter> findByStoreId(int storeid);
+    List<Counter> findByStoreid(int storeid);
 
 }

@@ -8,6 +8,7 @@ import pt.ist.ccu2021.queued.Server.domain.Store;
 import pt.ist.ccu2021.queued.Server.domain.Ticket;
 
 import javax.persistence.Column;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class UserTicketDto {
     private boolean canceled;
 
     @JsonProperty("enteringTime")
-    private Time enteringTime;
+    private Date enteringTime;
 
     @JsonProperty("peopleAheadInLine")
     private int peopleAheadInLine;

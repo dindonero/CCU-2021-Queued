@@ -10,7 +10,8 @@ public interface ITicketService {
 
     UserTicketDto getUserTicket(int ticketId);
 
-    UserTicketDto getNewTicket();
+    UserTicketDto getNewTicket(int userId, int counterId);
+
 }
 
 
