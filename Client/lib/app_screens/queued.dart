@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'signup/login.dart';
 import 'dart:async';
 
 class QueuedScreen extends StatefulWidget {
@@ -11,7 +12,10 @@ class _QueuedScreen extends State<QueuedScreen> {
    @override
    void initState() {
      super.initState();
-     Timer(Duration(seconds: 5), ()=> print("Splash Done!"));
+     Timer(Duration(seconds: 5), () => Navigator.push(
+         context,
+         MaterialPageRoute(builder: (context) => LoginScreen())
+     ));
    }
 
   @override
