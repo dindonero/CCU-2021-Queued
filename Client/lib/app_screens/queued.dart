@@ -2,6 +2,23 @@ import 'package:flutter/material.dart';
 import 'signup/login.dart';
 import 'dart:async';
 
+class QueuedTheme extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        textTheme: TextTheme(
+          bodyText2: TextStyle(fontSize: 40, fontFamily: 'Rubik',
+              fontWeight: FontWeight.normal, color: Colors.white),
+        ),
+      ),
+      home: QueuedScreen()
+    );
+  }
+}
+
 class QueuedScreen extends StatefulWidget {
   @override
   _QueuedScreen createState() => _QueuedScreen();
@@ -31,14 +48,8 @@ class _QueuedScreen extends State<QueuedScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  QueuedImageAsset(),
-                  Text('UEUED', textAlign: TextAlign.left, style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Rubik',
-                      fontSize: 40,
-                      fontWeight: FontWeight.normal,
-                      height: 1
-                  ))
+                  new Image.asset('images/logo_branco.png', width: 120),
+                  Text('UEUED')
                 ],
               ),
               Padding(
@@ -61,19 +72,8 @@ class _QueuedScreen extends State<QueuedScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                    Text("wait ", style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Rubik',
-                          fontSize: 40,
-                          fontWeight: FontWeight.normal,
-                          height: 1
-                      )),
-                    Text("online,", style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Rubik',
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        height: 1))
+                    Text("wait "),
+                    Text("online,", style: TextStyle(fontWeight: FontWeight.bold))
                   ]),
                   Padding(
                       padding: EdgeInsets.only(top: 10)
@@ -81,30 +81,11 @@ class _QueuedScreen extends State<QueuedScreen> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                      Text(" not ", style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Rubik',
-                          fontSize: 40,
-                          fontWeight: FontWeight.normal,
-                          height: 1
-                      )),
-                      Text("inline.", style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Rubik',
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          height: 1))
+                      Text(" not "),
+                      Text("inline.", style: TextStyle(fontWeight: FontWeight.bold))
                       ])
                     ])
               ])
     );
-  }
-}
-
-class QueuedImageAsset extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Image image = new Image.asset('images/logo_branco.png', width: 120);
-    return Container(child: image,);
   }
 }

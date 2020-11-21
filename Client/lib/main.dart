@@ -11,11 +11,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CCU APP',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xff22bec8),
       ),
-      home: QueuedScreen(),
+      home: QueuedTheme(),
     );
   }
 }
