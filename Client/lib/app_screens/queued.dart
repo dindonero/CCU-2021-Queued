@@ -45,47 +45,43 @@ class _QueuedScreen extends State<QueuedScreen> {
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Image.asset('images/logo_branco.png', width: 120),
+                Text('UEUED')
+              ],
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 100)
+            ),
+            SizedBox(
+                height: 70.0,
+                width: 70.0,
+                child:
+                CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                    strokeWidth: 5.0)
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 50)
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              Text("wait "),
+              Text("online,", style: TextStyle(fontWeight: FontWeight.bold))
+            ]),
+            Padding(
+                padding: EdgeInsets.only(top: 10)
+            ),
+            Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Image.asset('images/logo_branco.png', width: 120),
-                  Text('UEUED')
-                ],
-              ),
-              Padding(
-                  padding: EdgeInsets.only(top: 100)
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      height: 70.0,
-                      width: 70.0,
-                      child:
-                      CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(Colors.white),
-                          strokeWidth: 5.0)
-                  ),
-                  Padding(
-                      padding: EdgeInsets.only(top: 50)
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                    Text("wait "),
-                    Text("online,", style: TextStyle(fontWeight: FontWeight.bold))
-                  ]),
-                  Padding(
-                      padding: EdgeInsets.only(top: 10)
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                      Text(" not "),
-                      Text("inline.", style: TextStyle(fontWeight: FontWeight.bold))
-                      ])
-                    ])
-              ])
+                children: <Widget>[
+                Text(" not "),
+                Text("inline.", style: TextStyle(fontWeight: FontWeight.bold))
+            ])
+          ])
     );
   }
 }
