@@ -24,11 +24,11 @@ public interface ITicketService {
 
     Time calculateAvgWaitingTime(int counterId);
 
-    Ticket getCurrentTicket(int counterId);
+    Ticket getCurrentTicket(int counterId, String staffCounter);
 
     int calculatePeopleAheadInLine(int counterId);
 
-    CounterDto staffNextTicket(int counterId) throws NoOneWaitingInLineException, NoOneCurrentlyWaitingInLineException;
+    CounterDto staffNextTicket(int counterId, String staffCounter) throws NoOneWaitingInLineException;
 
 }
 

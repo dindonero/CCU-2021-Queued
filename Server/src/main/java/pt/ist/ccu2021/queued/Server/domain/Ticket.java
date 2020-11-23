@@ -37,4 +37,8 @@ public class Ticket {
 
     @Column(name = "leavingtime")
     private Date leavingTime;
+
+    @Column(name = "staffcounter")
+    private String staffCounter;
+
 }

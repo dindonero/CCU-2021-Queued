@@ -30,4 +30,12 @@ public class CompanyAccountService implements ICompanyAccountService {
         if (!company.getPassword().equals(companyLogin.getPassword())) throw new WrongPasswordException(companyLogin.getEmail(), companyLogin.getPassword());
         return new CompanyAccountDto(company);
     }
+
+    @Override
+    public CompanyAccountDto loginStaff(LoginCompanyAccountDto staffLogin) throws EmailNotFoundException, WrongPasswordException {
+        CompanyAccount company = _companyAccountRespository.findByStaffEmail(staffLogin.getEmail());
+        if (company == null) throw new EmailNotFoundException(staffLogin.getEmail());
+        if (!company.getStaffPassword().equals(staffLogin.getPassword())) throw new WrongPasswordException(staffLogin.getEmail(), staffLogin.getPassword());
+        return new CompanyAccountDto(company);
+    }
 }

@@ -27,6 +27,9 @@ public class CompanyAccount {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "secondaryemail")
-    private String secondaryEmail;
+    @Column(name = "staffemail")
+    private String staffEmail;
+
+    @Column(name = "staffpassword")
+    private String staffPassword;
 }

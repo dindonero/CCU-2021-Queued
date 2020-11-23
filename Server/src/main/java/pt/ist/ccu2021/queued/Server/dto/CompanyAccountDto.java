@@ -13,7 +13,7 @@ import pt.ist.ccu2021.queued.Server.domain.UserAccount;
 @Getter
 @Setter
 @ToString
-@JsonPropertyOrder({"id", "name", "email", "password", "secondaryEmail"})
+@JsonPropertyOrder({"id", "name", "email", "password", "staffEmail", "staffPassword"})
 public class CompanyAccountDto {
 
     @JsonProperty("id")
@@ -28,19 +28,22 @@ public class CompanyAccountDto {
     @JsonProperty("password")
     private String password;
 
-    @JsonProperty("secondaryEmail")
-    private String secondaryEmail;
+    @JsonProperty("staffEmail")
+    private String staffEmail;
+
+    @JsonProperty("staffPassword")
+    private String staffPassword;
 
     public CompanyAccountDto(CompanyAccount company){
         id = company.getId();
         name = company.getName();
         email = company.getEmail();
         password = company.getPassword();
-        secondaryEmail = company.getSecondaryEmail();
-
+        staffEmail = company.getStaffEmail();
+        staffPassword = company.getStaffPassword();
     }
     public CompanyAccount toDomain(){
         return CompanyAccount.builder().name(name).email(email)
-                .password(password).secondaryEmail(secondaryEmail).build();
+                .password(password).staffEmail(staffEmail).staffPassword(staffPassword).build();
     }
 }

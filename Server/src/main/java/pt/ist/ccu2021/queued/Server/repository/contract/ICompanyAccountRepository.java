@@ -10,4 +10,6 @@ public interface ICompanyAccountRepository extends JpaRepository<CompanyAccount,
 
     public CompanyAccount findByEmail(String email);
 
+    CompanyAccount findByStaffEmail(String staffEmail);
+
 }

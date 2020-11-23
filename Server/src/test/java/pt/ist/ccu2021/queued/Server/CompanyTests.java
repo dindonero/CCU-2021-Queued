@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 public class CompanyTests {
 
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    private CompanyAccountDto company = CompanyAccountDto.builder().email(ServerApplicationTests.generateRandomString()).name(ServerApplicationTests.generateRandomString()).password("asdasdasd").build();
+    private CompanyAccountDto company = CompanyAccountDto.builder().email(ServerApplicationTests.generateRandomString()).name(ServerApplicationTests.generateRandomString()).password("asdasdasd").staffEmail(ServerApplicationTests.generateRandomString()).staffPassword("StaffPassword").build();
     private String registerUrl = "http://localhost:8080/company/register";
     private String loginUrl = "http://localhost:8080/company/login";
     private RestTemplate rest = new RestTemplate();

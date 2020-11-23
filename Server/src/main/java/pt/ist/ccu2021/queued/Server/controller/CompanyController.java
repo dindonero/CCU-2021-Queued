@@ -27,9 +27,9 @@ public class CompanyController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<Integer> createNewCompanyAccount(@RequestBody CompanyAccountDto newCompanyAccountDto){
-        _logger.info(String.format("CreateNewCompanyAccount - Name:%s, Email:%s, Password:%s, SecondaryEmail:%s",
+        _logger.info(String.format("CreateNewCompanyAccount - Name:%s, Email:%s, Password:%s, StaffEmail:%s, StaffPassword:%s",
                 newCompanyAccountDto.getName(), newCompanyAccountDto.getEmail(),
-                newCompanyAccountDto.getPassword(), newCompanyAccountDto.getSecondaryEmail()));
+                newCompanyAccountDto.getPassword(), newCompanyAccountDto.getStaffEmail(), newCompanyAccountDto.getStaffPassword()));
         try {
             int id = _companyAccountService.createNewCompanyAccount(newCompanyAccountDto);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
@@ -47,6 +47,22 @@ public class CompanyController {
 
         try {
             return new ResponseEntity<>(_companyAccountService.loginCompany(companyAccountDto), HttpStatus.ACCEPTED);
+        } catch (WrongPasswordException e) {
+            _logger.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } catch (EmailNotFoundException e) {
+            _logger.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/staff/login")
+    public ResponseEntity<CompanyAccountDto> loginStaff(@RequestBody LoginCompanyAccountDto companyAccountDto) {
+        _logger.info(String.format("LoginStaffAccount - Email:%s, Password:%s",
+                companyAccountDto.getEmail(), companyAccountDto.getPassword()));
+
+        try {
+            return new ResponseEntity<>(_companyAccountService.loginStaff(companyAccountDto), HttpStatus.ACCEPTED);
         } catch (WrongPasswordException e) {
             _logger.error(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);

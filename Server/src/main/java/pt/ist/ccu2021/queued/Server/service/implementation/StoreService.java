@@ -81,11 +81,9 @@ public class StoreService implements IStoreService {
         Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
         counter.setHasStaff(true);
         int peopleAhead = _ticketService.calculatePeopleAheadInLine(counterId);
-        CounterDto counterDto = new CounterDto(_counterRepository.save(counter),
+        return new CounterDto(_counterRepository.save(counter),
                 peopleAhead,
                 _ticketService.calculateAvgWaitingTime(counterId));
-        if (peopleAhead != 0) counterDto.setCurrentTicketId(_ticketService.getCurrentTicket(counterId).getId());
-        return counterDto;
     }
 
     @Override

@@ -24,7 +24,8 @@ CREATE TABLE CompanyAccount (
 	name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) UNIQUE NOT NULL,
 	password VARCHAR(255) NOT NULL,
-	secondaryEmail VARCHAR(255),
+	staffEmail VARCHAR(255) UNIQUE NOT NULL,
+	staffPassword VARCHAR(255) NOT NULL,
 
 	CONSTRAINT PK_CompanyAccount PRIMARY KEY (id)
 );
@@ -60,6 +61,7 @@ CREATE TABLE Ticket (
 	canceled BOOLEAN NOT NULL,
 	enteringTime DATE NOT NULL,
 	leavingTime DATE,
+	staffCounter VARCHAR(255),
 
 	CONSTRAINT PK_Ticket PRIMARY KEY (id),
 	CONSTRAINT FK_Ticket_Store FOREIGN KEY (storeId) REFERENCES Store(id) ON DELETE CASCADE,

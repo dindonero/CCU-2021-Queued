@@ -3,7 +3,6 @@ package pt.ist.ccu2021.queued.Server.service.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.ist.ccu2021.queued.Server.Exception.ClosedCounterException;
-import pt.ist.ccu2021.queued.Server.Exception.NoOneCurrentlyWaitingInLineException;
 import pt.ist.ccu2021.queued.Server.Exception.NoOneWaitingInLineException;
 import pt.ist.ccu2021.queued.Server.domain.Counter;
 import pt.ist.ccu2021.queued.Server.domain.Store;
@@ -17,8 +16,6 @@ import pt.ist.ccu2021.queued.Server.service.contract.ITicketService;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.Duration;
-import java.time.temporal.TemporalAmount;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +54,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public UserTicketDto getNewTicket(int userId, int counterId) throws ClosedCounterException {
-        Counter counter = _counterRepository.findById( (long) counterId).orElseThrow();
+        Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
         if (!counter.isHasStaff()) throw new ClosedCounterException(counterId, counter.getName());
         Ticket ticket = Ticket.builder().storeId(counter.getStoreid()).counterId(counterId)
                 .userId(userId).canceled(false).enteringTime(new Date(System.currentTimeMillis())).build();
@@ -86,7 +83,7 @@ public class TicketService implements ITicketService {
 
 
     @Override
-    public Time calculateAvgWaitingTime(int counterId){
+    public Time calculateAvgWaitingTime(int counterId) {
         List<Ticket> ticketsFromCounter = _ticketRepository.findByCounterId(counterId);
         if (ticketsFromCounter.size() == 0) return new Time(0);
         long secondsWaiting = ticketsFromCounter.stream().filter(ticket -> ticket.getLeavingTime() != null)
@@ -98,40 +95,45 @@ public class TicketService implements ITicketService {
 
 
     @Override
-    public int calculatePeopleAheadInLine(int counterId){
+    public int calculatePeopleAheadInLine(int counterId) {
         return (int) _ticketRepository.findByCounterId(counterId).stream()
                 .filter(ticket -> !ticket.isCanceled() && ticket.getLeavingTime() == null).count() - 1;
     }
 
 
     @Override
-    public CounterDto staffNextTicket(int counterId) throws NoOneWaitingInLineException, NoOneCurrentlyWaitingInLineException {
-        Ticket currentTicket = getCurrentTicket(counterId);
-        if (currentTicket == null) throw new NoOneCurrentlyWaitingInLineException(counterId, _counterRepository.findById((long) counterId).orElseThrow().getName());
-        currentTicket.setLeavingTime(new Date(System.currentTimeMillis()));
-        _ticketRepository.save(currentTicket);
-
-        if (getCurrentTicket(counterId) == null) throw new NoOneWaitingInLineException(counterId, _counterRepository.findById((long) counterId).orElseThrow().getName());
+    public CounterDto staffNextTicket(int counterId, String staffCounter) throws NoOneWaitingInLineException {
+        Ticket ticket = getNextTicket(counterId);
+        if (ticket == null)
+            throw new NoOneWaitingInLineException(counterId, _counterRepository.findById((long) counterId).orElseThrow().getName());
+        ticket.setStaffCounter(staffCounter);
+        ticket.setLeavingTime(new Date(System.currentTimeMillis()));
+        int id = _ticketRepository.save(ticket).getId();
         Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
 
-        return new CounterDto(counter, calculatePeopleAheadInLine(counterId), calculateAvgWaitingTime(counterId), getCurrentTicket(counterId).getId());
+        return new CounterDto(counter, calculatePeopleAheadInLine(counterId), calculateAvgWaitingTime(counterId), id);
     }
-
 
     @Override
-    public Ticket getCurrentTicket(int counterId) {
+    public Ticket getCurrentTicket(int counterId, String staffCounter) {
+        List<Ticket> ticketsOutOfQueue = _ticketRepository.findByCounterId(counterId).stream().filter(ticket -> ticket.getLeavingTime() != null && ticket.getStaffCounter().equals(staffCounter) && !ticket.isCanceled()).collect(Collectors.toList());
+        if (ticketsOutOfQueue.size() == 0) return null;
+        return ticketsOutOfQueue.get(ticketsOutOfQueue.size() - 1);
+    }
 
-        return _ticketRepository.findByCounterId(counterId).stream().filter(ticket -> ticket.getLeavingTime() == null).findFirst().orElse(null);
+    public Ticket getNextTicket(int counterId) {
+
+        return _ticketRepository.findByCounterId(counterId).stream().filter(ticket -> ticket.getLeavingTime() == null && !ticket.isCanceled()).findFirst().orElse(null);
     }
 
 
-    private Ticket findUserTicketByUserAndCounterId(int userId, int counterId){
+    private Ticket findUserTicketByUserAndCounterId(int userId, int counterId) {
 
         return _ticketRepository.findByUserId(userId).stream().filter(ticket -> ticket.getCounterId() == counterId).findFirst().orElseThrow();
     }
 
 
-    private int calculatePeopleAheadInLineForUser(Ticket userTicket){
+    private int calculatePeopleAheadInLineForUser(Ticket userTicket) {
 
         return (int) _ticketRepository.findByCounterId(userTicket.getCounterId()).stream()
                 .filter(ticket -> !ticket.isCanceled() && ticket.getLeavingTime() == null && ticket.getId() < userTicket.getId()).count() - 1;

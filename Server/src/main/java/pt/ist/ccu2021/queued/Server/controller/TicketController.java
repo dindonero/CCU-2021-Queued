@@ -60,15 +60,13 @@ public class TicketController {
         return new ResponseEntity<>(_ticketService.cancelUserTicket(ticketId), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "/counter/{counterid}/next")
-    public ResponseEntity<CounterDto> staffNextTicket(@PathVariable("counterid") int counterId){
+    @GetMapping(value = "/counter/{counterid}/staffCounter/{staffcounter}/next")
+    public ResponseEntity<CounterDto> staffNextTicket(@PathVariable("counterid") int counterId, @PathVariable("staffcounter") String staffCounter){
 
         try {
-            return new ResponseEntity<>(_ticketService.staffNextTicket(counterId), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(_ticketService.staffNextTicket(counterId, staffCounter), HttpStatus.ACCEPTED);
         } catch (NoOneWaitingInLineException e) {
             return new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE);
-        } catch (NoOneCurrentlyWaitingInLineException e) {
-            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
     }
 }

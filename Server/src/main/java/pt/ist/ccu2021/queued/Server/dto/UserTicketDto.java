@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
-@JsonPropertyOrder({"id", "storeid", "counterid", "userId", "canceled", "enteringTime", "peopleAheadInLine", "estimatedWaitingTime", "storeName", "storeAddress"})
+@JsonPropertyOrder({"id", "storeid", "counterid", "userId", "canceled", "enteringTime", "leavingTime", "staffCounter","peopleAheadInLine", "estimatedWaitingTime", "storeName", "storeAddress"})
 public class UserTicketDto {
 
     @JsonProperty("id")
@@ -41,6 +41,12 @@ public class UserTicketDto {
     @JsonProperty("enteringTime")
     private Date enteringTime;
 
+    @JsonProperty("leavingTime")
+    private Date leavingTime;
+
+    @JsonProperty("staffCounter")
+    private String staffCounter;
+
     @JsonProperty("peopleAheadInLine")
     private int peopleAheadInLine;
 
@@ -60,6 +66,8 @@ public class UserTicketDto {
         userId = ticket.getUserId();
         canceled = ticket.isCanceled();
         enteringTime = ticket.getEnteringTime();
+        leavingTime = ticket.getLeavingTime();
+        staffCounter = ticket.getStaffCounter();
         peopleAheadInLine = peopleAhead;
         estimatedWaitingTime = waitingTime;
         storeName = sName;

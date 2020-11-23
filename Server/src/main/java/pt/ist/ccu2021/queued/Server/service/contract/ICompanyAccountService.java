@@ -12,4 +12,6 @@ public interface ICompanyAccountService {
 
     CompanyAccountDto loginCompany(LoginCompanyAccountDto companyLogin) throws EmailNotFoundException, WrongPasswordException;
 
+    CompanyAccountDto loginStaff(LoginCompanyAccountDto companyLogin) throws EmailNotFoundException, WrongPasswordException;
+
 }
