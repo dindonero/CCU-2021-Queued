@@ -1,4 +1,5 @@
 import 'signup.dart';
+import '../categories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -87,7 +88,10 @@ class _SignFormState extends State<SignForm> {
           color: Color(0xff13497B),
           shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Categories()));
+          },
           child: const Text('LOGIN',
             style: TextStyle(fontSize: 18, color: Colors.white)),
         )

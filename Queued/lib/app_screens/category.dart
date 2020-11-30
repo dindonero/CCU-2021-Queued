@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class Category {
   final String image;
-  final int size, id;
+  final String title;
+  final int id;
   final Color color;
 
   Category({
     this.id,
+    this.title,
     this.image,
-    this.size,
     this.color,
   });
 }
@@ -16,9 +17,8 @@ class Category {
 List<Category> categories = [
   Category(
       id: 1,
-      size: 12,
+      title: "Supermarket",
       image: "images/supermarkets.png",
       color: Color(0xFFFFFFFF)),
-
 ];
 
