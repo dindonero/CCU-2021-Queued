@@ -50,14 +50,14 @@ application.properties
 **/.DS_Store
 
 # App Files #
-Queued/.gitignore
-Queued/.dart_tool/
-Queued/README.md
-Queued/.metadata
-Queued/pubspec.lock
-Queued/android/
-Queued/ios/
-Queued/build/
-Queued/test/
-Queued/.packages
+**/.gitignore
+**/.dart_tool/
+**/README.md
+**/.metadata
+**/pubspec.lock
+**/android/
+**/ios/
+**/build/
+**/test/
+**/.packages
 Client/**
