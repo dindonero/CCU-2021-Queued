@@ -21,11 +21,11 @@ class _CategoriesState extends State<Categories> {
     return Scaffold(
       backgroundColor: const Color(0xffF8FBFF),
       body: Column(
-      //crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-          SizedBox(height: screenSize().height/25),
-           Align(alignment: Alignment.center,
-           child: Padding(padding: const EdgeInsets.all(20.0),
+        Padding(
+          padding: const EdgeInsets.only(top: 50.0),
+           child: Padding(padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
               child:mainRow(),
               ),
            ),
@@ -37,19 +37,18 @@ class _CategoriesState extends State<Categories> {
                 child: Text("    Please choose your category", style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
           ),
           SizedBox(height: screenSize().height/30),
-          Container(width: 380,
-              child: buildSearchField(),
-              ),
+          Padding(padding: EdgeInsets.symmetric( horizontal: screenSize().width / 20),
+              child: buildSearchField()),
       Expanded(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 1),
+          padding: EdgeInsets.symmetric(horizontal: screenSize().width/20),
           child: GridView.builder(
               itemCount: categories.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                // mainAxisSpacing: screenSize().width/10,
-                // crossAxisSpacing: screenSize().width/10,
-                childAspectRatio: 0.9,
+                mainAxisSpacing: screenSize().width/15,
+                crossAxisSpacing: screenSize().width/25,
+                childAspectRatio: 1,
               ),
               itemBuilder: (context, index) => ItemCard(
                     category: categories[index],
