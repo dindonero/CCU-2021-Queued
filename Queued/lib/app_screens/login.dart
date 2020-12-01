@@ -1,8 +1,8 @@
-import 'package:Queued/app_screens/services/ServerCommunicationService.dart';
+import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../categories.dart';
+import 'categories.dart';
 import 'signup.dart';
 
 class LoginScreen extends StatefulWidget {

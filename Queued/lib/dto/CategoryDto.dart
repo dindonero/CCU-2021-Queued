@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:Queued/app_screens/category.dart';
+import '../domain/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 

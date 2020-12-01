@@ -4,7 +4,7 @@ import 'package:Queued/dto/CategoryDto.dart';
 import 'package:Queued/dto/UserAccountDto.dart';
 import 'package:http/http.dart' as http;
 
-import '../category.dart';
+import '../domain/category.dart';
 
 String url = "http://192.168.1.72:8080";
 String registerUrl = "/user/register";

@@ -1,6 +1,6 @@
-import 'package:Queued/app_screens/services/ServerCommunicationService.dart';
+import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
-import 'category.dart';
+import '../domain/category.dart';
 import 'item.dart';
 import 'navBar.dart';
 import 'dart:math' as math;
