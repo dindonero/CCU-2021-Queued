@@ -24,7 +24,7 @@ class ItemCard extends StatelessWidget {
               width: 800,
               decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: new AssetImage(category.image),
+                        image: category.image.image,
                         fit: BoxFit.cover
                     )
               ),
