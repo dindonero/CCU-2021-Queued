@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'category.dart';
 
 class ItemCard extends StatelessWidget {
@@ -15,29 +16,43 @@ class ItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: press,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: Container(
+              height: 180,
+              width: 800,
+              decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: new AssetImage(category.image),
+                        fit: BoxFit.cover
+                    )
+              ),
+              child: Stack(
+                children: <Widget>[
+                    // Stroked text as border.
+                    Center( child: Text(
+                                          category.title,
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              foreground: Paint()
+                                              ..style = PaintingStyle.stroke
+                                              ..strokeWidth = 2
+                                              ..color = Colors.black,
+                                          ),
+                                        ),
+                          ),
+                    // solid text
+                    Center (child:  Text(category.title, style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 25, ),),),
+                    ],
+                )
               // padding: EdgeInsets.all(MediaQuery.of(context).size.height/10),
               // For  demo we use fixed height  and width
               // Now we dont need them
-              height: 180,
-              width: 160,
-              child: Hero(
-                tag: "${category.id}",
-                child: Image.asset(category.image, width: 500),
+            
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 1),
-            child: Text(
-              // categorys is out demo list
-              category.title,
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
         ],
       ),
     );

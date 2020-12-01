@@ -24,7 +24,7 @@ class _CategoriesState extends State<Categories> {
                 crossAxisCount: 2,
                 // mainAxisSpacing: screenSize().width/10,
                 // crossAxisSpacing: screenSize().width/10,
-                childAspectRatio: 0.75,
+                childAspectRatio: 0.9,
               ),
               itemBuilder: (context, index) => ItemCard(
                     category: categories[index],
