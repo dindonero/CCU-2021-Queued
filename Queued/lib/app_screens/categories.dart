@@ -73,7 +73,7 @@ class _CategoriesState extends State<Categories> {
                         }
                       })),
             ),
-            navBar(),
+            navBar(context),
           ],
         ));
   }
