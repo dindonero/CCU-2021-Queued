@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'category.dart';
 import 'item.dart';
+import 'navBar.dart';
 import 'dart:math' as math;
 
 
@@ -62,6 +63,7 @@ class _CategoriesState extends State<Categories> {
                   )),
         ),
       ),
+      navBar(),
       ],
     ));
   }
@@ -102,5 +104,7 @@ class _CategoriesState extends State<Categories> {
       ],
     );
   }
+
+
 
 }
