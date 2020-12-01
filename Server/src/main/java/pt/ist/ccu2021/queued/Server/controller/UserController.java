@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity<Integer> createNewUserAccount(@RequestBody UserAccountDto newUserAccountDto){
         _logger.info(String.format("CreateNewUserAccount - FirstName:%s, LastName:%s, Email:%s, Password:%s, DateOfBirth:%s",
                 newUserAccountDto.getFirstName(), newUserAccountDto.getLastName(), newUserAccountDto.getEmail(),
-                newUserAccountDto.getPassword(), newUserAccountDto.getDateOfBirth().toString()));
+                newUserAccountDto.getPassword(), newUserAccountDto.getDateOfBirth()));
         try {
             int id = _userAccountService.createNewUserAccount(newUserAccountDto);
             return new ResponseEntity<>(id, HttpStatus.CREATED);

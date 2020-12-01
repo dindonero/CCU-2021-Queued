@@ -26,7 +26,7 @@ public class UserTests {
     public void beforeEach(){
         user.setEmail(ServerApplicationTests.generateRandomString());
         try {
-            user.setDateOfBirth(formatter.parse(formatter.format(new Date())));
+            user.setDateOfBirth(formatter.parse(formatter.format(new Date())).toInstant().toEpochMilli());
         } catch (ParseException e) {
             // do nothing
         }
