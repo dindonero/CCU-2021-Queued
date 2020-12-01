@@ -33,7 +33,7 @@ public class UserAccountDto implements Serializable {
     private String password;
 
     @JsonProperty("dateOfBirth")
-    private Date dateOfBirth;
+    private long dateOfBirth;
 
     public UserAccountDto(UserAccount user){
         id = user.getId();
@@ -41,12 +41,12 @@ public class UserAccountDto implements Serializable {
         lastName = user.getLastName();
         email = user.getEmail();
         password = user.getPassword();
-        dateOfBirth = user.getDateOfBirth();
+        dateOfBirth = user.getDateOfBirth().toInstant().toEpochMilli();
 
     }
 
     public UserAccount toDomain(){
         return UserAccount.builder().firstName(firstName).lastName(lastName).email(email)
-                .password(password).dateOfBirth(dateOfBirth).build();
+                .password(password).dateOfBirth(new Date(dateOfBirth)).build();
     }
 }

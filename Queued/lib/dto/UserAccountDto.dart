@@ -1,21 +1,31 @@
 class UserAccountDto {
 
-  const UserAccountDto({this.id, this.firstName, this.lastName, this.email, this.password, this.dateOfBirth});
+  UserAccountDto(this.id, this.firstName, this.lastName, this.email, this.password, this.dateOfBirth);
 
-  final int id;
+  int id;
 
-  final String firstName;
+  String firstName;
 
-  final String lastName;
+  String lastName;
 
-  final String email;
+  String email;
 
-  final String password;
+  String password;
 
-  final DateTime dateOfBirth;
+  DateTime dateOfBirth;
 
-  factory UserAccountDto.fromJson(Map<String, dynamic> json) {
-    return UserAccountDto(id: json['id'], firstName: json['firstName'], lastName: json['lastName'], email: json['email'], password: json['password'], dateOfBirth: json['dateOfBirth']);
+  UserAccountDto.fromJson(Map<String, dynamic> json) {
+    this.id = json['id'];
+    this.firstName = json['firstName'];
+    this.lastName = json['lastName'];
+    this.email = json['email'];
+    this.password = json['password'];
+    this.dateOfBirth = DateTime.fromMillisecondsSinceEpoch(json['dateOfBirth']);
   }
+
+  Map<String, dynamic> toJson(){
+      return {'id': this.id.toString(), 'firstName': this.firstName, 'lastName': this.lastName, 'email': this.email, 'password': this.password, 'dateOfBirth': this.dateOfBirth.toString()};
+  }
+
 
 }
