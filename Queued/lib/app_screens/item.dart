@@ -21,7 +21,6 @@ class ItemCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
-              height: 180,
               width: 800,
               decoration: BoxDecoration(
                     image: DecorationImage(
