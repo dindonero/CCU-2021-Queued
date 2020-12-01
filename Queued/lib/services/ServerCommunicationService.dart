@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Queued/dto/CategoryDto.dart';
+import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/dto/UserAccountDto.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,6 +23,7 @@ Future<UserAccountDto> loginUser(UserAccountDto userToLogin) async {
     var responseJson = json.decode(response.body);
     return UserAccountDto.fromJson(responseJson);
   }
+  return null;
 }
 
 Future<List<Category>> getAllCategories() async {
@@ -30,4 +32,14 @@ Future<List<Category>> getAllCategories() async {
     List<dynamic> responseJson = json.decode(response.body);
     return responseJson.map((category) => CategoryDto.fromJson(category).toDomain()).toList();
   }
+  return null;
+}
+
+Future<List<StoreDto>> getStoresFromCategory(int categoryId) async {
+  var response = await http.get(url + "/category/" + categoryId.toString() + "/store", headers: headers);
+  if (response.statusCode == 200 || response.statusCode == 202) {
+    List<dynamic> responseJson = json.decode(response.body);
+    return responseJson.map((store) => StoreDto.fromJson(store)).toList();
+  }
+  return null;
 }
