@@ -37,7 +37,7 @@ class ItemCard extends StatelessWidget {
                                               fontSize: 25,
                                               foreground: Paint()
                                               ..style = PaintingStyle.stroke
-                                              ..strokeWidth = 2
+                                              ..strokeWidth = 5
                                               ..color = Colors.black,
                                           ),
                                         ),

@@ -35,7 +35,7 @@ class _LoginScreen extends State<LoginScreen> {
                     child: Column(children: [
                       Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: screenSize().height / 10),
+                              vertical: screenSize().height / 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -44,7 +44,7 @@ class _LoginScreen extends State<LoginScreen> {
                               Text('UEUED')
                             ],
                           )),
-                      SizedBox(height: screenSize().height / 20),
+                      SizedBox(height: screenSize().height / 10),
                       Text("Welcome",
                           style: TextStyle(
                               color: Color(0xff13497b),

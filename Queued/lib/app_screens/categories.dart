@@ -2,6 +2,7 @@ import 'package:Queued/app_screens/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
 import 'item.dart';
+import 'navBar.dart';
 import 'dart:math' as math;
 
 class Categories extends StatefulWidget {
@@ -72,6 +73,7 @@ class _CategoriesState extends State<Categories> {
                         }
                       })),
             ),
+            navBar(),
           ],
         ));
   }
