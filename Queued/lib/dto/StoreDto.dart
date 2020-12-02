@@ -1,14 +1,16 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:Queued/dto/CounterDto.dart';
 import 'package:Queued/dto/ScheduleDto.dart';
+import 'package:flutter/cupertino.dart';
 
 class StoreDto {
   int id;
 
   String name;
 
-  Uint8List img;
+  Image img;
 
   String address;
 
@@ -21,7 +23,7 @@ class StoreDto {
   StoreDto.fromJson(Map<String, dynamic> json){
     this.id = json['id'];
     this.name = json['name'];
-    this.img = Uint8List.fromList(json['img'].cast<int>());
+    this.img = new Image.memory(Uint8List.fromList(json['img'].cast<int>()));
     this.address = json['address'];
     this.categoryId = json['categoryId'];
     this.counters = json['counters'].map((counter) => CounterDto.fromJson(counter)).toList(); //.cast<List<dynamic>>()
