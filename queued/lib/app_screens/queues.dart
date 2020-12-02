@@ -1,9 +1,8 @@
+import 'package:Queued/domain/category.dart';
 import 'package:flutter/material.dart';
-import 'category.dart';
 import 'ticketsCard.dart';
 import 'navBar.dart';
 import 'dart:math' as math;
-
 
 class Queues extends StatefulWidget {
   @override
