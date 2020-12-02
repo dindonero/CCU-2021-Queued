@@ -2,6 +2,7 @@ import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'stores.dart';
 import 'categories.dart';
 import 'signup.dart';
 

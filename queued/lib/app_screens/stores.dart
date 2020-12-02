@@ -1,23 +1,32 @@
-import 'package:Queued/app_screens/stores.dart';
+import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
 import '../domain/category.dart';
-import 'item.dart';
+import 'storeCard.dart';
 import 'navBar.dart';
 import 'dart:math' as math;
 
-class Categories extends StatefulWidget {
+class Stores extends StatefulWidget {
+  final int id;
+  Stores(this.id);
+
+  //Stores({Key key, @required this.id}) : super(key: key);
   @override
-  _CategoriesState createState() => _CategoriesState();
+  _StoresState createState() => _StoresState(this.id);
 }
 
-class _CategoriesState extends State<Categories> {
-  Future<List<Category>> futureCategories;
+class _StoresState extends State<Stores> {
+  Future<List<StoreDto>> futureStores;
+  int id;
+
+  _StoresState(this.id);
 
   @override
   void initState() {
-    futureCategories = getAllCategories();
+    futureStores = getStoresFromCategory(this.id);
   }
+
+ 
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
@@ -48,7 +57,7 @@ class _CategoriesState extends State<Categories> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("    Please choose your category",
+              child: Text("    Please choose your store",
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
@@ -58,9 +67,9 @@ class _CategoriesState extends State<Categories> {
             ),
             Expanded(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
-                  child: FutureBuilder<List<Category>>(
-                      future: this.futureCategories,
+                  padding: EdgeInsets.symmetric(horizontal: 1),
+                  child: FutureBuilder<List<StoreDto>>(
+                      future: this.futureStores,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -79,24 +88,24 @@ class _CategoriesState extends State<Categories> {
         ));
   }
 
-  Widget _buildGridView(BuildContext context, List<Category> categories) {
+  Widget _buildGridView(BuildContext context, List<StoreDto> stores) {
     return GridView.builder(
-        itemCount: categories.length,
+        itemCount: stores.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: screenSize().width / 20,
-          crossAxisSpacing: screenSize().width / 20,
-          childAspectRatio: 1,
+          crossAxisCount: 1,
+          mainAxisSpacing: screenSize().width / 15,
+          crossAxisSpacing: screenSize().width / 25,
+          childAspectRatio: 0.75,
         ),
-        itemBuilder: (context, index) => ItemCard(
-              category: categories[index],
-               press: () => Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                     builder: (context) => Stores(
-                       categories[index].id,
-                     ),
-                   )),
+        itemBuilder: (context, index) => StoreCard(
+              store: stores[index],
+              // press: () => Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => DetailsScreen(
+              //         category: categories[index],
+              //       ),
+              //     )),
             ));
   }
 

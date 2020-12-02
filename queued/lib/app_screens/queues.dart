@@ -10,6 +10,7 @@ class Queues extends StatefulWidget {
 }
 
 class _QueuesState extends State<Queues> {
+  Future<List<Category>> futureCategories;
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -40,29 +41,47 @@ class _QueuesState extends State<Queues> {
               child: buildSearchField(),
               ),
       Expanded(
-          child: GridView.builder(
-              itemCount: categories.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount( 
-                crossAxisCount: 1,
-                
-                // mainAxisSpacing: screenSize().width/10,
-                // crossAxisSpacing: screenSize().width/10,
-                childAspectRatio: 2.95,
-              ),
-              itemBuilder: (context, index) => TicketsCard(
-                    category: categories[index],
-                    // press: () => Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => DetailsScreen(
-                    //         category: categories[index],
-                    //       ),
-                    //     )),
-                  )),
-      ),
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 1),
+                  child: FutureBuilder<List<Category>>(
+                      future: this.futureCategories,
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                          case ConnectionState.waiting:
+                            return CircularProgressIndicator();
+                          default:
+                            if (snapshot.hasError)
+                              return new Text('Error: ${snapshot.error}');
+                            else
+                              return _buildGridView(context, snapshot.data);
+                        }
+                      })),
+            ),
       navBar(context),
       ],
     ));
+  }
+
+    Widget _buildGridView(BuildContext context, List<Category> categories) {
+    return GridView.builder(
+        itemCount: categories.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1,
+          mainAxisSpacing: screenSize().width / 15,
+          crossAxisSpacing: screenSize().width / 25,
+          childAspectRatio: 0.75,
+        ),
+        itemBuilder: (context, index) => TicketsCard(
+              category: categories[index],
+              // press: () => Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => DetailsScreen(
+              //         category: categories[index],
+              //       ),
+              //     )),
+            ));
   }
 
   Size screenSize() {
