@@ -16,6 +16,7 @@ import pt.ist.ccu2021.queued.Server.service.contract.ITicketService;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public List<UserTicketDto> getAllUserTickets(int userId) {
-        List<Ticket> tickets = _ticketRepository.findByUserId(userId);
+        List<Ticket> tickets = new ArrayList<>(_ticketRepository.findByUserId(userId));
 
         return tickets.stream().map(ticket -> getUserTicket(ticket.getId())).collect(Collectors.toList());
     }
@@ -84,7 +85,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public Time calculateAvgWaitingTime(int counterId) {
-        List<Ticket> ticketsFromCounter = _ticketRepository.findByCounterId(counterId);
+        List<Ticket> ticketsFromCounter = new ArrayList<>(_ticketRepository.findByCounterId(counterId));
         if (ticketsFromCounter.size() == 0) return new Time(0);
         long secondsWaiting = ticketsFromCounter.stream().filter(ticket -> ticket.getLeavingTime() != null)
                 .mapToLong(ticket -> ticket.getLeavingTime().getTime() - ticket.getEnteringTime().getTime()).sum();

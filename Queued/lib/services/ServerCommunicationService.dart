@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:Queued/dto/CategoryDto.dart';
+import 'package:Queued/dto/TicketDto.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/dto/UserAccountDto.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/category.dart';
 
-String url = "http://192.168.1.72:8080";
+String url = "http://192.168.1.5:8080";
 String registerUrl = "/user/register";
 String loginUrl = "/user/login";
 String categoriesUrl = "/category/getAll";
@@ -42,4 +43,9 @@ Future<List<StoreDto>> getStoresFromCategory(int categoryId) async {
     return responseJson.map((store) => StoreDto.fromJson(store)).toList();
   }
   return null;
+}
+
+Future<TicketDto> getNewUserTicket(int userId, int counterId) async {
+  var response = await http.get(url + "/user/" + userId.toString() + "/counter/" + counterId.toString() + "/new", headers: headers);
+ return null;
 }
