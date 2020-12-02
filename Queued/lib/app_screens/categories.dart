@@ -57,7 +57,7 @@ class _CategoriesState extends State<Categories> {
             ),
             Expanded(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 1),
+                  padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
                   child: FutureBuilder<List<Category>>(
                       future: this.futureCategories,
                       builder: (context, snapshot) {
@@ -83,8 +83,8 @@ class _CategoriesState extends State<Categories> {
         itemCount: categories.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: screenSize().width / 15,
-          crossAxisSpacing: screenSize().width / 25,
+          mainAxisSpacing: screenSize().width / 20,
+          crossAxisSpacing: screenSize().width / 20,
           childAspectRatio: 1,
         ),
         itemBuilder: (context, index) => ItemCard(
