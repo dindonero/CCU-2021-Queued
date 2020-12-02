@@ -33,10 +33,12 @@ class _LoginScreen extends State<LoginScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    child: Column(children: [
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                       Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: screenSize().height / 20),
+                              vertical: screenSize().height / 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
