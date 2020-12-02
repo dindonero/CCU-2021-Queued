@@ -43,11 +43,12 @@ class _QueuesState extends State<Queues> {
       Expanded(
           child: GridView.builder(
               itemCount: categories.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount( 
                 crossAxisCount: 1,
+                
                 // mainAxisSpacing: screenSize().width/10,
                 // crossAxisSpacing: screenSize().width/10,
-                childAspectRatio: 0.75,
+                childAspectRatio: 2.95,
               ),
               itemBuilder: (context, index) => TicketsCard(
                     category: categories[index],
