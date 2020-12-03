@@ -41,8 +41,8 @@ class TicketsCard extends StatelessWidget {
                       ),
                     ),
                     Center(
-                      child: Text(
-                        category.title,
+                      child: Text("title",
+                        // category.title,
                         style: TextStyle(
                           color: Color(0xFF143656),
                           fontSize: 25,

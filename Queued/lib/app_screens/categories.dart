@@ -86,6 +86,7 @@ class _CategoriesState extends State<Categories> {
                         }
                       })),
             ),
+            Nav(0)
           ],
         ));
   }

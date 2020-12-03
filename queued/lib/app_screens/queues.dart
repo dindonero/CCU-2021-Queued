@@ -58,7 +58,7 @@ class _QueuesState extends State<Queues> {
                         }
                       })),
             ),
-      Nav(),
+      Nav(1),
       ],
     ));
   }

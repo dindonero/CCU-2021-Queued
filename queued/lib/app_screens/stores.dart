@@ -84,6 +84,7 @@ class _StoresState extends State<Stores> {
                         }
                       })),
             ),
+            Nav(0)
           ],
         ));
   }

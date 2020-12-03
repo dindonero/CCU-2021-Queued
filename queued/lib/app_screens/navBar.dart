@@ -1,34 +1,37 @@
- import 'package:Queued/app_screens/categories.dart';
- import 'package:Queued/app_screens/login.dart';
+import 'package:Queued/app_screens/categories.dart';
+import 'package:Queued/app_screens/queues.dart';
 import 'package:flutter/material.dart';
  import 'queues.dart';
 
  class Nav extends StatefulWidget {
+   final int id;
+   Nav(this.id);
+
    @override
-   _NavState createState() => _NavState();
+   _NavState createState() => _NavState(this.id);
  }
 
 class _NavState extends State<Nav> {
-    int _selectedIndex = 0;
+    int id;
+    _NavState(this.id);
     List<Widget> _widgetOptions = <Widget>[
       Categories(),
-      Text('NO TICKETS', style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 30)),
-      Text('Profile'),
+      Queues(),
       Text('Ola')
     ];
 
     void _onItemTap(int index) {
       setState(() {
-        _selectedIndex = index;
+        int _selectedIndex = index;
       });
-    }
+       Navigator.push(
+        context, MaterialPageRoute(builder: (context) => _widgetOptions.elementAt(index)));
+      }
 
     @override 
     Widget build(BuildContext context){
-      return Scaffold(
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex)
-        ),bottomNavigationBar: new Theme(
+      return Container(
+        child: new Theme(
       data: Theme.of(context).copyWith(
         // sets the background color of the `BottomNavigationBar`
         // canvasColor: Colors.green,
@@ -60,7 +63,7 @@ class _NavState extends State<Nav> {
             title: Text('Profile')
           )
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: this.id,
         onTap: _onItemTap
       ))));
     }

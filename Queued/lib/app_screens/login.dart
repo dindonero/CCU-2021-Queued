@@ -124,7 +124,7 @@ class _SignFormState extends State<SignForm> {
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Nav()));
+                      MaterialPageRoute(builder: (context) => Categories()));
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),
