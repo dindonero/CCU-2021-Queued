@@ -64,5 +64,5 @@ Client/**
 **/.vscode/
 **/.settings/
 **/.classpath
-**/factorypath
+**/.factorypath
 **/.project
