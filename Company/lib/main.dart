@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xff22bec8),
       ),
-      home: QueuedTheme(),
+      home: CompanyTheme(),
     );
   }
 }

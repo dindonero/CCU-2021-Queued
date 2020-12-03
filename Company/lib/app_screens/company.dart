@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'signup/login.dart';
+import 'login.dart';
 import 'dart:async';
 
-class QueuedTheme extends StatelessWidget {
+class CompanyTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,16 +16,16 @@ class QueuedTheme extends StatelessWidget {
                 color: Colors.white),
           ),
         ),
-        home: QueuedCompanyScreen());
+        home: CompanyScreen());
   }
 }
 
-class QueuedCompanyScreen extends StatefulWidget {
+class CompanyScreen extends StatefulWidget {
   @override
-  _QueuedCompanyScreen createState() => _QueuedCompanyScreen();
+  _CompanyScreen createState() => _CompanyScreen();
 }
 
-class _QueuedCompanyScreen extends State<QueuedCompanyScreen> {
+class _CompanyScreen extends State<CompanyScreen> {
   // This widget is the root of your application.
   @override
   void initState() {
