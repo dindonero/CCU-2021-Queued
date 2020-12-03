@@ -1,15 +1,16 @@
-import 'package:Queued/domain/category.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'dart:math' as math;
 
+import 'package:Queued/dto/TicketDto.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
 class TicketsCard extends StatelessWidget {
-  final Category category;
+  final TicketDto ticket;
   final Function press;
 
   const TicketsCard({
     Key key,
-    this.category,
+    this.ticket,
     this.press,
   }) : super(key: key);
 
@@ -41,7 +42,7 @@ class TicketsCard extends StatelessWidget {
                       ),
                     ),
                     Center(
-                      child: Text("title",
+                      child: Text(ticket.storeName,
                         // category.title,
                         style: TextStyle(
                           color: Color(0xFF143656),

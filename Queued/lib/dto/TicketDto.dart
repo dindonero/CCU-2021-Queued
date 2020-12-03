@@ -30,8 +30,8 @@ class TicketDto {
     this.counterId = json['counterId'];
     this.userId = json['userId'];
     this.canceled = json['canceled'];
-    this.enteringTime = json['enteringTime'];
-    this.leavingTime = json['leavingTime'];
+    this.enteringTime = DateTime.fromMillisecondsSinceEpoch(json['enteringTime']);
+    this.leavingTime = DateTime.fromMillisecondsSinceEpoch(json['leavingTime']);
     this.staffCounter = json['staffCounter'];
     this.peopleAheadInLine = json['peopleAheadInLine'];
     this.estimatedWaitingTime = json['estimatedWaitingTime'];

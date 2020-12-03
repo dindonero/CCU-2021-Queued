@@ -1,4 +1,6 @@
 import 'package:Queued/domain/category.dart';
+import 'package:Queued/dto/TicketDto.dart';
+import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
 import 'ticketsCard.dart';
 import 'navBar.dart';
@@ -10,12 +12,18 @@ class Queues extends StatefulWidget {
 }
 
 class _QueuesState extends State<Queues> {
-  Future<List<Category>> futureCategories;
+  Future<List<TicketDto>> futureTickets;
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
     gapPadding: 10,
   );
+
+  @override
+  void initState(){
+    futureTickets = getAllUserTickets(1); // todo insert user id
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +51,8 @@ class _QueuesState extends State<Queues> {
       Expanded(
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 1),
-                  child: FutureBuilder<List<Category>>(
-                      future: this.futureCategories,
+                  child: FutureBuilder<List<TicketDto>>(
+                      future: this.futureTickets,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -63,9 +71,9 @@ class _QueuesState extends State<Queues> {
     ));
   }
 
-    Widget _buildGridView(BuildContext context, List<Category> categories) {
+    Widget _buildGridView(BuildContext context, List<TicketDto> tickets) {
     return GridView.builder(
-        itemCount: categories.length,
+        itemCount: tickets.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           mainAxisSpacing: screenSize().width / 15,
@@ -73,7 +81,7 @@ class _QueuesState extends State<Queues> {
           childAspectRatio: 0.75,
         ),
         itemBuilder: (context, index) => TicketsCard(
-              category: categories[index],
+              ticket: tickets[index],
               // press: () => Navigator.push(
               //     context,
               //     MaterialPageRoute(

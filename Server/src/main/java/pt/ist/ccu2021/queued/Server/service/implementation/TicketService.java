@@ -42,8 +42,8 @@ public class TicketService implements ITicketService {
 
     @Override
     public UserTicketDto getUserTicket(int ticketId) {
-        Ticket ticket = _ticketRepository.findById((long) ticketId).orElseThrow();
-        Store store = _storeRepository.findById((long) ticket.getStoreId()).orElseThrow();
+        Ticket ticket = _ticketRepository.findById(ticketId);
+        Store store = _storeRepository.findById(ticket.getStoreId());
 
         int peopleAheadInLine = calculatePeopleAheadInLineForUser(ticket);
 
@@ -55,7 +55,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public UserTicketDto getNewTicket(int userId, int counterId) throws ClosedCounterException {
-        Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
+        Counter counter = _counterRepository.findById(counterId);
         if (!counter.isHasStaff()) throw new ClosedCounterException(counterId, counter.getName());
         Ticket ticket = Ticket.builder().storeId(counter.getStoreid()).counterId(counterId)
                 .userId(userId).canceled(false).enteringTime(new Date(System.currentTimeMillis())).build();
@@ -137,6 +137,6 @@ public class TicketService implements ITicketService {
     private int calculatePeopleAheadInLineForUser(Ticket userTicket) {
 
         return (int) _ticketRepository.findByCounterId(userTicket.getCounterId()).stream()
-                .filter(ticket -> !ticket.isCanceled() && ticket.getLeavingTime() == null && ticket.getId() < userTicket.getId()).count() - 1;
+                .filter(ticket -> !ticket.isCanceled() && ticket.getLeavingTime() == null && ticket.getId() < userTicket.getId()).count();
     }
 }

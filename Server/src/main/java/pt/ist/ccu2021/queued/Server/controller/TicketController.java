@@ -28,12 +28,14 @@ public class TicketController {
 
     @GetMapping(value = "/user/{userid}")
     public ResponseEntity<List<UserTicketDto>> getAllUserTickets(@PathVariable("userid") int userId){
+        _logger.info("getAllUserTickets - UserId:" + userId);
 
         return new ResponseEntity<>(_ticketService.getAllUserTickets(userId), HttpStatus.OK);
     }
 
     @GetMapping(value = "/user/{userid}/counter/{counterid}/new")
     public ResponseEntity<UserTicketDto> getNewTicket(@PathVariable("userid") int userId, @PathVariable("counterid") int counterId){
+        _logger.info("getNewTicket - UserId:" + userId + ", CounterId:" + counterId);
 
         try {
             return new ResponseEntity<>(_ticketService.getNewTicket(userId, counterId), HttpStatus.CREATED);
@@ -44,24 +46,28 @@ public class TicketController {
 
     @GetMapping(value = "/user/{userid}/counter/{counterid}/cancel")
     public ResponseEntity<UserTicketDto> cancelUserTicket(@PathVariable("userid") int userId, @PathVariable("counterid") int counterId){
+        _logger.info("cancelUserTicket - UserId:" + userId + ", CounterId:" + counterId);
 
         return new ResponseEntity<>(_ticketService.cancelUserTicket(userId, counterId), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/{ticketid}")
     public ResponseEntity<UserTicketDto> getUserTicket(@PathVariable("ticketid") int ticketId){
+        _logger.info("getUserTicket - TicketId:" + ticketId);
 
         return new ResponseEntity<>(_ticketService.getUserTicket(ticketId), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{ticketid}/cancel")
     public ResponseEntity<UserTicketDto> cancelUserTicketById(@PathVariable("ticketid") int ticketId){
+        _logger.info("cancelUserTicketById - TicketId:" + ticketId);
 
         return new ResponseEntity<>(_ticketService.cancelUserTicket(ticketId), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/counter/{counterid}/staffCounter/{staffcounter}/next")
     public ResponseEntity<CounterDto> staffNextTicket(@PathVariable("counterid") int counterId, @PathVariable("staffcounter") String staffCounter){
+        _logger.info("staffNextTicket - CounterId:" + counterId + ", StaffCounter:" + staffCounter);
 
         try {
             return new ResponseEntity<>(_ticketService.staffNextTicket(counterId, staffCounter), HttpStatus.ACCEPTED);

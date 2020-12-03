@@ -39,10 +39,10 @@ public class UserTicketDto {
     private boolean canceled;
 
     @JsonProperty("enteringTime")
-    private Date enteringTime;
+    private long enteringTime;
 
     @JsonProperty("leavingTime")
-    private Date leavingTime;
+    private long leavingTime;
 
     @JsonProperty("staffCounter")
     private String staffCounter;
@@ -59,14 +59,16 @@ public class UserTicketDto {
     @JsonProperty("storeAddress")
     private String storeAddress;
 
+    //todo fix entering and leaving time postgres
+
     public UserTicketDto(Ticket ticket, int peopleAhead, Time waitingTime, String sName, String sAddress){
         id = ticket.getId();
         storeId = ticket.getStoreId();
         counterId = ticket.getCounterId();
         userId = ticket.getUserId();
         canceled = ticket.isCanceled();
-        enteringTime = ticket.getEnteringTime();
-        leavingTime = ticket.getLeavingTime();
+        enteringTime = ticket.getEnteringTime().getTime();
+        if (ticket.getLeavingTime() != null) leavingTime = ticket.getLeavingTime().getTime();
         staffCounter = ticket.getStaffCounter();
         peopleAheadInLine = peopleAhead;
         estimatedWaitingTime = waitingTime;

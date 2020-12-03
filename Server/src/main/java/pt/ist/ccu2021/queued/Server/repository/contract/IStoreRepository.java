@@ -14,4 +14,6 @@ public interface IStoreRepository extends JpaRepository<Store, Long> {
     public List<Store> findByCategoryId(int categoryid);
 
     public List<Store> findByCompanyId(int companyid);
+
+    Store findById(int id);
 }

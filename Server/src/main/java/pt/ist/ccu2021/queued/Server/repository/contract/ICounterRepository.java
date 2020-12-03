@@ -12,4 +12,6 @@ public interface ICounterRepository extends JpaRepository<Counter, Long> {
 
     List<Counter> findByStoreid(int storeid);
 
+    Counter findById(int id);
+
 }

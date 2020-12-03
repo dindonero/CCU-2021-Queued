@@ -17,4 +17,6 @@ public interface ITicketRepository extends JpaRepository<Ticket, Long> {
 
     List<Ticket> findByCounterId(int counterid);
 
+    Ticket findById(int id);
+
 }
