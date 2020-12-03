@@ -31,7 +31,7 @@ class _QueuedScreen extends State<QueuedScreen> {
    @override
    void initState() {
      super.initState();
-     Timer(Duration(seconds: 5), () => Navigator.push(
+     Timer(Duration(seconds: 1), () => Navigator.push(
          context,
          MaterialPageRoute(builder: (context) => LoginScreen())
      ));

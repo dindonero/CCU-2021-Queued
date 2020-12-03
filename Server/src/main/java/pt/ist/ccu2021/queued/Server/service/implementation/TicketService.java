@@ -16,6 +16,7 @@ import pt.ist.ccu2021.queued.Server.service.contract.ITicketService;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +48,7 @@ public class TicketService implements ITicketService {
 
         int peopleAheadInLine = calculatePeopleAheadInLineForUser(ticket);
 
-        Time avgWaitingTime = calculateAvgWaitingTime(ticket.getCounterId());
+        long avgWaitingTime = calculateAvgWaitingTime(ticket.getCounterId());
 
         return new UserTicketDto(ticket, peopleAheadInLine, avgWaitingTime, store.getName(), store.getAddress());
     }
@@ -58,7 +59,7 @@ public class TicketService implements ITicketService {
         Counter counter = _counterRepository.findById(counterId);
         if (!counter.isHasStaff()) throw new ClosedCounterException(counterId, counter.getName());
         Ticket ticket = Ticket.builder().storeId(counter.getStoreid()).counterId(counterId)
-                .userId(userId).canceled(false).enteringTime(new Date(System.currentTimeMillis())).build();
+                .userId(userId).canceled(false).enteringTime(new Timestamp(System.currentTimeMillis())).build();
         int id = _ticketRepository.save(ticket).getId();
 
         return getUserTicket(id);
@@ -84,14 +85,13 @@ public class TicketService implements ITicketService {
 
 
     @Override
-    public Time calculateAvgWaitingTime(int counterId) {
-        List<Ticket> ticketsFromCounter = new ArrayList<>(_ticketRepository.findByCounterId(counterId));
-        if (ticketsFromCounter.size() == 0) return Time.valueOf("00:00:00");
-        long secondsWaiting = ticketsFromCounter.stream().filter(ticket -> ticket.getLeavingTime() != null)
-                .mapToLong(ticket -> ticket.getLeavingTime().getTime() - ticket.getEnteringTime().getTime()).sum();
+    public long calculateAvgWaitingTime(int counterId) {
+        List<Ticket> ticketsFromCounter = _ticketRepository.findByCounterId(counterId).stream().filter(ticket -> ticket.getLeavingTime() != null).collect(Collectors.toList());
+        if (ticketsFromCounter.size() == 0) return 0;
+        long secondsWaiting = ticketsFromCounter.stream().mapToLong(ticket -> ticket.getLeavingTime().getTime() - ticket.getEnteringTime().getTime()).sum();
         double avgWaitingTime = secondsWaiting / ticketsFromCounter.size();
 
-        return new Time((long) avgWaitingTime);
+        return (long) avgWaitingTime;
     }
 
 
@@ -108,7 +108,7 @@ public class TicketService implements ITicketService {
         if (ticket == null)
             throw new NoOneWaitingInLineException(counterId, _counterRepository.findById((long) counterId).orElseThrow().getName());
         ticket.setStaffCounter(staffCounter);
-        ticket.setLeavingTime(new Date(System.currentTimeMillis()));
+        ticket.setLeavingTime(new Timestamp(System.currentTimeMillis()));
         int id = _ticketRepository.save(ticket).getId();
         Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
 

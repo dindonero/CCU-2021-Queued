@@ -35,27 +35,27 @@ public class CounterDto {
     private int peopleWaitingInLine;
 
     @JsonProperty("avgWaitingTime")
-    private Time avgWaitingTime;
+    private long avgWaitingTime;
 
     @JsonProperty("currentTicketId")
     private int currentTicketId;
 
-    public CounterDto(Counter counter, int peopleAhead, Time avgTime){
+    public CounterDto(Counter counter, int peopleAhead, long avgTime){
         id = counter.getId();
         name = counter.getName();
         storeId = counter.getStoreid();
         hasStaff = counter.isHasStaff();
         peopleWaitingInLine = peopleAhead;
-        avgWaitingTime = avgTime;
+        avgWaitingTime = avgTime * peopleAhead;
     }
 
-    public CounterDto(Counter counter, int peopleAhead, Time avgTime, int currentTicket){
+    public CounterDto(Counter counter, int peopleAhead, long avgTime, int currentTicket){
         id = counter.getId();
         name = counter.getName();
         storeId = counter.getStoreid();
         hasStaff = counter.isHasStaff();
         peopleWaitingInLine = peopleAhead;
-        avgWaitingTime = avgTime;
+        avgWaitingTime = avgTime * peopleAhead;
         currentTicketId = currentTicket;
     }
 

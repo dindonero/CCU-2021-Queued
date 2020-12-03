@@ -59,8 +59,8 @@ CREATE TABLE Ticket (
 	counterId INT NOT NULL,
 	userId INT NOT NULL,
 	canceled BOOLEAN NOT NULL,
-	enteringTime DATE NOT NULL,
-	leavingTime DATE,
+	enteringTime TIMESTAMP NOT NULL,
+	leavingTime TIMESTAMP,
 	staffCounter VARCHAR(255),
 
 	CONSTRAINT PK_Ticket PRIMARY KEY (id),

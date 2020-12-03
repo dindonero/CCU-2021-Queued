@@ -51,7 +51,7 @@ public class UserTicketDto {
     private int peopleAheadInLine;
 
     @JsonProperty("estimatedWaitingTime")
-    private Time estimatedWaitingTime;
+    private long estimatedWaitingTime;
 
     @JsonProperty("storeName")
     private String storeName;
@@ -59,9 +59,7 @@ public class UserTicketDto {
     @JsonProperty("storeAddress")
     private String storeAddress;
 
-    //todo fix entering and leaving time postgres
-
-    public UserTicketDto(Ticket ticket, int peopleAhead, Time waitingTime, String sName, String sAddress){
+    public UserTicketDto(Ticket ticket, int peopleAhead, long avgWaitingTime, String sName, String sAddress){
         id = ticket.getId();
         storeId = ticket.getStoreId();
         counterId = ticket.getCounterId();
@@ -71,7 +69,7 @@ public class UserTicketDto {
         if (ticket.getLeavingTime() != null) leavingTime = ticket.getLeavingTime().getTime();
         staffCounter = ticket.getStaffCounter();
         peopleAheadInLine = peopleAhead;
-        estimatedWaitingTime = waitingTime;
+        estimatedWaitingTime = avgWaitingTime * peopleAhead;
         storeName = sName;
         storeAddress = sAddress;
     }

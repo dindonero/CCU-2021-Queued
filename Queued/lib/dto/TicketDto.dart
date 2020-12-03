@@ -18,7 +18,7 @@ class TicketDto {
 
   int peopleAheadInLine;
 
-  String estimatedWaitingTime;
+  DateTime estimatedWaitingTime;
 
   String storeName;
 
@@ -30,11 +30,12 @@ class TicketDto {
     this.counterId = json['counterId'];
     this.userId = json['userId'];
     this.canceled = json['canceled'];
-    this.enteringTime = DateTime.fromMillisecondsSinceEpoch(json['enteringTime']);
-    this.leavingTime = DateTime.fromMillisecondsSinceEpoch(json['leavingTime']);
+    this.enteringTime = DateTime.fromMillisecondsSinceEpoch(json['enteringTime'], isUtc: true);
+    if (json['leavingTime'] == 0) this.leavingTime = null;
+    else this.leavingTime = DateTime.fromMillisecondsSinceEpoch(json['leavingTime'], isUtc: true);
     this.staffCounter = json['staffCounter'];
     this.peopleAheadInLine = json['peopleAheadInLine'];
-    this.estimatedWaitingTime = json['estimatedWaitingTime'];
+    this.estimatedWaitingTime = DateTime.fromMillisecondsSinceEpoch(json['estimatedWaitingTime'], isUtc: true);
     this.storeName = json['storeName'];
     this.storeAddress = json['storeAddress'];
   }

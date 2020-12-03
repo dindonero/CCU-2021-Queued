@@ -8,6 +8,7 @@ import pt.ist.ccu2021.queued.Server.dto.CounterDto;
 import pt.ist.ccu2021.queued.Server.dto.UserTicketDto;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface ITicketService {
@@ -22,7 +23,7 @@ public interface ITicketService {
 
     UserTicketDto cancelUserTicket(int userId, int counterId);
 
-    Time calculateAvgWaitingTime(int counterId);
+    long calculateAvgWaitingTime(int counterId);
 
     Ticket getCurrentTicket(int counterId, String staffCounter);
 

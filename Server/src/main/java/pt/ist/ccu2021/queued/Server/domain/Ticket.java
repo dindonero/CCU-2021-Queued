@@ -3,8 +3,7 @@ package pt.ist.ccu2021.queued.Server.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 @Builder
 @Setter
@@ -33,10 +32,10 @@ public class Ticket {
     private boolean canceled;
 
     @Column(name = "enteringtime")
-    private Date enteringTime;
+    private Timestamp enteringTime;
 
     @Column(name = "leavingtime")
-    private Date leavingTime;
+    private Timestamp leavingTime;
 
     @Column(name = "staffcounter")
     private String staffCounter;

@@ -61,3 +61,8 @@ application.properties
 **/test/
 **/.packages
 Client/**
+**/.vscode/
+**/.settings/
+**/.classpath
+**/factorypath
+**/.project

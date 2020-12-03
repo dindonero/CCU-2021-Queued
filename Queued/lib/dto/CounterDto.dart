@@ -22,7 +22,7 @@ class CounterDto {
     this.storeId = json['storeId'];
     this.hasStaff = json['hasStaff'];
     this.peopleWaitingInLine = json['peopleWaitingInLine'];
-    this.avgWaitingTime = DateTime.parse("1970-01-01 " + json['avgWaitingTime']);
+    this.avgWaitingTime = DateTime.fromMillisecondsSinceEpoch(json['avgWaitingTime'], isUtc: true);
     this.currentTicketId = json['currentTicketId'];
   }
 
