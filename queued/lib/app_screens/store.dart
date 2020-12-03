@@ -11,20 +11,22 @@ import 'dart:math' as math;
 
 class Store extends StatefulWidget {
   final StoreDto store;
-  Store(this.store);
+  int counter;
+  Store(this.store,this.counter);
 
   //Stores({Key key, @required this.id}) : super(key: key);
   @override
-  _StoreState createState() => _StoreState(this.store);
+  _StoreState createState() => _StoreState(this.store,this.counter);
 }
 
 class _StoreState extends State<Store> {
  String name;
  Image img;
  final StoreDto store;
+ int counter;
   
 
-  _StoreState(this.store);
+  _StoreState(this.store, this.counter);
 
   @override
   void initState() {
