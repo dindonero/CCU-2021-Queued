@@ -35,9 +35,12 @@ class _CategoriesState extends State<Categories> {
             SizedBox(height: screenSize().height / 25),
             Align(
               alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: mainRow(),
+               child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+               child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
+                  child: mainRow(),
+               )
               ),
             ),
             SizedBox(height: screenSize().height / 40),
@@ -52,8 +55,8 @@ class _CategoriesState extends State<Categories> {
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
-            Container(
-              width: 380,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
               child: buildSearchField(),
             ),
             Expanded(
@@ -65,7 +68,16 @@ class _CategoriesState extends State<Categories> {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
-                            return CircularProgressIndicator();
+                            return Center(
+                                child: SizedBox(
+                                height: 70.0,
+                                width: 70.0,
+                                child:
+                                CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation(Color(0xff22bec8)),
+                                    strokeWidth: 5.0)
+            
+                                ));
                           default:
                             if (snapshot.hasError)
                               return new Text('Error: ${snapshot.error}');
@@ -74,7 +86,6 @@ class _CategoriesState extends State<Categories> {
                         }
                       })),
             ),
-            navBar(context),
           ],
         ));
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'stores.dart';
 import 'categories.dart';
 import 'signup.dart';
+import 'navBar.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -123,7 +124,7 @@ class _SignFormState extends State<SignForm> {
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Categories()));
+                      MaterialPageRoute(builder: (context) => Nav()));
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),

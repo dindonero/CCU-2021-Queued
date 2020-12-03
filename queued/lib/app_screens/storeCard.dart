@@ -21,13 +21,11 @@ class StoreCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
-              width: 800,
-              //decoration: BoxDecoration(
-                //    image: DecorationImage(
-                //        image: store.img.image,
-                //        fit: BoxFit.cover
-                //    )
-           //   ),
+              decoration: BoxDecoration(
+                   image: DecorationImage(
+                       image: store.img.image,
+                   )
+             ),
               child: Stack(
                 children: <Widget>[
                     // Stroked text as border.

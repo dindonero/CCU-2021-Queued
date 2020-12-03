@@ -26,8 +26,6 @@ class _StoresState extends State<Stores> {
     futureStores = getStoresFromCategory(this.id);
   }
 
- 
-
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -83,7 +81,6 @@ class _StoresState extends State<Stores> {
                         }
                       })),
             ),
-            navBar(context),
           ],
         ));
   }
@@ -93,9 +90,9 @@ class _StoresState extends State<Stores> {
         itemCount: stores.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
-          mainAxisSpacing: screenSize().width / 15,
-          crossAxisSpacing: screenSize().width / 25,
-          childAspectRatio: 0.75,
+          // mainAxisSpacing: screenSize().width /20,
+          // crossAxisSpacing: screenSize().width / 30,
+          childAspectRatio: 2,
         ),
         itemBuilder: (context, index) => StoreCard(
               store: stores[index],
