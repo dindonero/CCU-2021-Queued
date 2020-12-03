@@ -26,7 +26,9 @@ class StoreDto {
     this.img = new Image.memory(Uint8List.fromList(json['img'].cast<int>()));
     this.address = json['address'];
     this.categoryId = json['categoryId'];
-    this.counters = json['counters'].map((counter) => CounterDto.fromJson(counter)).toList(); //.cast<List<dynamic>>()
-    this.schedules = json['schedules'].map((schedule) => ScheduleDto.fromJson(schedule)).toList();
+    List<dynamic> counters = json['counters'];
+    this.counters = counters.map((counter) => CounterDto.fromJson(counter)).toList(); //.cast<List<dynamic>>()
+    List<dynamic> schedules = json['schedules'];
+    this.schedules = schedules.map((schedule) => ScheduleDto.fromJson(schedule)).toList();
   }
 }

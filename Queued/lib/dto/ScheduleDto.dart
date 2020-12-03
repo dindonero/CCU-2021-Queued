@@ -1,10 +1,7 @@
-import 'package:Queued/domain/day.dart';
-
 class ScheduleDto {
-
   ScheduleDto(this.day, this.openingTime, this.closingTime);
 
-  Day day;
+  String day;
 
   String openingTime;
 
