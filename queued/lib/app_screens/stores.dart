@@ -1,3 +1,5 @@
+import 'package:Queued/app_screens/categories.dart';
+import 'package:Queued/app_screens/store.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
@@ -96,13 +98,13 @@ class _StoresState extends State<Stores> {
         ),
         itemBuilder: (context, index) => StoreCard(
               store: stores[index],
-              // press: () => Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => DetailsScreen(
-              //         category: categories[index],
-              //       ),
-              //     )),
+               press: () => Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                     builder: (context) => Store(
+                        stores[index],
+                     ),
+                   )),
             ));
   }
 
@@ -128,6 +130,20 @@ class _StoresState extends State<Stores> {
   Row mainRow() {
     return Row(
       children: [
+          Transform.rotate(
+          angle: 180 * math.pi / 180,
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Color(0xFF143656),
+            ),
+            onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Categories()));
+                },
+          ),
+        ),
+        Spacer(),
         Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
         Text(" IST, Lisboa",
             style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),

@@ -1,5 +1,7 @@
+import 'package:Queued/app_screens/stores.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/dto/CounterDto.dart';
+import 'package:Queued/dto/ScheduleDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
 import '../domain/category.dart';
@@ -8,31 +10,29 @@ import 'navBar.dart';
 import 'dart:math' as math;
 
 class Store extends StatefulWidget {
-  //final StoreDto store;
-  //Store(this.store);
+  final StoreDto store;
+  Store(this.store);
 
   //Stores({Key key, @required this.id}) : super(key: key);
   @override
-  _StoreState createState() => _StoreState(); //_StoreState(this.store);
+  _StoreState createState() => _StoreState(this.store);
 }
 
 class _StoreState extends State<Store> {
- // String name;
-//  final StoreDto store;
+ String name;
+ Image img;
+ final StoreDto store;
+  
 
-  //_StoreState(this.store);
+  _StoreState(this.store);
 
   @override
   void initState() {
-   // name = this.store.name;
-    //List<CounterDto> counters = this.store.counters;
-    //CounterDto currentCounter = counters[0];
+    name = this.store.name;
+    img  = this.store.img;
+
   }
-  OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10),
-    borderSide: BorderSide(color: Color(0x50000000)),
-    gapPadding: 10,
-  );
+  
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +49,34 @@ class _StoreState extends State<Store> {
                 child: mainRow(),
               ),
             ),
-            SizedBox(height: screenSize().height / 40),
+            SizedBox(height: screenSize().height / 50),
             Container(
-              width: 400,
-              height: 100,
-              color: Colors.black,
-             // child: buildSearchField(),
+              width: 900,
+              height: 150,
+              decoration: BoxDecoration( 
+                    image: DecorationImage(
+                        image: img.image,
+                        fit: BoxFit.cover
+                    )
+              ),
+              child: Stack(
+                children: <Widget>[
+                    // Stroked text as border.
+                    Center( child: Text(
+                                          name,
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              foreground: Paint()
+                                              ..style = PaintingStyle.stroke
+                                              ..strokeWidth = 5
+                                              ..color = Colors.black,
+                                          ),
+                                        ),
+                          ),
+                    // solid text
+                    Center (child:  Text(name, style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 35, ),),),
+                    ],
+                )
             ),
             Align(
               alignment: Alignment.center,
@@ -64,7 +86,38 @@ class _StoreState extends State<Store> {
               ),
             ),
             SizedBox(height: screenSize().height / 30),
-            Row(children:[ 
+            aheadRow(),
+            estimatedWaitingTimeRow(),
+            SizedBox(height: screenSize().height / 15),
+            getTicketButton(),
+            SizedBox(height: screenSize().height / 35),
+            getDailyPredictionsButton(),
+            Spacer(),
+          ],
+        ));
+
+ 
+  }
+
+  Size screenSize() {
+    return MediaQuery.of(context).size;
+  }
+
+ Row secondRow() {
+    return Row(
+      children: [
+        Icon(Icons.timer_rounded, color: Color(0xFF000000), size: 32.0),
+        Text(this.store.schedules[0].openingTime + " - "  + this.store.schedules[0].closingTime,style: TextStyle(color: Color(0xFF000000), fontSize: 20)), //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
+        SizedBox(height: screenSize().height / 30),
+        Spacer(),
+         Icon(Icons.location_on_outlined, color: Color(0xFF000000), size: 32.0),
+        Text(" Directions",style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+      ],
+    );
+  }
+
+  Row aheadRow(){
+    return Row(children:[ 
               Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -76,11 +129,19 @@ class _StoreState extends State<Store> {
              Column(
                children: [
                  Text("Ahead: ",style: TextStyle(color: Color(0xFF143656), fontSize: 22, fontWeight: FontWeight.bold)),
-                 Text("7 people",style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+                 Text((() {
+                    if(this.store.counters[0].peopleWaitingInLine == -1){
+                        return "0";}
+
+                    return this.store.counters[0].peopleWaitingInLine.toString();
+                  })() ,style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
                ],
              ),
-          ]),
-          Row(children:[
+          ]);
+  }
+
+  Row estimatedWaitingTimeRow(){
+      return Row(children:[
                   Align(alignment: Alignment.centerLeft, 
                     child:Padding(padding:  EdgeInsets.symmetric(
                                   horizontal: screenSize().width / 10),
@@ -89,11 +150,14 @@ class _StoreState extends State<Store> {
                   ),
                   Column(children: [
                       Text("Estimated waiting time:",style: TextStyle(color: Color(0xFF143656), fontSize: 21,fontWeight: FontWeight.bold)),
-                       Text("15-20 minutes",style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+                       
+                       Text(this.store.counters[0].avgWaitingTime  ,style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
                   ],),
-          ]),
-          SizedBox(height: screenSize().height / 15),
-          Container(
+          ]);
+  }
+
+  Container getTicketButton(){
+    return Container(
                   width: 300,
                   height: 80,
                   decoration: BoxDecoration(color: Color(0xFF13497B), border: Border.all( color: Color(0xFF13497B),),
@@ -106,9 +170,11 @@ class _StoreState extends State<Store> {
                 child:  Text("Get Ticket",style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 25, fontWeight: FontWeight.bold)),
               ),
             ),        
-          ),
-          SizedBox(height: screenSize().height / 25),
-          Container(
+          );
+  }
+
+  Container getDailyPredictionsButton(){
+    return Container(
                   width: 300,
                   height: 80,
                   decoration: BoxDecoration(color: Color(0xFF13497B), border: Border.all( color: Color(0xFF13497B),),
@@ -127,30 +193,7 @@ class _StoreState extends State<Store> {
                       child:  Text("Daily Predictions",style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 25, fontWeight: FontWeight.bold)),
                     ),
                   ),        
-          ),
-          Spacer(),
-            navBar(context),
-          ],
-        ));
-
- 
-  }
-
-  Size screenSize() {
-    return MediaQuery.of(context).size;
-  }
-
- Row secondRow() {
-    return Row(
-      children: [
-        Icon(Icons.timer_rounded, color: Color(0xFF000000), size: 32.0),
-        Text("08:00 - 20:00",style: TextStyle(color: Color(0xFF000000), fontSize: 20)), //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
-        SizedBox(height: screenSize().height / 30),
-        Spacer(),
-         Icon(Icons.location_on_outlined, color: Color(0xFF000000), size: 32.0),
-        Text(" Directions",style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
-      ],
-    );
+          );
   }
 
 
@@ -164,9 +207,13 @@ class _StoreState extends State<Store> {
               Icons.arrow_forward_ios_rounded,
               color: Color(0xFF143656),
             ),
-            onPressed: null,
+            onPressed:  () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Stores(this.store.categoryId)));
+                },
           ),
         ),
+        Spacer(),
         Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
         Text(" IST, Lisboa",
             style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),
