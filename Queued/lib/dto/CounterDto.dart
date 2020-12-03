@@ -12,7 +12,7 @@ class CounterDto {
 
   int peopleWaitingInLine;
 
-  String avgWaitingTime;
+  DateTime avgWaitingTime;
 
   int currentTicketId;
 
@@ -22,7 +22,7 @@ class CounterDto {
     this.storeId = json['storeId'];
     this.hasStaff = json['hasStaff'];
     this.peopleWaitingInLine = json['peopleWaitingInLine'];
-    this.avgWaitingTime = json['avgWaitingTime'];
+    this.avgWaitingTime = DateTime.parse("1970-01-01 " + json['avgWaitingTime']);
     this.currentTicketId = json['currentTicketId'];
   }
 

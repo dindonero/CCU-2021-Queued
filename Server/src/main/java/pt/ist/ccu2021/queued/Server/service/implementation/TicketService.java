@@ -86,7 +86,7 @@ public class TicketService implements ITicketService {
     @Override
     public Time calculateAvgWaitingTime(int counterId) {
         List<Ticket> ticketsFromCounter = new ArrayList<>(_ticketRepository.findByCounterId(counterId));
-        if (ticketsFromCounter.size() == 0) return new Time(0);
+        if (ticketsFromCounter.size() == 0) return Time.valueOf("00:00:00");
         long secondsWaiting = ticketsFromCounter.stream().filter(ticket -> ticket.getLeavingTime() != null)
                 .mapToLong(ticket -> ticket.getLeavingTime().getTime() - ticket.getEnteringTime().getTime()).sum();
         double avgWaitingTime = secondsWaiting / ticketsFromCounter.size();
@@ -98,7 +98,7 @@ public class TicketService implements ITicketService {
     @Override
     public int calculatePeopleAheadInLine(int counterId) {
         return (int) _ticketRepository.findByCounterId(counterId).stream()
-                .filter(ticket -> !ticket.isCanceled() && ticket.getLeavingTime() == null).count() - 1;
+                .filter(ticket -> !ticket.isCanceled() && ticket.getLeavingTime() == null).count();
     }
 
 

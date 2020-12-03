@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Queued/domain/day.dart';
 import 'package:Queued/dto/CounterDto.dart';
 import 'package:Queued/dto/ScheduleDto.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,5 +31,17 @@ class StoreDto {
     this.counters = counters.map((counter) => CounterDto.fromJson(counter)).toList(); //.cast<List<dynamic>>()
     List<dynamic> schedules = json['schedules'];
     this.schedules = schedules.map((schedule) => ScheduleDto.fromJson(schedule)).toList();
+  }
+
+  bool isOpened(){
+    DateTime now = DateTime.now();
+    int weekDay = now.weekday;
+    Day day = Day.values[weekDay - 1]; // hack
+    ScheduleDto schedule = schedules.firstWhere((schedule) => schedule.day == day);
+    if (schedule == null) return false;
+    if (now.isAfter(schedule.openingTime) && now.isBefore(schedule.closingTime)){
+      return true;
+    }
+    return false;
   }
 }
