@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../domain/category.dart';
 import 'storeCard.dart';
 import 'navBar.dart';
+import 'selectq.dart';
 import 'dart:math' as math;
 
 class Stores extends StatefulWidget {
@@ -100,12 +101,24 @@ class _StoresState extends State<Stores> {
               store: stores[index],
                press: () => Navigator.push(
                    context,
-                   MaterialPageRoute(
-                     builder: (context) => Store(
-                        stores[index],
+                   navigate(stores[index]),
+    ),),);
+  }
+
+  MaterialPageRoute navigate(StoreDto store){
+    if (store.counters.length > 1){
+         return MaterialPageRoute(
+                     builder: (context) => SelectQ(
+                        store,
                      ),
-                   )),
-            ));
+                   );
+    }else{
+      return MaterialPageRoute(
+                     builder: (context) => Store(
+                        store,1
+                     ),
+                   );
+    }
   }
 
   Size screenSize() {
