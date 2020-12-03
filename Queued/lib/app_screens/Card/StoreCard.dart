@@ -22,8 +22,9 @@ class StoreCard extends StatelessWidget {
           Expanded(
             child: Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                  image: store.img.image,
+                  image: DecorationImage(
+                    image: store.img.image,
+                    fit: BoxFit.cover,
                 )),
                 child: Stack(
                   children: <Widget>[
@@ -32,7 +33,7 @@ class StoreCard extends StatelessWidget {
                       child: Text(
                         store.name,
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 35,
                           foreground: Paint()
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 5
@@ -46,7 +47,7 @@ class StoreCard extends StatelessWidget {
                         store.name,
                         style: TextStyle(
                           color: Color(0xFFFFFFFF),
-                          fontSize: 25,
+                          fontSize: 35,
                         ),
                       ),
                     ),

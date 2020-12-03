@@ -84,9 +84,9 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
         itemCount: tickets.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
-          mainAxisSpacing: screenSize().width / 15,
+          mainAxisSpacing: screenSize().width / 20,
           crossAxisSpacing: screenSize().width / 25,
-          childAspectRatio: 0.75,
+          childAspectRatio: 5,
         ),
         itemBuilder: (context, index) => TicketsCard(
               ticket: tickets[index],
