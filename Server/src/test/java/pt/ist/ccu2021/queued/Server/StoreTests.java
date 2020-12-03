@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @SpringBootTest
 public class StoreTests {
 
-    private List<ScheduleDto> scheduleDtos = new ArrayList<>();
-    private StoreDto storeDto = StoreDto.builder().categoryId(1).counters(new ArrayList<>()).img("aaa".getBytes()).schedules(scheduleDtos)
+    private List<ScheduleDto> scheduleDtos = new ArrayList<>(); // todo img below
+    private StoreDto storeDto = StoreDto.builder().categoryId(1).counters(new ArrayList<>()).img(null).schedules(scheduleDtos)
             .address("Rua Manuel Vaccines 31").name(ServerApplicationTests.generateRandomString()).build();
     private RestTemplate rest = new RestTemplate();
     private String url = "http://localhost:8080/company/1/store/register";

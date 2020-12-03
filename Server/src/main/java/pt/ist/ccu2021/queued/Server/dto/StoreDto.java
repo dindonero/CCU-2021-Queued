@@ -27,7 +27,7 @@ public class StoreDto {
     private String name;
 
     @JsonProperty("img")
-    private byte[] img;
+    private Byte[] img;
 
     @JsonProperty("address")
     private String address;

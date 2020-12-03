@@ -15,7 +15,6 @@ public interface ITicketRepository extends JpaRepository<Ticket, Long> {
 
     List<Ticket> findByUserId(int userid);
 
-    @Query(value = "SELECT * FROM Ticket t WHERE t.counterId = ?1", nativeQuery = true)
     List<Ticket> findByCounterId(int counterid);
 
 }

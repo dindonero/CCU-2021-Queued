@@ -22,7 +22,7 @@ public class Store {
     private String name;
 
     @Column(name = "img")
-    private byte[] img;
+    private Byte[] img;
 
     @Column(name = "address")
     private String address;

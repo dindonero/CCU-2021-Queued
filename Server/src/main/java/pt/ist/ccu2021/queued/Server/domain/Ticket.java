@@ -12,7 +12,7 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "companyaccount")
+@Table(name = "ticket")
 public class Ticket {
 
     @Id
