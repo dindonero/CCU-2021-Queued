@@ -1,29 +1,29 @@
-import 'package:Queued/app_screens/stores.dart';
-import 'package:Queued/services/ServerCommunicationService.dart';
-import 'package:flutter/material.dart';
-import '../domain/category.dart';
-import 'item.dart';
-import 'navBar.dart';
 import 'dart:math' as math;
 
-class Categories extends StatefulWidget {
+import 'package:Queued/dto/TicketDto.dart';
+import 'package:Queued/services/ServerCommunicationService.dart';
+import 'package:flutter/material.dart';
+
+import '../Widget/navBarWidget.dart';
+import '../Card/TicketsCard.dart';
+
+class AllUserTicketsScreen extends StatefulWidget {
   @override
-  _CategoriesState createState() => _CategoriesState();
+  _AllUserTicketsScreenState createState() => _AllUserTicketsScreenState();
 }
 
-class _CategoriesState extends State<Categories> {
-  Future<List<Category>> futureCategories;
-
-  @override
-  void initState() {
-    futureCategories = getAllCategories();
-  }
-
+class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
+  Future<List<TicketDto>> futureTickets;
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
     gapPadding: 10,
   );
+
+  @override
+  void initState() {
+    futureTickets = getAllUserTickets(1); // todo insert user id
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +35,9 @@ class _CategoriesState extends State<Categories> {
             SizedBox(height: screenSize().height / 25),
             Align(
               alignment: Alignment.center,
-               child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
-                  child: mainRow(),
-               )
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: mainRow(),
               ),
             ),
             SizedBox(height: screenSize().height / 40),
@@ -51,33 +48,24 @@ class _CategoriesState extends State<Categories> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("    Please choose your category",
+              child: Text("    These are your tickets:",
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
+            Container(
+              width: 380,
               child: buildSearchField(),
             ),
             Expanded(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenSize().width/25),
-                  child: FutureBuilder<List<Category>>(
-                      future: this.futureCategories,
+                  padding: EdgeInsets.symmetric(horizontal: 1),
+                  child: FutureBuilder<List<TicketDto>>(
+                      future: this.futureTickets,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
-                            return Center(
-                                child: SizedBox(
-                                height: 70.0,
-                                width: 70.0,
-                                child:
-                                CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(Color(0xff22bec8)),
-                                    strokeWidth: 5.0)
-            
-                                ));
+                            return CircularProgressIndicator();
                           default:
                             if (snapshot.hasError)
                               return new Text('Error: ${snapshot.error}');
@@ -86,29 +74,29 @@ class _CategoriesState extends State<Categories> {
                         }
                       })),
             ),
-            Nav(0)
+            Nav(1),
           ],
         ));
   }
 
-  Widget _buildGridView(BuildContext context, List<Category> categories) {
+  Widget _buildGridView(BuildContext context, List<TicketDto> tickets) {
     return GridView.builder(
-        itemCount: categories.length,
+        itemCount: tickets.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: screenSize().width / 20,
-          crossAxisSpacing: screenSize().width / 20,
-          childAspectRatio: 1,
+          crossAxisCount: 1,
+          mainAxisSpacing: screenSize().width / 15,
+          crossAxisSpacing: screenSize().width / 25,
+          childAspectRatio: 0.75,
         ),
-        itemBuilder: (context, index) => ItemCard(
-              category: categories[index],
-               press: () => Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                     builder: (context) => Stores(
-                       categories[index].id,
-                     ),
-                   )),
+        itemBuilder: (context, index) => TicketsCard(
+              ticket: tickets[index],
+              // press: () => Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => DetailsScreen(
+              //         category: categories[index],
+              //       ),
+              //     )),
             ));
   }
 

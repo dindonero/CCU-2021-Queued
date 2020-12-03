@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../domain/category.dart';
+import '../../domain/category.dart';
 
-class ItemCard extends StatelessWidget {
+class CategoryCard extends StatelessWidget {
   final Category category;
   final Function press;
-  const ItemCard({
+  const CategoryCard({
     Key key,
     this.category,
     this.press,

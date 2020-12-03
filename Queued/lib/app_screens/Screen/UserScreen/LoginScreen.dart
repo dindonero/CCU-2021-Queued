@@ -1,11 +1,9 @@
-import 'package:Queued/services/ServerCommunicationService.dart';
+import 'package:Queued/app_screens/Screen/CategoriesScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'stores.dart';
-import 'categories.dart';
-import 'signup.dart';
-import 'navBar.dart';
+import 'SignupScreen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override

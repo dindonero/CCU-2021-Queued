@@ -1,32 +1,23 @@
-import 'package:Queued/app_screens/categories.dart';
-import 'package:Queued/app_screens/store.dart';
-import 'package:Queued/dto/StoreDto.dart';
-import 'package:Queued/services/ServerCommunicationService.dart';
-import 'package:flutter/material.dart';
-import '../domain/category.dart';
-import 'storeCard.dart';
-import 'navBar.dart';
-import 'selectq.dart';
 import 'dart:math' as math;
 
-class Stores extends StatefulWidget {
-  final int id;
-  Stores(this.id);
+import 'package:Queued/app_screens/Card/CategoryCard.dart';
+import 'package:Queued/app_screens/Screen/StoresListScreen.dart';
+import 'package:Queued/app_screens/Widget/navBarWidget.dart';
+import 'package:Queued/domain/category.dart';
+import 'package:Queued/services/ServerCommunicationService.dart';
+import 'package:flutter/material.dart';
 
-  //Stores({Key key, @required this.id}) : super(key: key);
+class Categories extends StatefulWidget {
   @override
-  _StoresState createState() => _StoresState(this.id);
+  _CategoriesState createState() => _CategoriesState();
 }
 
-class _StoresState extends State<Stores> {
-  Future<List<StoreDto>> futureStores;
-  int id;
-
-  _StoresState(this.id);
+class _CategoriesState extends State<Categories> {
+  Future<List<Category>> futureCategories;
 
   @override
   void initState() {
-    futureStores = getStoresFromCategory(this.id);
+    futureCategories = getAllCategories();
   }
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
@@ -46,9 +37,12 @@ class _StoresState extends State<Stores> {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: mainRow(),
-              ),
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize().width / 25),
+                    child: mainRow(),
+                  )),
             ),
             SizedBox(height: screenSize().height / 40),
             Align(
@@ -58,24 +52,33 @@ class _StoresState extends State<Stores> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("    Please choose your store",
+              child: Text("    Please choose your category",
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
-            Container(
-              width: 380,
+            Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: screenSize().width / 25),
               child: buildSearchField(),
             ),
             Expanded(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 1),
-                  child: FutureBuilder<List<StoreDto>>(
-                      future: this.futureStores,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: screenSize().width / 25),
+                  child: FutureBuilder<List<Category>>(
+                      future: this.futureCategories,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
-                            return CircularProgressIndicator();
+                            return Center(
+                                child: SizedBox(
+                                    height: 70.0,
+                                    width: 70.0,
+                                    child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Color(0xff22bec8)),
+                                        strokeWidth: 5.0)));
                           default:
                             if (snapshot.hasError)
                               return new Text('Error: ${snapshot.error}');
@@ -89,37 +92,25 @@ class _StoresState extends State<Stores> {
         ));
   }
 
-  Widget _buildGridView(BuildContext context, List<StoreDto> stores) {
+  Widget _buildGridView(BuildContext context, List<Category> categories) {
     return GridView.builder(
-        itemCount: stores.length,
+        itemCount: categories.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          // mainAxisSpacing: screenSize().width /20,
-          // crossAxisSpacing: screenSize().width / 30,
-          childAspectRatio: 2,
+          crossAxisCount: 2,
+          mainAxisSpacing: screenSize().width / 20,
+          crossAxisSpacing: screenSize().width / 20,
+          childAspectRatio: 1,
         ),
-        itemBuilder: (context, index) => StoreCard(
-              store: stores[index],
-               press: () => Navigator.push(
-                   context,
-                   navigate(stores[index]),
-    ),),);
-  }
-
-  MaterialPageRoute navigate(StoreDto store){
-    if (store.counters.length > 1){
-         return MaterialPageRoute(
-                     builder: (context) => SelectQ(
-                        store,
-                     ),
-                   );
-    }else{
-      return MaterialPageRoute(
-                     builder: (context) => Store(
-                        store,1
-                     ),
-                   );
-    }
+        itemBuilder: (context, index) => CategoryCard(
+              category: categories[index],
+              press: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Stores(
+                      categories[index].id,
+                    ),
+                  )),
+            ));
   }
 
   Size screenSize() {
@@ -144,20 +135,6 @@ class _StoresState extends State<Stores> {
   Row mainRow() {
     return Row(
       children: [
-          Transform.rotate(
-          angle: 180 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
-            ),
-            onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Categories()));
-                },
-          ),
-        ),
-        Spacer(),
         Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
         Text(" IST, Lisboa",
             style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),

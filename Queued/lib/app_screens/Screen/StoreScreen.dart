@@ -1,26 +1,26 @@
 import 'dart:math' as math;
 
-import 'package:Queued/app_screens/stores.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:flutter/material.dart';
 
+import 'StoresListScreen.dart';
+
 class Store extends StatefulWidget {
   final StoreDto store;
-  int counter;
-  Store(this.store,this.counter);
+  final int counter;
+
+  Store(this.store, this.counter);
 
   //Stores({Key key, @required this.id}) : super(key: key);
   @override
-  _StoreState createState() => _StoreState(this.store,this.counter);
+  _StoreState createState() => _StoreState(this.store, this.counter);
 }
 
 class _StoreState extends State<Store> {
-  
- String name;
- Image img;
- final StoreDto store;
- int counter;
-
+  String name;
+  Image img;
+  final StoreDto store;
+  int counter;
 
   _StoreState(this.store, this.counter);
 

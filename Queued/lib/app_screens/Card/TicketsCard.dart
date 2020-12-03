@@ -42,7 +42,8 @@ class TicketsCard extends StatelessWidget {
                       ),
                     ),
                     Center(
-                      child: Text(ticket.storeName,
+                      child: Text(
+                        ticket.storeName,
                         // category.title,
                         style: TextStyle(
                           color: Color(0xFF143656),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './app_screens/queued.dart';
+import 'app_screens/Screen/QueuedLoadingScreen.dart';
 
 void main() {
   runApp(MyApp());
