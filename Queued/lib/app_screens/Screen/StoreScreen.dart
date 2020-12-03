@@ -34,69 +34,80 @@ class _StoreState extends State<Store> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: screenSize().height / 25),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: screenSize().width / 25),
-                    child: mainRow(),
-                  )),
-            ),
-            Container(
-                height: (screenSize().width / 2) + 25,
-                decoration: BoxDecoration(
-                    image:
-                        DecorationImage(image: img.image, fit: BoxFit.cover)),
-                child: Stack(
+        body: SingleChildScrollView(
+            reverse: true,
+            child: Padding(
+                padding: EdgeInsets.only(bottom: bottom),
+                child: Column(
                   children: <Widget>[
-                    // Stroked text as border.
-                    Center(
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          fontSize: 35,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 5
-                            ..color = Colors.black,
-                        ),
-                      ),
+                    SizedBox(height: screenSize().height / 25),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize().width / 25),
+                            child: mainRow(),
+                          )),
                     ),
-                    // solid text
-                    Center(
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          color: Color(0xFFFFFFFF),
-                          fontSize: 35,
-                        ),
-                      ),
+                    Container(
+                        height: (screenSize().width / 2) + 25,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: img.image, fit: BoxFit.cover)),
+                        child: Stack(
+                          children: <Widget>[
+                            // Stroked text as border.
+                            Center(
+                              child: Text(
+                                name,
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 5
+                                    ..color = Colors.black,
+                                ),
+                              ),
+                            ),
+                            // solid text
+                            Center(
+                              child: Text(
+                                name,
+                                style: TextStyle(
+                                  color: Color(0xFFFFFFFF),
+                                  fontSize: 35,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize().width / 25),
+                      child: secondRow(),
+                    ),
+                    SizedBox(height: screenSize().height / 30),
+                    aheadRow(),
+                    estimatedWaitingTimeRow(),
+                    SizedBox(height: screenSize().height / 15),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize().width / 10),
+                      child: getTicketButton(),
+                    ),
+                    SizedBox(height: screenSize().height / 35),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize().width / 10),
+                      child: getDailyPredictionsButton(),
                     ),
                   ],
-                )),
-            Padding(padding: EdgeInsets.symmetric(horizontal: screenSize().width / 25),
-              child: secondRow(),
-            ),
-            SizedBox(height: screenSize().height / 30),
-            aheadRow(),
-            estimatedWaitingTimeRow(),
-            SizedBox(height: screenSize().height / 15),
-            Padding(padding: EdgeInsets.symmetric(horizontal: screenSize().width / 10),
-              child: getTicketButton(),
-            ),
-            SizedBox(height: screenSize().height / 35),
-            Padding(padding: EdgeInsets.symmetric(horizontal: screenSize().width / 10),
-              child: getDailyPredictionsButton(),
-            ),
-          ],
-        ));
+                ))));
   }
 
   Size screenSize() {
@@ -137,8 +148,9 @@ class _StoreState extends State<Store> {
                   color: Color(0xFF143656),
                   fontSize: 22,
                   fontWeight: FontWeight.bold)),
-          Text(this.store.counters[0].peopleWaitingInLine.toString() +
-                  " people", style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+          Text(
+              this.store.counters[0].peopleWaitingInLine.toString() + " people",
+              style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         ],
       ),
     ]);
@@ -150,8 +162,8 @@ class _StoreState extends State<Store> {
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: screenSize().width / 10),
-          child:
-              Icon(Icons.access_time_rounded, color: Color(0xFF000000), size: 60.0),
+          child: Icon(Icons.access_time_rounded,
+              color: Color(0xFF000000), size: 60.0),
         ),
       ),
       Column(
@@ -174,35 +186,37 @@ class _StoreState extends State<Store> {
   }
 
   Container getTicketButton() {
-    return  Container(
-      width: screenSize().width,
-      height: screenSize().height / 10, 
-      child: RaisedButton(
-      color: Color(0xff13497B),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)),
-      onPressed: () {
-        Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Ticket(getNewUserTicket(1, 1)))); // todo userid and counterId
-      },
-      child: const Text('Get Ticket',
-          style: TextStyle(fontSize: 25, color: Colors.white)),
-    ));
+    return Container(
+        width: screenSize().width,
+        height: screenSize().height / 10,
+        child: RaisedButton(
+          color: Color(0xff13497B),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Ticket(
+                        getNewUserTicket(1, 1)))); // todo userid and counterId
+          },
+          child: const Text('Get Ticket',
+              style: TextStyle(fontSize: 25, color: Colors.white)),
+        ));
   }
 
   Container getDailyPredictionsButton() {
-    return  Container(
-      width: screenSize().width,
-      height: screenSize().height / 10, 
-      child: RaisedButton(
-      color: Color(0xff13497B),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)),
-      onPressed: () {
-      },
-      child: const Text('Daily Predictions',
-          style: TextStyle(fontSize: 25, color: Colors.white)),
-    ));
+    return Container(
+        width: screenSize().width,
+        height: screenSize().height / 10,
+        child: RaisedButton(
+          color: Color(0xff13497B),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          onPressed: () {},
+          child: const Text('Daily Predictions',
+              style: TextStyle(fontSize: 25, color: Colors.white)),
+        ));
   }
 
   Row mainRow() {
