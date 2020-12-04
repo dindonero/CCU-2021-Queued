@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:Queued/app_screens/Card/CategoryCard.dart';
 import 'package:Queued/app_screens/Screen/StoresListScreen.dart';
+import 'package:Queued/app_screens/Widget/TextSearchWidget.dart';
 import 'package:Queued/app_screens/Widget/navBarWidget.dart';
 import 'package:Queued/domain/category.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
@@ -56,11 +57,7 @@ class _CategoriesState extends State<Categories> {
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: screenSize().width / 25),
-              child: buildSearchField(),
-            ),
+            TextSearchField(),
             Expanded(
               child: Padding(
                   padding:
@@ -115,21 +112,6 @@ class _CategoriesState extends State<Categories> {
 
   Size screenSize() {
     return MediaQuery.of(context).size;
-  }
-
-  TextFormField buildSearchField() {
-    return TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            hintText: "What are you looking for?",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
-            prefixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.search, color: Color(0xff27192B0), size: 32.0),
-            )));
   }
 
   Row mainRow() {

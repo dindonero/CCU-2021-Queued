@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../domain/category.dart';
 
-String url = "http://192.168.1.5:8080";
+String url = "http://192.168.1.72:8080";
 String registerUrl = "/user/register";
 String loginUrl = "/user/login";
 String categoriesUrl = "/category/getAll";

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:Queued/app_screens/Card/StoreCard.dart';
+import 'package:Queued/app_screens/Widget/TextSearchWidget.dart';
 import 'package:Queued/app_screens/Widget/navBarWidget.dart';
 import 'package:Queued/dto/CounterDto.dart';
 import 'package:Queued/dto/StoreDto.dart';
@@ -66,11 +67,7 @@ class _StoresState extends State<Stores> {
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: screenSize().width / 25),
-              child: buildSearchField(),
-            ),
+            TextSearchField(),
             Expanded(
               child: FutureBuilder<List<StoreDto>>(
                       future: this.futureStores,
@@ -136,21 +133,6 @@ class _StoresState extends State<Stores> {
 
   Size screenSize() {
     return MediaQuery.of(context).size;
-  }
-
-  TextFormField buildSearchField() {
-    return TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            hintText: "What are you looking for?",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
-            prefixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.search, color: Color(0xff27192B0), size: 32.0),
-            )));
   }
 
   Row mainRow() {
