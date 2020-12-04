@@ -65,20 +65,26 @@ class _StoresState extends State<Stores> {
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
-            Container(
-              width: 380,
+            Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: screenSize().width / 25),
               child: buildSearchField(),
             ),
             Expanded(
-              child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 1),
-                  child: FutureBuilder<List<StoreDto>>(
+              child: FutureBuilder<List<StoreDto>>(
                       future: this.futureStores,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
-                            return CircularProgressIndicator();
+                            return Center(
+                                child: SizedBox(
+                                    height: 70.0,
+                                    width: 70.0,
+                                    child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Color(0xff22bec8)),
+                                        strokeWidth: 5.0)));
                           default:
                             if (snapshot.hasError)
                               return new Text('Error: ${snapshot.error}');
@@ -86,7 +92,6 @@ class _StoresState extends State<Stores> {
                               return _buildGridView(context, snapshot.data);
                         }
                       })),
-            ),
             Nav(0)
           ],
         ));

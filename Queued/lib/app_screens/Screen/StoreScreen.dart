@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:Queued/dto/StoreDto.dart';
+import 'package:Queued/app_screens/Widget/navBarWidget.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
 
@@ -37,8 +38,8 @@ class _StoreState extends State<Store> {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
-        body: SingleChildScrollView(
-            reverse: true,
+        body: Column( children: <Widget>[Expanded(child: SingleChildScrollView(
+            reverse: false,
             child: Padding(
                 padding: EdgeInsets.only(bottom: bottom),
                 child: Column(
@@ -97,17 +98,19 @@ class _StoreState extends State<Store> {
                     SizedBox(height: screenSize().height / 15),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: screenSize().width / 10),
+                          horizontal: screenSize().width / 5),
                       child: getTicketButton(),
                     ),
                     SizedBox(height: screenSize().height / 35),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: screenSize().width / 10),
+                          horizontal: screenSize().width / 5),
                       child: getDailyPredictionsButton(),
                     ),
                   ],
-                ))));
+                )))),
+                Nav(0),
+                ]));
   }
 
   Size screenSize() {
@@ -117,7 +120,7 @@ class _StoreState extends State<Store> {
   Row secondRow() {
     return Row(
       children: [
-        Icon(Icons.timer_rounded, color: Color(0xFF000000), size: 32.0),
+        Icon(Icons.access_time_rounded, color: Color(0xFF000000), size: 32.0),
         Text(
             formatSchedule(this.store.schedules[0].openingTime) +
                 " - " +

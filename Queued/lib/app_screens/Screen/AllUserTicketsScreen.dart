@@ -36,9 +36,12 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: mainRow(),
-              ),
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize().width / 25),
+                    child: mainRow(),
+                  )),
             ),
             SizedBox(height: screenSize().height / 40),
             Align(
@@ -65,7 +68,14 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
-                            return CircularProgressIndicator();
+                            return Center(
+                                child: SizedBox(
+                                    height: 70.0,
+                                    width: 70.0,
+                                    child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Color(0xff22bec8)),
+                                        strokeWidth: 5.0)));
                           default:
                             if (snapshot.hasError)
                               return new Text('Error: ${snapshot.error}');
