@@ -201,7 +201,7 @@ class _StoreState extends State<Store> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => Ticket(
-                        getNewUserTicket(1, 1)))); // todo userid and counterId
+                        ServerCommunicationService.getNewUserTicket(1, 1)))); // todo userid and counterId
           },
           child: const Text('Get Ticket',
               style: TextStyle(fontSize: 25, color: Colors.white)),

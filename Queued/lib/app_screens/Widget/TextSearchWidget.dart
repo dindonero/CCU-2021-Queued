@@ -1,3 +1,6 @@
+import 'package:Queued/app_screens/Screen/StoresListScreen.dart';
+import 'package:Queued/dto/StoreDto.dart';
+import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +15,7 @@ class _TextSearchField extends State<TextSearchField> {
     borderSide: BorderSide(color: Color(0x50000000)),
     gapPadding: 10,
   );
+  //TextEditingController textInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,8 @@ class _TextSearchField extends State<TextSearchField> {
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width / 25),
         child: TextFormField(
+          //controller: textInput,
+          onFieldSubmitted: searchStoresQuery,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
                 hintText: "What are you looking for?",
@@ -32,5 +38,11 @@ class _TextSearchField extends State<TextSearchField> {
                   child:
                       Icon(Icons.search, color: Color(0xff27192B0), size: 32.0),
                 ))));
+  }
+
+  void searchStoresQuery(String query){
+    Future<List<StoreDto>> stores = ServerCommunicationService.findStoresByName(query);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Stores.fromFutureStores(stores)));
   }
 }

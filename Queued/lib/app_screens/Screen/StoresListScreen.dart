@@ -14,13 +14,14 @@ import 'StoreScreen.dart';
 
 
 class Stores extends StatefulWidget {
-  final int id;
+  int id = -1;
+  Future<List<StoreDto>> futureStores;
 
   Stores(this.id);
+  Stores.fromFutureStores(this.futureStores);
 
-  //Stores({Key key, @required this.id}) : super(key: key);
   @override
-  _StoresState createState() => _StoresState(this.id);
+  _StoresState createState() => this.id != -1 ? _StoresState(this.id) : _StoresState.fromFutureStores(this.futureStores);
 }
 
 class _StoresState extends State<Stores> {
@@ -28,10 +29,11 @@ class _StoresState extends State<Stores> {
   int id;
 
   _StoresState(this.id);
+  _StoresState.fromFutureStores(this.futureStores);
 
   @override
   void initState() {
-    futureStores = getStoresFromCategory(this.id);
+    if (this.futureStores == null) futureStores = ServerCommunicationService.getStoresFromCategory(this.id);
   }
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(

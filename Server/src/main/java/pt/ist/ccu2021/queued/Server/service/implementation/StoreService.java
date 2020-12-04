@@ -45,7 +45,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public List<StoreDto> getAllStoresFromName(String name) {
-        List<Store> stores = _storeRepository.findByName(name);
+        List<Store> stores = _storeRepository.findAll().stream().filter(store -> store.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
         return stores.stream()
                 .map(store -> new StoreDto(store,
                         _counterRepository.findByStoreid(store.getId()).stream()

@@ -18,7 +18,7 @@ class _CategoriesState extends State<Categories> {
 
   @override
   void initState() {
-    futureCategories = getAllCategories();
+    futureCategories = ServerCommunicationService.getAllCategories();
   }
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(

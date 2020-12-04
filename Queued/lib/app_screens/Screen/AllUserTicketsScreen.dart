@@ -22,7 +22,7 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
 
   @override
   void initState() {
-    futureTickets = getAllUserTickets(1); // todo insert user id
+    futureTickets = ServerCommunicationService.getAllUserTickets(1); // todo insert user id
   }
 
   @override
