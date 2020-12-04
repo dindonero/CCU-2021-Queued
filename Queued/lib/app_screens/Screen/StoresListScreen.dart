@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:Queued/app_screens/Card/StoreCard.dart';
 import 'package:Queued/app_screens/Widget/navBarWidget.dart';
+import 'package:Queued/dto/CounterDto.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
@@ -108,27 +109,30 @@ class _StoresState extends State<Stores> {
       ),
       itemBuilder: (context, index) => StoreCard(
         store: stores[index],
-        press: () => Navigator.push(
-          context,
-          navigate(stores[index]),
-        ),
+        press: () => {
+        if (stores[index].counters.length > 1) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SelectQPopUp(stores[index]);})}
+        else {
+         showDialog(
+            context: context,
+            builder: (context) {
+              return SelectQPopUp(stores[index]);})}
+        }
       ),
     );
   }
 
-  MaterialPageRoute navigate(StoreDto store) {
-    if (store.counters.length > 1) {
-      return MaterialPageRoute(
-        builder: (context) => SelectQ(
-          store,
-        ),
-      );
-    } else {
-      return MaterialPageRoute(
-        builder: (context) => Store(store, 1),
-      );
-    }
-  }
+  //  Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) =>
+  //                     Store(stores[index], 1),
+  //         )),
+  //       }
+
 
   Size screenSize() {
     return MediaQuery.of(context).size;
@@ -185,5 +189,76 @@ class _StoresState extends State<Stores> {
         Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),
       ],
     );
+  }
+}
+
+  class SelectQPopUp extends StatefulWidget {
+  final StoreDto store;
+  SelectQPopUp(this.store);
+
+  @override
+  _SelectQPopUpState createState() => _SelectQPopUpState(this.store);
+}
+
+class _SelectQPopUpState extends State<SelectQPopUp> {
+    StoreDto store;
+    _SelectQPopUpState(this.store);
+
+    int counter_id;
+    CounterDto selected_item;
+    String counter_name;
+    void _changeValue(CounterDto counter) {
+      setState(() {
+        selected_item = counter;
+        counter_id = counter.id;
+        counter_name = counter.name;
+      });
+    }
+    @override
+    Widget build(BuildContext context) {
+      return AlertDialog(
+          scrollable: true,
+          title:  Align(alignment: Alignment.center,
+                      child: Text('Select Counter:'),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+                children: <Widget>[
+                  new DropdownButton<CounterDto>(
+                    hint: Text("Select item"),
+                    // value: counters[0].name,
+                    value: selected_item,
+                    items: store.counters.map((CounterDto value) {
+                      return new DropdownMenuItem<CounterDto>(
+                        value: value,
+                        child: new Text(value.name),
+                      );
+                    }).toList(),
+                    onChanged: _changeValue,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height / 25),
+                  Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  height: MediaQuery.of(context).size.height / 15,
+                  child: RaisedButton(
+                    color: Color(0xff13497B),
+                    shape:
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                    onPressed: () {
+                     Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                Store(store, counter_id),
+                      ));
+                    },
+                    child: const Text('Confirm',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  ))
+                ],
+              ),
+            ),
+          );
   }
 }
