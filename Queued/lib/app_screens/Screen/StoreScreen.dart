@@ -5,6 +5,7 @@ import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/app_screens/Widget/navBarWidget.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'StoresListScreen.dart';
 import 'TicketScreen.dart';
@@ -120,11 +121,23 @@ class _StoreState extends State<Store> {
             style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
         Spacer(),
-        Icon(Icons.location_on_outlined, color: Color(0xFF000000), size: 32.0),
-        Text(" Directions",
-            style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+        RaisedButton(onPressed: () => openMaps(),
+        child: Row(children: [
+          Icon(Icons.location_on_outlined, color: Color(0xFF000000), size: 32.0),
+          Text(" Directions", style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+        ],))
       ],
     );
+  }
+
+  Future<void> openMaps() async{
+    String url = "https://www.google.com/maps/search/?api=1&query=" + store.address.replaceAll(" ", "+");
+    print("launching = " + url);
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Row aheadRow() {
