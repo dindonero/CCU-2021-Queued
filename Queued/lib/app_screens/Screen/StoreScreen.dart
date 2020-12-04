@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:Queued/app_screens/Widget/MainRowWidget.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/app_screens/Widget/navBarWidget.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
@@ -45,16 +46,7 @@ class _StoreState extends State<Store> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: screenSize().height / 25),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: screenSize().width / 25),
-                            child: mainRow(),
-                          )),
-                    ),
+                    MainRowWidget(),
                     Container(
                         height: (screenSize().width / 2) + 25,
                         decoration: BoxDecoration(
@@ -220,46 +212,6 @@ class _StoreState extends State<Store> {
           child: const Text('Daily Predictions',
               style: TextStyle(fontSize: 25, color: Colors.white)),
         ));
-  }
-
-  Row mainRow() {
-    return Row(
-      children: [
-        Transform.rotate(
-          angle: 180 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Stores(this.store.categoryId)));
-            },
-          ),
-        ),
-        Spacer(),
-        Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
-        Text(" IST, Lisboa",
-            style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),
-        Transform.rotate(
-          angle: 90 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
-            ),
-            onPressed: null,
-          ),
-        ),
-        Spacer(),
-        Icon(Icons.notifications_none_outlined,
-            color: Color(0xff13497B), size: 32.0),
-        Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),
-      ],
-    );
   }
 }
 
