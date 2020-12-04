@@ -60,7 +60,7 @@ class ServerCommunicationService {
             counterId.toString() +
             "/new",
         headers: headers);
-    if (response.statusCode == 200 || response.statusCode == 202) {
+    if (response.statusCode == 201) {
       return TicketDto.fromJson(json.decode(response.body));
     }
     return null;
