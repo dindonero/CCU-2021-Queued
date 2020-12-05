@@ -226,7 +226,7 @@ class _SelectQState extends State<SelectQ> {
               press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Store(store, index),
+                    builder: (context) => Store(store),
                   )),
             ));
   }

@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
 import 'package:Staff/app_screens/Widget/MainRowWidget.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/app_screens/Widget/navBarWidget.dart';
@@ -12,27 +13,23 @@ import 'TicketScreen.dart';
 
 class Store extends StatefulWidget {
   final StoreDto store;
-  final int counter;
 
-  Store(this.store, this.counter);
+  Store(this.store);
 
   //Stores({Key key, @required this.id}) : super(key: key);
   @override
-  _StoreState createState() => _StoreState(this.store, this.counter);
+  _StoreState createState() => _StoreState(this.store);
 }
 
 class _StoreState extends State<Store> {
   String name;
-  Image img;
   final StoreDto store;
-  int counter;
 
-  _StoreState(this.store, this.counter);
+  _StoreState(this.store);
 
   @override
   void initState() {
     name = this.store.name;
-    img = this.store.img;
   }
 
   @override
@@ -40,85 +37,63 @@ class _StoreState extends State<Store> {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
-        body: Column( children: <Widget>[Expanded(child: SingleChildScrollView(
-            reverse: false,
-            child: Padding(
-                padding: EdgeInsets.only(bottom: bottom),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: screenSize().height / 25),
-                    MainRowWidget(),
-                    Container(
-                        height: (screenSize().width / 2) + 25,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: img.image, fit: BoxFit.cover)),
-                        child: Stack(
-                          children: <Widget>[
-                            // Stroked text as border.
-                            Center(
-                              child: Text(
-                                name,
-                                style: TextStyle(
-                                  fontSize: 35,
-                                  foreground: Paint()
-                                    ..style = PaintingStyle.stroke
-                                    ..strokeWidth = 5
-                                    ..color = Colors.black,
-                                ),
-                              ),
-                            ),
-                            // solid text
-                            Center(
-                              child: Text(
-                                name,
-                                style: TextStyle(
-                                  color: Color(0xFFFFFFFF),
-                                  fontSize: 35,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize().width / 25),
-                      child: secondRow(),
-                    ),
-                    SizedBox(height: screenSize().height / 30),
-                    aheadRow(),
-                    estimatedWaitingTimeRow(),
+        body: Column( children:   <Widget>[
+          Expanded( child: Column( children:   <Widget>[
                     SizedBox(height: screenSize().height / 15),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize().width / 5),
-                      child: getTicketButton(),
-                    ),
-                    SizedBox(height: screenSize().height / 35),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize().width / 5),
-                      child: getDailyPredictionsButton(),
-                    ),
-                  ],
-                )))),
+                    mainRow(),
+                    Container(width: 350, height:10 , child: Divider(color: Colors.black),),
+                    SizedBox(height: MediaQuery.of(context).size.height / 25),
+                    Align (  alignment: Alignment.centerLeft, child: 
+                   Padding(
+                    padding: EdgeInsets.symmetric(
+                       horizontal: screenSize().width / 25),  child: 
+                    Text("Select sector you are working in:", style: TextStyle(color: Color(0xFF13497B), fontSize: 18))
+                    )),
+          ],),),
+
+
                 Nav(0),
-                ]));
+        ]),
+                );
   }
 
   Size screenSize() {
     return MediaQuery.of(context).size;
   }
 
-  Row secondRow() {
+  Row mainRow() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Icon(Icons.access_time_rounded, color: Color(0xFF000000), size: 32.0),
-        Text(
-            formatSchedule(this.store.schedules[0].openingTime) +
-                " - " +
-                formatSchedule(this.store.schedules[0].closingTime),
-            style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+        Transform.rotate(
+          angle: 180 * math.pi / 180,
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Color(0xFF143656),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AllStaffStoresScreen()));
+            },
+          ),
+        ),
+          Align(
+              alignment: Alignment.center,
+              child: Text(this.store.name, 
+                    style: TextStyle(color: Color(0xFF13497B),fontSize: 30,  fontWeight: FontWeight.bold,),),
+            ),
+            Container(width: 32.0, height: 0.0),      
+      ],
+    );
+  }
+
+  Column selectSectorSection() {
+    return Column(
+      children: <Widget> [
+        Text(" Directions", style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
         Spacer(),
         RaisedButton(onPressed: () => openMaps(),

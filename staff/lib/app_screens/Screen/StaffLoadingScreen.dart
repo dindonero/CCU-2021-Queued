@@ -47,11 +47,16 @@ class _StaffScreen extends State<StaffScreen> {
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                new Image.asset('images/logo_branco.png', width: 120),
-                Text('UEUED')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    new Image.asset('images/logo_branco.png', width: 120),
+                    Text('UEUED')
+                  ],
+                ),
+                 Text('Staff')
               ],
             ),
             Padding(

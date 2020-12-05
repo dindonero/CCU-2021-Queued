@@ -1,7 +1,6 @@
-import 'package:Staff/app_screens/Screen/CategoriesScreen.dart';
 import 'package:flutter/material.dart';
 
-import '../Screen/AllUserTicketsScreen.dart';
+import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
 
 class Nav extends StatefulWidget {
   final int id;
@@ -17,7 +16,7 @@ class _NavState extends State<Nav> {
 
   _NavState(this.id);
 
-  List<Widget> _widgetOptions = <Widget>[Categories(), AllUserTicketsScreen(), Text('Ola')];
+  List<Widget> _widgetOptions = <Widget>[AllStaffStoresScreen(), Text('Ola')];
 
   void _onItemTap(int index) {
     setState(() {
@@ -50,13 +49,6 @@ class _NavState extends State<Nav> {
                     icon: new Icon(Icons.home),
                     title: new Text('Home'),
                   ),
-                  // BottomNavigationBarItem(
-                  //   icon: new Icon(Icons.location_on),
-                  //   title: new Text('Location'),
-                  // ),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.confirmation_number_outlined),
-                      title: Text('Tickets')),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.person), title: Text('Profile'))
                 ], currentIndex: this.id, onTap: _onItemTap))));

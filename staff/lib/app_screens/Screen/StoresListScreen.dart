@@ -189,7 +189,7 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                Store(store, counter_id),
+                                Store(store),
                       ));
                     },
                     child: const Text('Confirm',

@@ -1,19 +1,20 @@
 import 'dart:math' as math;
 
-import 'package:Staff/dto/TicketDto.dart';
+import 'package:Staff/app_screens/Screen/StoreScreen.dart';
+import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
 
 import '../Widget/navBarWidget.dart';
-import '../Card/TicketsCard.dart';
+import '../Card/StoresCard.dart';
 
-class AllUserTicketsScreen extends StatefulWidget {
+class AllStaffStoresScreen extends StatefulWidget {
   @override
-  _AllUserTicketsScreenState createState() => _AllUserTicketsScreenState();
+  _AllStaffStoresScreenState createState() => _AllStaffStoresScreenState();
 }
 
-class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
-  Future<List<TicketDto>> futureTickets;
+class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
+  Future<List<StoreDto>> futureStores;
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -22,7 +23,7 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
 
   @override
   void initState() {
-    futureTickets = ServerCommunicationService.getAllUserTickets(1); // todo insert user id
+    futureStores = ServerCommunicationService.getAllStoresFromStaffEmail('staff@gmail.com'); // todo insert user id
   }
 
   @override
@@ -32,7 +33,7 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
         body: Column(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: screenSize().height / 25),
+            SizedBox(height: screenSize().height / 15),
             Align(
               alignment: Alignment.center,
               child: Padding(
@@ -43,27 +44,17 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
                     child: mainRow(),
                   )),
             ),
-            SizedBox(height: screenSize().height / 40),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Hello Maurício!",
-                  style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    These are your tickets:",
-                  style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
-            ),
             SizedBox(height: screenSize().height / 30),
             Container(
               width: 380,
               child: buildSearchField(),
+              color: Colors.white,
             ),
             Expanded(
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 1),
-                  child: FutureBuilder<List<TicketDto>>(
-                      future: this.futureTickets,
+                  child: FutureBuilder<List<StoreDto>>(
+                      future: this.futureStores,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -84,29 +75,29 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
                         }
                       })),
             ),
-            Nav(1),
+            Nav(0),
           ],
         ));
   }
 
-  Widget _buildGridView(BuildContext context, List<TicketDto> tickets) {
+  Widget _buildGridView(BuildContext context, List<StoreDto> stores) {
     return GridView.builder(
-        itemCount: tickets.length,
+        itemCount: stores.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           mainAxisSpacing: screenSize().width / 20,
           crossAxisSpacing: screenSize().width / 25,
           childAspectRatio: 5,
         ),
-        itemBuilder: (context, index) => TicketsCard(
-              ticket: tickets[index],
-              // press: () => Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => DetailsScreen(
-              //         category: categories[index],
-              //       ),
-              //     )),
+        itemBuilder: (context, index) => StoresCard(
+              store: stores[index],
+               press: () => Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                     builder: (context) => Store(
+                       stores[index]
+                     ),
+                  )),
             ));
   }
 
@@ -132,19 +123,19 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
   Row mainRow() {
     return Row(
       children: [
-        Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
-        Text(" IST, Lisboa",
-            style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),
-        Transform.rotate(
-          angle: 90 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
+        Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Hello Staff!",
+                  style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
             ),
-            onPressed: null,
-          ),
-        ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Select a store:",
+                  style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
+            ),
+        ],),
         Spacer(),
         Icon(Icons.notifications_none_outlined,
             color: Color(0xff13497B), size: 32.0),

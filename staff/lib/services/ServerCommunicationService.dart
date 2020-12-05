@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/dto/CategoryDto.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/dto/TicketDto.dart';
@@ -13,6 +14,8 @@ class ServerCommunicationService {
   static String registerUrl = "/user/register";
   static String loginUrl = "/user/login";
   static String categoriesUrl = "/category/getAll";
+  static String storesUrl = "/stores/getAll";
+  static String staffUrl = "/staff/";
   static Map<String, String> headers = {
     'Content-type': 'application/json',
     'Accept': 'application/json',
@@ -39,6 +42,17 @@ class ServerCommunicationService {
     }
     return null;
   }
+
+  static Future<List<StoreDto>> getAllStoresFromStaffEmail(String email) async {
+  var response = await http.get(url + staffUrl + email, headers: headers);
+    if (response.statusCode == 200 || response.statusCode == 202) {
+    List<dynamic> responseJson = json.decode(response.body);
+    return responseJson
+        .map((store) => StoreDto.fromJson(store))
+        .toList();
+  }
+  return null;
+}
 
   static Future<List<StoreDto>> getStoresFromCategory(int categoryId) async {
     var response = await http.get(
@@ -77,6 +91,16 @@ class ServerCommunicationService {
   }
 
   static Future<List<StoreDto>> findStoresByName(String name) async {
+    var response = await http.get(url + "/searchStores/" + name.toString(),
+        headers: headers);
+    if (response.statusCode == 200 || response.statusCode == 202) {
+      List<dynamic> responseJson = json.decode(response.body);
+      return responseJson.map((store) => StoreDto.fromJson(store)).toList();
+    }
+    return null;
+  }
+
+  static Future<List<StoreDto>> getAllStores(String name) async {
     var response = await http.get(url + "/searchStores/" + name.toString(),
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {

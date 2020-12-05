@@ -1,16 +1,16 @@
 import 'dart:math' as math;
 
-import 'package:Staff/dto/TicketDto.dart';
+import 'package:Staff/dto/StoreDto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class TicketsCard extends StatelessWidget {
-  final TicketDto ticket;
+class StoresCard extends StatelessWidget {
+  final StoreDto store;
   final Function press;
 
-  const TicketsCard({
+  const StoresCard({
     Key key,
-    this.ticket,
+    this.store,
     this.press,
   }) : super(key: key);
 
@@ -27,7 +27,7 @@ class TicketsCard extends StatelessWidget {
                 height: 70,
                 //color: Colors.white,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(color: Colors.black, width: 2),
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
@@ -35,21 +35,30 @@ class TicketsCard extends StatelessWidget {
                   children: <Widget>[
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Transform.rotate(
-                        angle: 225 * math.pi / 180,
-                        child: Icon(Icons.confirmation_number_outlined,
+                      child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize(context).width / 25), 
+                    child:  Icon(Icons.store_outlined,
                             color: Colors.black, size: 45.0),
-                      ),
+                  )
                     ),
-                    Center(
+                    Align(     alignment: Alignment.centerRight,
+                      child: Padding(
+                    padding: EdgeInsets.symmetric(
+                       horizontal: screenSize(context).width / 25), 
                       child: Text(
-                        ticket.storeName,
+                        store.name,
                         // category.title,
                         style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           color: Color(0xFF143656),
                           fontSize: 25,
                         ),
                       ),
+                  )
+                      
+                      
+                
                     ),
                   ],
                 )
@@ -62,5 +71,9 @@ class TicketsCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Size screenSize(context) {
+    return MediaQuery.of(context).size;
   }
 }

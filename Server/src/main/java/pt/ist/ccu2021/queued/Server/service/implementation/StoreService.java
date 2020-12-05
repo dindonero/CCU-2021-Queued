@@ -2,6 +2,7 @@ package pt.ist.ccu2021.queued.Server.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pt.ist.ccu2021.queued.Server.domain.CompanyAccount;
 import pt.ist.ccu2021.queued.Server.domain.Counter;
 import pt.ist.ccu2021.queued.Server.domain.Store;
 import pt.ist.ccu2021.queued.Server.dto.CounterDto;
@@ -11,6 +12,7 @@ import pt.ist.ccu2021.queued.Server.repository.contract.IScheduleRepository;
 import pt.ist.ccu2021.queued.Server.repository.contract.IStoreRepository;
 import pt.ist.ccu2021.queued.Server.service.contract.IStoreService;
 import pt.ist.ccu2021.queued.Server.service.contract.ITicketService;
+import pt.ist.ccu2021.queued.Server.repository.contract.ICompanyAccountRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +31,9 @@ public class StoreService implements IStoreService {
 
     @Autowired
     private ITicketService _ticketService;
+
+    @Autowired
+    private ICompanyAccountRepository _companyAccountRespository;
 
     @Override
     public List<StoreDto> getAllStoresFromCategory(int categoryId) {
@@ -56,6 +61,8 @@ public class StoreService implements IStoreService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
     public int insertNewStore(StoreDto store, int companyId) {
         int id = _storeRepository.save(store.toDomain(companyId)).getId();
@@ -74,6 +81,23 @@ public class StoreService implements IStoreService {
                                         _ticketService.calculateAvgWaitingTime(counter.getId()))).collect(Collectors.toList()),
                         _scheduleRepository.findByStoreId(store.getId()))
                 ).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StoreDto> getAllStoresFromStaffEmail(String email) {
+        CompanyAccount companyAccount = _companyAccountRespository.findByStaffEmail((String)email);
+        System.out.println(companyAccount.getId());
+        if ( companyAccount != null ) {
+            List<StoreDto> stores = getAllStoresFromCompany(companyAccount.getId());
+            if ( stores != null ) {
+                System.out.println(companyAccount.getId());
+                return stores;
+            }
+            return null;
+        }else{
+            System.out.println('n');
+            return null;
+        }
     }
 
     @Override

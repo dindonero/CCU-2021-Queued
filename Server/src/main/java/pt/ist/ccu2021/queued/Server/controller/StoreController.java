@@ -48,6 +48,11 @@ public class StoreController {
         return new ResponseEntity<>(_storeService.getAllStoresFromCompany(companyId), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/staff/{email}")
+    public ResponseEntity<List<StoreDto>> getAllStoresFromStaffEmail(@PathVariable("email") String staffEmail){
+        return new ResponseEntity<>(_storeService.getAllStoresFromStaffEmail(staffEmail), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/counter/{counterid}/staff/enter")
     public ResponseEntity<CounterDto> staffHasEnteredCounter(@PathVariable("counterid") int counterId){
         return new ResponseEntity<>(_storeService.staffHasLeftCounter(counterId), HttpStatus.ACCEPTED);
