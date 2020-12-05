@@ -102,7 +102,6 @@ class _StoreState extends State<Store> {
                     ),
                   ],
                 )))),
-                Nav(0),
                 ]));
   }
 
@@ -115,9 +114,9 @@ class _StoreState extends State<Store> {
       children: [
         Icon(Icons.access_time_rounded, color: Color(0xFF000000), size: 32.0),
         Text(
-            formatSchedule(this.store.schedules[0].openingTime) +
+            formatSchedule(this.store.schedules[this.counter-1].openingTime) +
                 " - " +
-                formatSchedule(this.store.schedules[0].closingTime),
+                formatSchedule(this.store.schedules[this.counter-1].closingTime),
             style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
         Spacer(),
@@ -150,6 +149,7 @@ class _StoreState extends State<Store> {
         ),
       ),
       Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Ahead: ",
               style: TextStyle(
@@ -157,7 +157,7 @@ class _StoreState extends State<Store> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold)),
           Text(
-              this.store.counters[0].peopleWaitingInLine.toString() + " people",
+              this.store.counters[this.counter-1].peopleWaitingInLine.toString() + " people",
               style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         ],
       ),
@@ -183,8 +183,8 @@ class _StoreState extends State<Store> {
                   fontSize: 21,
                   fontWeight: FontWeight.bold)),
           Text(
-              (this.store.counters[0].avgWaitingTime.hour * 60 +
-                          this.store.counters[0].avgWaitingTime.minute)
+              (this.store.counters[this.counter-1].avgWaitingTime.hour * 60 +
+                          this.store.counters[this.counter-1].avgWaitingTime.minute)
                       .toString() +
                   " minutes",
               style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
@@ -206,7 +206,7 @@ class _StoreState extends State<Store> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => Ticket(
-                        ServerCommunicationService.getNewUserTicket(1, 1)))); // todo userid and counterId
+                        ServerCommunicationService.getNewUserTicket(1, this.counter)))); // todo userid and counterId
           },
           child: const Text('Get Ticket',
               style: TextStyle(fontSize: 25, color: Colors.white)),

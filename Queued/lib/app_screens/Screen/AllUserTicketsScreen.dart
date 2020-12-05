@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:Queued/app_screens/Screen/TicketScreen.dart';
 import 'package:Queued/dto/TicketDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
@@ -100,14 +101,18 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
         ),
         itemBuilder: (context, index) => TicketsCard(
               ticket: tickets[index],
-              // press: () => Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => DetailsScreen(
-              //         category: categories[index],
-              //       ),
-              //     )),
+              press: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Ticket(
+                      getTicket(tickets[index]),
+                    ),
+                  )),
             ));
+  }
+
+   Future<TicketDto> getTicket(TicketDto ticket) async {
+    return ticket;
   }
 
   Size screenSize() {
