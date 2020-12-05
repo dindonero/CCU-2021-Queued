@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:Queued/dto/CategoryDto.dart';
-import 'package:Queued/dto/StoreDto.dart';
-import 'package:Queued/dto/TicketDto.dart';
-import 'package:Queued/dto/UserAccountDto.dart';
+import 'package:Staff/dto/CategoryDto.dart';
+import 'package:Staff/dto/StoreDto.dart';
+import 'package:Staff/dto/TicketDto.dart';
+import 'package:Staff/dto/UserAccountDto.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/category.dart';
