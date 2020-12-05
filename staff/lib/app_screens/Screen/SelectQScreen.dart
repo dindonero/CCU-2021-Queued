@@ -1,12 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:Staff/app_screens/Card/CounterCard.dart';
+import 'package:Staff/app_screens/Widget/MainRowWidget.dart';
 import 'package:Staff/dto/CounterDto.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:flutter/material.dart';
 
 import 'StoreScreen.dart';
-import 'StoresListScreen.dart';
 
 class SelectQ extends StatefulWidget {
   final StoreDto store;
@@ -39,13 +39,7 @@ class _SelectQState extends State<SelectQ> {
         body: Column(
           children: <Widget>[
             SizedBox(height: screenSize().height / 25),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: mainRow(),
-              ),
-            ),
+            MainRowWidget(),
             Expanded(
               child: Column(
                 children: <Widget>[
@@ -229,45 +223,5 @@ class _SelectQState extends State<SelectQ> {
                     builder: (context) => Store(store),
                   )),
             ));
-  }
-
-  Row mainRow() {
-    return Row(
-      children: [
-        Transform.rotate(
-          angle: 180 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Stores(this.store.categoryId)));
-            },
-          ),
-        ),
-        Spacer(),
-        Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
-        Text(" IST, Lisboa",
-            style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),
-        Transform.rotate(
-          angle: 90 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
-            ),
-            onPressed: null,
-          ),
-        ),
-        Spacer(),
-        Icon(Icons.notifications_none_outlined,
-            color: Color(0xff13497B), size: 32.0),
-        Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),
-      ],
-    );
   }
 }

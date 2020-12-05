@@ -48,8 +48,8 @@ public class StoreController {
         return new ResponseEntity<>(_storeService.getAllStoresFromCompany(companyId), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/staff/{email}")
-    public ResponseEntity<List<StoreDto>> getAllStoresFromStaffEmail(@PathVariable("email") String staffEmail){
+    @PostMapping(value = "/staff/getStores")
+    public ResponseEntity<List<StoreDto>> getAllStoresFromStaffEmail(@RequestBody String staffEmail){
         return new ResponseEntity<>(_storeService.getAllStoresFromStaffEmail(staffEmail), HttpStatus.OK);
     }
 

@@ -1,15 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
-import 'package:Staff/app_screens/Widget/MainRowWidget.dart';
-import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/app_screens/Widget/navBarWidget.dart';
-import 'package:Staff/services/ServerCommunicationService.dart';
+import 'package:Staff/dto/StoreDto.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'StoresListScreen.dart';
-import 'TicketScreen.dart';
 
 class Store extends StatefulWidget {
   final StoreDto store;
@@ -36,25 +31,33 @@ class _StoreState extends State<Store> {
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
-        backgroundColor: const Color(0xffF8FBFF),
-        body: Column( children:   <Widget>[
-          Expanded( child: Column( children:   <Widget>[
-                    SizedBox(height: screenSize().height / 15),
-                    mainRow(),
-                    Container(width: 350, height:10 , child: Divider(color: Colors.black),),
-                    SizedBox(height: MediaQuery.of(context).size.height / 25),
-                    Align (  alignment: Alignment.centerLeft, child: 
-                   Padding(
-                    padding: EdgeInsets.symmetric(
-                       horizontal: screenSize().width / 25),  child: 
-                    Text("Select sector you are working in:", style: TextStyle(color: Color(0xFF13497B), fontSize: 18))
-                    )),
-          ],),),
-
-
-                Nav(0),
-        ]),
-                );
+      backgroundColor: const Color(0xffF8FBFF),
+      body: Column(children: <Widget>[
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: screenSize().height / 15),
+              mainRow(),
+              Container(
+                width: 350,
+                height: 10,
+                child: Divider(color: Colors.black),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height / 25),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize().width / 25),
+                      child: Text("Select sector you are working in:",
+                          style: TextStyle(
+                              color: Color(0xFF13497B), fontSize: 18)))),
+            ],
+          ),
+        ),
+        Nav(0),
+      ]),
+    );
   }
 
   Size screenSize() {
@@ -80,33 +83,46 @@ class _StoreState extends State<Store> {
             },
           ),
         ),
-          Align(
-              alignment: Alignment.center,
-              child: Text(this.store.name, 
-                    style: TextStyle(color: Color(0xFF13497B),fontSize: 30,  fontWeight: FontWeight.bold,),),
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            this.store.name,
+            style: TextStyle(
+              color: Color(0xFF13497B),
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
             ),
-            Container(width: 32.0, height: 0.0),      
+          ),
+        ),
+        Container(width: 32.0, height: 0.0),
       ],
     );
   }
 
   Column selectSectorSection() {
     return Column(
-      children: <Widget> [
-        Text(" Directions", style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+      children: <Widget>[
+        Text(" Directions",
+            style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
         Spacer(),
-        RaisedButton(onPressed: () => openMaps(),
-        child: Row(children: [
-          Icon(Icons.location_on_outlined, color: Color(0xFF000000), size: 32.0),
-          Text(" Directions", style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
-        ],))
+        RaisedButton(
+            onPressed: () => openMaps(),
+            child: Row(
+              children: [
+                Icon(Icons.location_on_outlined,
+                    color: Color(0xFF000000), size: 32.0),
+                Text(" Directions",
+                    style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+              ],
+            ))
       ],
     );
   }
 
-  Future<void> openMaps() async{
-    String url = "https://www.google.com/maps/search/?api=1&query=" + store.address.replaceAll(" ", "+");
+  Future<void> openMaps() async {
+    String url = "https://www.google.com/maps/search/?api=1&query=" +
+        store.address.replaceAll(" ", "+");
     print("launching = " + url);
     if (await canLaunch(url)) {
       await launch(url);
@@ -177,11 +193,11 @@ class _StoreState extends State<Store> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPressed: () {
-            Navigator.push(
+            /*Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => Ticket(
-                        ServerCommunicationService.getNewUserTicket(1, 1)))); // todo userid and counterId
+                        ServerCommunicationService.getNewUserTicket(1, 1)))); */ // todo userid and counterId
           },
           child: const Text('Get Ticket',
               style: TextStyle(fontSize: 25, color: Colors.white)),

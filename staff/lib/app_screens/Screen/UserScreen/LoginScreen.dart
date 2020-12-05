@@ -1,11 +1,8 @@
 import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
-import 'package:Staff/app_screens/Screen/StoresListScreen.dart';
-import 'package:Staff/app_screens/Screen/StoreScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'SignupScreen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -35,59 +32,60 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: screenSize().height / 20),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenSize().height / 20),
+                              child: Column(
                                 children: [
-                                  new Image.asset('images/logo_branco.png',
-                                      width: 120),
-                                  Text('UEUED'),
-
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      new Image.asset('images/logo_branco.png',
+                                          width: 120),
+                                      Text('UEUED'),
+                                    ],
+                                  ),
+                                  Text('Staff') //, style: TextStyle(
+                                  //  color: Color(0xff13497b),) )
                                 ],
-                              ),
-                                Text('Staff') //, style: TextStyle(
-                            //  color: Color(0xff13497b),) )
-                            ],
-                          )),
-                      SizedBox(height: screenSize().height / 8),
-                      Text("Welcome",
-                          style: TextStyle(
-                              color: Color(0xff13497b),
-                              fontWeight: FontWeight.bold)),
-                      Text("Login to start waiting online.",
-                          style: TextStyle(
-                              color: Color(0x50000000), fontSize: 25)),
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenSize().width / 10,
-                              vertical: screenSize().width / 10),
-                          child: SignForm()),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              onTap: signup,
-                              child: Text("Forgot password?",
-                                  style: TextStyle(
-                                      color: Color(0x50000000), fontSize: 18)),
-                            ),
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: screenSize().width / 8)),
-                            InkWell(
-                              onTap: signup,
-                              child: Text("Sign up",
-                                  style: TextStyle(
-                                      color: Color(0xff13497b), fontSize: 18)),
-                            ),
-                          ])
-                    ])))));
+                              )),
+                          SizedBox(height: screenSize().height / 8),
+                          Text("Welcome",
+                              style: TextStyle(
+                                  color: Color(0xff13497b),
+                                  fontWeight: FontWeight.bold)),
+                          Text("Login to start waiting online.",
+                              style: TextStyle(
+                                  color: Color(0x50000000), fontSize: 25)),
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: screenSize().width / 10,
+                                  vertical: screenSize().width / 10),
+                              child: SignForm()),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: signup,
+                                  child: Text("Forgot password?",
+                                      style: TextStyle(
+                                          color: Color(0x50000000),
+                                          fontSize: 18)),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenSize().width / 8)),
+                                InkWell(
+                                  onTap: signup,
+                                  child: Text("Sign up",
+                                      style: TextStyle(
+                                          color: Color(0xff13497b),
+                                          fontSize: 18)),
+                                ),
+                              ])
+                        ])))));
   }
 
   void signup() {
@@ -130,8 +128,10 @@ class _SignFormState extends State<SignForm> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AllStaffStoresScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AllStaffStoresScreen()));
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),

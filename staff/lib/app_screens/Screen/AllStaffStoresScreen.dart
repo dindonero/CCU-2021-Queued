@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:Staff/app_screens/Screen/StoreScreen.dart';
+import 'package:Staff/app_screens/Widget/MainRowWidget.dart';
+import 'package:Staff/app_screens/Widget/TextSearchWidget.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +11,20 @@ import '../Widget/navBarWidget.dart';
 import '../Card/StoresCard.dart';
 
 class AllStaffStoresScreen extends StatefulWidget {
+  Future<List<StoreDto>> futureStores;
+
+  AllStaffStoresScreen();
+  AllStaffStoresScreen.fromFutureStores(this.futureStores);
+
   @override
-  _AllStaffStoresScreenState createState() => _AllStaffStoresScreenState();
+  _AllStaffStoresScreenState createState() => _AllStaffStoresScreenState.fromFutureStores(this.futureStores);
 }
 
 class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
   Future<List<StoreDto>> futureStores;
+
+  _AllStaffStoresScreenState.fromFutureStores(this.futureStores);
+
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -23,7 +33,7 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
 
   @override
   void initState() {
-    futureStores = ServerCommunicationService.getAllStoresFromStaffEmail('staff@gmail.com'); // todo insert user id
+    if (futureStores == null) futureStores = ServerCommunicationService.getAllStoresFromStaffEmail('staff@gmail.com'); // todo insert user id
   }
 
   @override
@@ -34,22 +44,9 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: screenSize().height / 15),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: screenSize().width / 25),
-                    child: mainRow(),
-                  )),
-            ),
+            MainRowWidget(),
             SizedBox(height: screenSize().height / 30),
-            Container(
-              width: 380,
-              child: buildSearchField(),
-              color: Colors.white,
-            ),
+            TextSearchField(),
             Expanded(
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 1),
@@ -103,44 +100,5 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
 
   Size screenSize() {
     return MediaQuery.of(context).size;
-  }
-
-  TextFormField buildSearchField() {
-    return TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            hintText: "What are you looking for?",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
-            prefixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.search, color: Color(0xff27192B0), size: 32.0),
-            )));
-  }
-
-  Row mainRow() {
-    return Row(
-      children: [
-        Column(crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Text("Hello Staff!",
-                  style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("Select a store:",
-                  style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
-            ),
-        ],),
-        Spacer(),
-        Icon(Icons.notifications_none_outlined,
-            color: Color(0xff13497B), size: 32.0),
-        Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),
-      ],
-    );
   }
 }

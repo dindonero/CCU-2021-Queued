@@ -1,4 +1,4 @@
-import 'package:Staff/app_screens/Screen/StoresListScreen.dart';
+import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,6 +43,6 @@ class _TextSearchField extends State<TextSearchField> {
   void searchStoresQuery(String query){
     Future<List<StoreDto>> stores = ServerCommunicationService.findStoresByName(query);
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Stores.fromFutureStores(stores)));
+        context, MaterialPageRoute(builder: (context) => AllStaffStoresScreen.fromFutureStores(stores)));
   }
 }
