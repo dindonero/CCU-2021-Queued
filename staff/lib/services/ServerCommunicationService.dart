@@ -53,7 +53,7 @@ class ServerCommunicationService {
 
   static Future<CounterDto> staffNextTicket(int counterId, String staffCounter) async {
     print('done');
-    var response = await http.get(url + "/counter/" + counterId.toString() + " /staffCounter/"+ staffCounter + "/next",
+    var response = await http.get(url + "/ticket/counter/" + counterId.toString() + " /staffCounter/"+ staffCounter + "/next",
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
       print('not null');
