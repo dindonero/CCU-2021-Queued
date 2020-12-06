@@ -45,21 +45,29 @@ public class StoreController {
 
     @GetMapping(value = "/company/{companyid}")
     public ResponseEntity<List<StoreDto>> getAllStoresFromCompany(@PathVariable("companyid") int companyId){
+        _logger.info("getAllStoresFromCompany - CompanyId:" + companyId);
+
         return new ResponseEntity<>(_storeService.getAllStoresFromCompany(companyId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/staff/getStores")
     public ResponseEntity<List<StoreDto>> getAllStoresFromStaffEmail(@RequestBody String staffEmail){
+        _logger.info("getAllStoresFromStaffEmail - StaffEmail:" + staffEmail);
+
         return new ResponseEntity<>(_storeService.getAllStoresFromStaffEmail(staffEmail), HttpStatus.OK);
     }
 
     @GetMapping(value = "/counter/{counterid}/staff/enter")
     public ResponseEntity<CounterDto> staffHasEnteredCounter(@PathVariable("counterid") int counterId){
+        _logger.info("staffHasEnteredCounter - CounterId:" + counterId);
+
         return new ResponseEntity<>(_storeService.staffHasLeftCounter(counterId), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/counter/{counterid}/staff/leave")
     public ResponseEntity<CounterDto> staffHasLeftCounter(@PathVariable("counterid") int counterId){
+        _logger.info("staffHasLeftCounter - CounterId:" + counterId);
+
         return new ResponseEntity<>(_storeService.staffHasLeftCounter(counterId), HttpStatus.ACCEPTED);
     }
 }
