@@ -55,7 +55,6 @@ class ServerCommunicationService {
     var response = await http.get(url + "/ticket/counter/" + counterId.toString() + " /staffCounter/"+ staffCounter + "/next",
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
-      print('response  was not null');
       return CounterDto.fromJson(json.decode(response.body));
     }
     print(response.statusCode);
@@ -66,7 +65,6 @@ class ServerCommunicationService {
     var response = await http.get(url + "/counter/" + counterId.toString() + " /staff/enter",
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
-      print('response not null');
       return CounterDto.fromJson(json.decode(response.body));
     }
     print(response.statusCode);
@@ -77,7 +75,16 @@ class ServerCommunicationService {
     var response = await http.get(url + "/counter/" + counterId.toString() + " /staff/leave",
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
-      print('response not null');
+      return CounterDto.fromJson(json.decode(response.body));
+    }
+    print(response.statusCode);
+    return null;
+  }
+
+  static Future<CounterDto> getCounterId(int counterId) async {
+    var response = await http.get(url + "/counter/" + counterId.toString(),
+        headers: headers);
+    if (response.statusCode == 200 || response.statusCode == 202) {
       return CounterDto.fromJson(json.decode(response.body));
     }
     print(response.statusCode);
