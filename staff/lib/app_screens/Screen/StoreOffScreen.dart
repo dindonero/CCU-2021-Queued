@@ -11,12 +11,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 class StoreOff extends StatefulWidget {
   StoreDto store;
+  CounterDto counter;
 
 
-   StoreOff(this.store);
+   StoreOff(this.store,this.counter);
 
   @override
-  _StoreState createState() => _StoreState(this.store);
+  _StoreState createState() => _StoreState(this.store,this.counter);
 }
 
 class _StoreState extends State<StoreOff> {  
@@ -30,8 +31,9 @@ class _StoreState extends State<StoreOff> {
 
   String counterName;
   StoreDto store;
+  CounterDto counter;
 
-  _StoreState(this.store);
+  _StoreState(this.store,this.counter);
 
 
   @override
@@ -65,7 +67,7 @@ class _StoreState extends State<StoreOff> {
                         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 10),
                                   child: TextFormField(
                                   //controller: textInput,
-                                    onFieldSubmitted: saveCounterName,
+                                    onChanged: saveCounterName,
                                     keyboardType: TextInputType.text,
                                     decoration: InputDecoration(hintText: "Write you counter name here",
                                         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -109,10 +111,11 @@ class _StoreState extends State<StoreOff> {
                                                 _currentSliderValue = value;
                                                 if (_currentSliderValue == 1){
                                                   _currentlabel = 'open';
-                                                   Navigator.push(
+                                                  ServerCommunicationService.staffHasEnteredCounter(_SelectQPopUpState.counter_id);
+                                                  Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                                builder: (context) => StoreOn(this.store, _SelectQPopUpState.counter_id,_SelectQPopUpState.counter_name,this.counterName, null)));
+                                                                builder: (context) => StoreOn(this.store, _SelectQPopUpState.counter_id,_SelectQPopUpState.counter_name,this.counterName, this.counter)));
                                                 }
                                               }});
                                             },

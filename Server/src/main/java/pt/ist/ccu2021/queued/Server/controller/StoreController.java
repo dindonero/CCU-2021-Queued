@@ -61,7 +61,7 @@ public class StoreController {
     public ResponseEntity<CounterDto> staffHasEnteredCounter(@PathVariable("counterid") int counterId){
         _logger.info("staffHasEnteredCounter - CounterId:" + counterId);
 
-        return new ResponseEntity<>(_storeService.staffHasLeftCounter(counterId), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(_storeService.staffHasEnteredCounter(counterId), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/counter/{counterid}/staff/leave")
