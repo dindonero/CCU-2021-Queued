@@ -58,7 +58,7 @@ public class TicketService implements ITicketService {
     public UserTicketDto getNewTicket(int userId, int counterId) throws ClosedCounterException {
         Counter counter = _counterRepository.findById(counterId);
         if (!counter.isHasStaff()) throw new ClosedCounterException(counterId, counter.getName());
-        Ticket ticket = Ticket.builder().storeId(counter.getStoreid()).counterId(counterId)
+        Ticket ticket = Ticket.builder().storeId(counter.getStoreid()).counterId(counterId).staffCounter(counter.getName())
                 .userId(userId).canceled(false).enteringTime(new Timestamp(System.currentTimeMillis())).build();
         int id = _ticketRepository.save(ticket).getId();
 

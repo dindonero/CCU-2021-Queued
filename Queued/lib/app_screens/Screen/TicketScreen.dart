@@ -222,7 +222,7 @@ class _TicketState extends State<Ticket> {
                   fontSize: 21,
                   fontWeight: FontWeight.bold)),
           Text(
-              (ticket.staffCounter).toString() + " - " + ticket.id.toString(),
+              ticket.staffCounter.toString() + " - " + ticket.id.toString(),
               style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         ],
       ),
