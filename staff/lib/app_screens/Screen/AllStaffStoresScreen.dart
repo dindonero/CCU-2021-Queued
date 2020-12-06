@@ -93,7 +93,7 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
                    context,
                    MaterialPageRoute(
                      builder: (context) => StoreOff(
-                       stores[index])
+                       stores[index],null)
                      ),
                   )),
             );

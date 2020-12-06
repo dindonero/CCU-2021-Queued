@@ -105,7 +105,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public CounterDto staffHasEnteredCounter(int counterId) {
-        Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
+        Counter counter = _counterRepository.findById((int) counterId);
         counter.setHasStaff(true);
         int peopleAhead = _ticketService.calculatePeopleAheadInLine(counterId);
         return new CounterDto(_counterRepository.save(counter),
@@ -115,7 +115,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public CounterDto staffHasLeftCounter(int counterId) {
-        Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
+        Counter counter = _counterRepository.findById((int) counterId);
         counter.setHasStaff(false);
         return new CounterDto(_counterRepository.save(counter),
                 _ticketService.calculatePeopleAheadInLine(counterId),

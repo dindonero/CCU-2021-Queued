@@ -3,29 +3,29 @@ import 'dart:math' as math;
 import 'package:Staff/services/ServerCommunicationService.dart';
 import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
 import 'package:Staff/app_screens/Screen/StoreOffScreen.dart';
-import 'package:Staff/app_screens/Screen/StoreOnNextScreen.dart';
 import 'package:Staff/app_screens/Widget/navBarWidget.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/dto/CounterDto.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class StoreOn extends StatefulWidget {
+class StoreOnNext extends StatefulWidget {
   StoreDto store;
-  CounterDto counter;
+  Future<CounterDto> counter;
   int sector_id;
   String sector_name;
   String counter_id;
 
 
 
-   StoreOn(this.store, this.sector_id, this.sector_name, this.counter_id, this.counter);
+   StoreOnNext(this.store, this.sector_id, this.sector_name, this.counter_id, this.counter);
 
   @override
-  _StoreOnState createState() => _StoreOnState(this.store, this.sector_id, this.sector_name, this.counter_id, this.counter);
+  _StoreOnNextState createState() => _StoreOnNextState(this.store, this.sector_id, this.sector_name, this.counter_id, this.counter);
 }
 
-class _StoreOnState extends State<StoreOn> {
+class _StoreOnNextState extends State<StoreOnNext> {
+ Future<CounterDto> counter;
    OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -36,13 +36,17 @@ class _StoreOnState extends State<StoreOn> {
   String counterName;
   String _currentlabel = 'open';
   StoreDto store;
-  CounterDto counter;
   int sector_id;
   String sector_name;
   String counter_id;
 
 
- _StoreOnState(this.store, this.sector_id, this.sector_name, this.counter_id, this.counter);
+ _StoreOnNextState(this.store, this.sector_id, this.sector_name, this.counter_id, this.counter);
+
+  @override
+  void initState() {
+      counter = this.counter;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +54,50 @@ class _StoreOnState extends State<StoreOn> {
       backgroundColor: const Color(0xffF8FBFF),
       body: Column(children: <Widget>[
         Expanded(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: screenSize().height / 15),
+          child: 
+                    FutureBuilder<CounterDto>(
+                      future: counter,
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child: SizedBox(
+                                    height: 70.0,
+                                    width: 70.0,
+                                    child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Color(0xff22bec8)),
+                                        strokeWidth: 5.0)));
+                          default:
+                            if (snapshot.hasError)
+                              return new Text('Error: ${snapshot.error}');
+                            else{
+                               return buildScreen(context, snapshot.data); 
+  
+
+                            }
+                        }
+                      })
+
+        ),
+        Nav(0),
+      ]),
+    );
+  }
+
+  void saveCounterName(String name){
+    this.counterName = name;
+  }
+
+  Size screenSize() {
+    return MediaQuery.of(context).size;
+  }
+
+   Widget buildScreen(BuildContext context, CounterDto counter){
+             return  Column(
+            children: <Widget>[ 
+               SizedBox(height: screenSize().height / 15),
               mainRow(),
               Container(
                 width: 350,
@@ -116,11 +161,11 @@ class _StoreOnState extends State<StoreOn> {
                                                 _currentSliderValue = value;
                                                 if (_currentSliderValue == 0){
                                                   _currentlabel = 'close';
-                                                  ServerCommunicationService.staffHasLeftCounter(this.sector_id);
+                                                   ServerCommunicationService.staffHasLeftCounter(this.sector_id);
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) => StoreOff(this.store, null)));
+                                                            builder: (context) => StoreOff(this.store,counter)));
                                                                                       }
                                               });
                                             },
@@ -131,24 +176,16 @@ class _StoreOnState extends State<StoreOn> {
                          Text("Open", style: TextStyle(color: Color(0xFF000000), fontSize: 18, fontWeight: FontWeight.bold)),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 30),
-                     aheadRow(context), 
-                    estimatedWaitingTimeRow(),
+              generalInfo(),
+              SizedBox(height: MediaQuery.of(context).size.height / 30),
+                     aheadRow(counter), 
+                    estimatedWaitingTimeRow(counter),
                     SizedBox(height: MediaQuery.of(context).size.height / 30),
                      nextTicketButton(),
-            ],
-          ),
-        ),
-        Nav(0),
-      ]),
-    );
-  }
-
-  
-
-  Size screenSize() {
-    return MediaQuery.of(context).size;
-  }
+                    //aheadRow(counter), 
+                   // estimatedWaitingTimeRow(counter),
+                ],);
+      }
 
   Row mainRow() {
     return Row(
@@ -185,18 +222,46 @@ class _StoreOnState extends State<StoreOn> {
     );
   }
 
+  Column selectSectorSection() {
+    return Column(
+      children: <Widget>[
+        Text(" Directions",
+            style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+        //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
+        Spacer(),
+        RaisedButton(
+            onPressed: () => openMaps(),
+            child: Row(
+              children: [
+                Icon(Icons.location_on_outlined,
+                    color: Color(0xFF000000), size: 32.0),
+                Text(" Directions",
+                    style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
+              ],
+            ))
+      ],
+    );
+  }
+
+  Future<void> openMaps() async {
+    String url = "https://www.google.com/maps/search/?api=1&query=" +
+        store.address.replaceAll(" ", "+");
+    print("launching = " + url);
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   Column generalInfo(){
     return   Column ( children: [
       Text("General Information:", style: TextStyle(color: Color(0xFF13497B), fontSize: 22, fontWeight: FontWeight.bold)),
        SizedBox(height: MediaQuery.of(context).size.height / 30),]);
   }
 
-  
-  
-
-  Row buildaheadRow(BuildContext context,List<StoreDto> stores, String ticket_number){
-   
-      return Row(children: [
+   Row aheadRow(CounterDto counter) {
+    return Row(children: [
       Align(
         alignment: Alignment.centerLeft,
         child: Padding(
@@ -212,7 +277,7 @@ class _StoreOnState extends State<StoreOn> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold)),
           Text(
-              ticket_number ,
+              "Number " + counter.currentTicketId.toString() ,
               style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
 
         ],
@@ -220,28 +285,7 @@ class _StoreOnState extends State<StoreOn> {
     ]);
   }
 
-   Row aheadRow(BuildContext context) {
-     String ticket_number;
-     CounterDto counter;
-     if (this.counter != null){
-       counter = this.counter;
-     } else{
-       counter =  this.store.counters[this.sector_id-1];
-     }
-
-      ticket_number =   "Number " + counter.currentTicketId.toString();
-     
-     return buildaheadRow(context, null, ticket_number);
-   
-  }
-
-  Row estimatedWaitingTimeRow() {
-    CounterDto counter;
-     if (this.counter != null){
-       counter = this.counter;
-     } else{
-       counter =  this.store.counters[this.sector_id-1];
-     }
+  Row estimatedWaitingTimeRow(CounterDto counter) {
       return Row(children: [
       Align(
         alignment: Alignment.centerLeft,
@@ -278,18 +322,14 @@ class _StoreOnState extends State<StoreOn> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPressed: () {
-             print('is going to call server');
-             print(this.sector_id);
-             print(this.sector_name);
-             Future<CounterDto> new_counter = ServerCommunicationService.staffNextTicket(this.sector_id,this.sector_name);
+             Future<CounterDto> counter = ServerCommunicationService.staffNextTicket(this.sector_id,this.sector_name);
+              //play( this.new_counter);
+  
               Navigator.push(
                    context,
                    MaterialPageRoute(
-                     builder: (context) => StoreOnNext(this.store, this.sector_id, this.sector_name, this.counter_id,new_counter) //countername:A23 counter_id : index da Padaria
-                     ),);
-
-                     
-                     },
+                     builder: (context) => StoreOnNext(this.store, this.sector_id, this.sector_name, this.counter_id,counter) //countername:A23 counter_id : index da Padaria
+                     ),);},
                    // todo userid and counterId
      
           child: const Text('Next Person',
@@ -297,7 +337,32 @@ class _StoreOnState extends State<StoreOn> {
         );
   }
 
+  Widget play(Future<CounterDto> counter){
+    new FutureBuilder<CounterDto>(
+                      future: counter,
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child: SizedBox(
+                                    height: 70.0,
+                                    width: 70.0,
+                                    child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Color(0xff22bec8)),
+                                        strokeWidth: 5.0)));
+                          default:
+                            if (snapshot.hasError)
+                              return new Text('Error: ${snapshot.error}');
+                            else{
+                               return buildScreen(context, snapshot.data); 
   
+
+                            }
+                        }
+                      });
+  }
  
 }
 

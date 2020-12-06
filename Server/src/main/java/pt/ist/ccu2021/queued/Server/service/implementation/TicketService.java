@@ -105,13 +105,17 @@ public class TicketService implements ITicketService {
     @Override
     public CounterDto staffNextTicket(int counterId, String staffCounter) throws NoOneWaitingInLineException {
         Ticket ticket = getNextTicket(counterId);
-        if (ticket == null)
-            throw new NoOneWaitingInLineException(counterId, _counterRepository.findById((long) counterId).orElseThrow().getName());
+        if (ticket == null) {
+            System.out.println('e');
+            throw new NoOneWaitingInLineException(counterId, _counterRepository.findById(counterId).getName());
+        }
         ticket.setStaffCounter(staffCounter);
         ticket.setLeavingTime(new Timestamp(System.currentTimeMillis()));
         int id = _ticketRepository.save(ticket).getId();
-        Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
         System.out.println('h');
+        System.out.println(id);
+        Counter counter = _counterRepository.findById(counterId);
+        System.out.println(id);
         return new CounterDto(counter, calculatePeopleAheadInLine(counterId), calculateAvgWaitingTime(counterId), id);
     }
 
