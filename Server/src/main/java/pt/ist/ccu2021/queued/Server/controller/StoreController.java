@@ -57,6 +57,13 @@ public class StoreController {
         return new ResponseEntity<>(_storeService.getAllStoresFromStaffEmail(staffEmail), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/counter/{counterid}")
+    public ResponseEntity<CounterDto> getCounterFromId(@PathVariable("counterid") int counterId){
+        _logger.info("getCounterFromId - CounterId:" + counterId);
+
+        return new ResponseEntity<>(_storeService.getCounterFromId(counterId), HttpStatus.ACCEPTED);
+    }
+
     @GetMapping(value = "/counter/{counterid}/staff/enter")
     public ResponseEntity<CounterDto> staffHasEnteredCounter(@PathVariable("counterid") int counterId){
         _logger.info("staffHasEnteredCounter - CounterId:" + counterId);

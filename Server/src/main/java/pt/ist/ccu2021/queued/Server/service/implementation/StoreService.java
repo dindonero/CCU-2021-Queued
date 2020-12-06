@@ -98,6 +98,12 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    public CounterDto getCounterFromId(int counterId) {
+        Counter counter = _counterRepository.findById(counterId);
+        return new CounterDto(counter, _ticketService.calculatePeopleAheadInLine(counterId), _ticketService.calculateAvgWaitingTime(counterId));
+    }
+
+    @Override
     public CounterDto staffHasEnteredCounter(int counterId) {
         Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
         counter.setHasStaff(true);

@@ -17,6 +17,8 @@ public interface IStoreService {
 
     List<StoreDto> getAllStoresFromStaffEmail(String email);
 
+    CounterDto getCounterFromId(int counterId);
+
     CounterDto staffHasEnteredCounter(int counterId);
 
     CounterDto staffHasLeftCounter(int counterId);
