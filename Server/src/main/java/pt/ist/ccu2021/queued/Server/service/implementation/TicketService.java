@@ -111,7 +111,7 @@ public class TicketService implements ITicketService {
         ticket.setLeavingTime(new Timestamp(System.currentTimeMillis()));
         int id = _ticketRepository.save(ticket).getId();
         Counter counter = _counterRepository.findById((long) counterId).orElseThrow();
-
+        System.out.println('h');
         return new CounterDto(counter, calculatePeopleAheadInLine(counterId), calculateAvgWaitingTime(counterId), id);
     }
 

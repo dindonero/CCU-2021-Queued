@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:Staff/app_screens/Screen/StoreScreen.dart';
+import 'package:Staff/app_screens/Screen/StoreOffScreen.dart';
 import 'package:Staff/app_screens/Widget/MainRowWidget.dart';
 import 'package:Staff/app_screens/Widget/TextSearchWidget.dart';
 import 'package:Staff/dto/StoreDto.dart';
@@ -12,6 +12,7 @@ import '../Card/StoresCard.dart';
 
 class AllStaffStoresScreen extends StatefulWidget {
   Future<List<StoreDto>> futureStores;
+  
 
   AllStaffStoresScreen();
   AllStaffStoresScreen.fromFutureStores(this.futureStores);
@@ -91,11 +92,11 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
                press: () => Navigator.push(
                    context,
                    MaterialPageRoute(
-                     builder: (context) => Store(
-                       stores[index]
+                     builder: (context) => StoreOff(
+                       stores[index])
                      ),
                   )),
-            ));
+            );
   }
 
   Size screenSize() {

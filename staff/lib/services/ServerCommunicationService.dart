@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Staff/dto/CompanyAccountDto.dart';
 import 'package:Staff/dto/StoreDto.dart';
+import 'package:Staff/dto/CounterDto.dart';
 import 'package:http/http.dart' as http;
 
 class ServerCommunicationService {
@@ -45,6 +46,20 @@ class ServerCommunicationService {
       List<dynamic> responseJson = json.decode(response.body);
       return responseJson.map((store) => StoreDto.fromJson(store)).toList();
     }
+    return null;
+  }
+
+  //(value = "/counter/{counterid}/staffCounter/{staffcounter}/next")
+
+  static Future<CounterDto> staffNextTicket(int counterId, String staffCounter) async {
+    print('done');
+    var response = await http.get(url + "/counter/" + counterId.toString() + " /staffCounter/"+ staffCounter + "/next",
+        headers: headers);
+    if (response.statusCode == 200 || response.statusCode == 202) {
+      print('not null');
+      return CounterDto.fromJson(json.decode(response.body));
+    }
+    print('response null');
     return null;
   }
 }

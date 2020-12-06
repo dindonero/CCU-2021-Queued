@@ -86,16 +86,13 @@ public class StoreService implements IStoreService {
     @Override
     public List<StoreDto> getAllStoresFromStaffEmail(String email) {
         CompanyAccount companyAccount = _companyAccountRespository.findByStaffEmail((String)email);
-        System.out.println(companyAccount.getId());
         if ( companyAccount != null ) {
             List<StoreDto> stores = getAllStoresFromCompany(companyAccount.getId());
             if ( stores != null ) {
-                System.out.println(companyAccount.getId());
                 return stores;
             }
             return null;
         }else{
-            System.out.println('n');
             return null;
         }
     }

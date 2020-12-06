@@ -13,45 +13,39 @@ class _MainRowWidget extends State<MainRowWidget>{
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(
+              alignment: Alignment.center,
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize().width / 25),
+                    child: Row(
+      children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Transform.rotate(
-              angle: 180 * math.pi / 180,
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Color(0xFF143656),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Hello Staff!",
+                  style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
             ),
-            Spacer(),
-            Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
-            Text(" IST, Lisboa",
-                style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),
-            Transform.rotate(
-              angle: 90 * math.pi / 180,
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Color(0xFF143656),
-                ),
-                onPressed: null,
-              ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Select a store:",
+                  style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
-            Spacer(),
-            Icon(Icons.notifications_none_outlined,
-                color: Color(0xff13497B), size: 32.0),
-            Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),
-          ],
-        ),
-      ),
-    );
+        ],),
+        Spacer(),
+        Icon(Icons.notifications_none_outlined,
+            color: Color(0xff13497B), size: 32.0),
+        Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),
+      ],
+    ),
+
+              ),),);
+  }
+
+  Size screenSize() {
+    return MediaQuery.of(context).size;
   }
 }
 
