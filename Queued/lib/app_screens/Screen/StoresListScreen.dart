@@ -95,9 +95,7 @@ class _StoresState extends State<Stores> {
       itemCount: stores.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
-        // mainAxisSpacing: screenSize().width /20,
-        // crossAxisSpacing: screenSize().width / 30,
-        childAspectRatio: 2,
+        childAspectRatio: 2.5,
       ),
       itemBuilder: (context, index) => StoreCard(
         store: stores[index],
@@ -108,23 +106,18 @@ class _StoresState extends State<Stores> {
             builder: (context) {
               return SelectQPopUp(stores[index]);})}
         else {
-         showDialog(
-            context: context,
-            builder: (context) {
-              return SelectQPopUp(stores[index]);})}
+          print(stores[index].counters[0].name),
+         Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                      Store(stores[index], stores[index].counters[0]),
+          )),
+        }
         }
       ),
     );
   }
-
-  //  Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                   builder: (context) =>
-  //                     Store(stores[index], 1),
-  //         )),
-  //       }
-
 
   Size screenSize() {
     return MediaQuery.of(context).size;
@@ -148,6 +141,7 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
     String counter_name;
     void _changeValue(CounterDto counter) {
       setState(() {
+        print(counter.id);
         selected_item = counter;
         counter_id = counter.id;
         counter_name = counter.name;
@@ -185,12 +179,14 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
                     shape:
                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
-                     Navigator.push(
+                    print(counter_id);
+                    Navigator.pop(context);
+                    Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                Store(store, counter_id),
-                      ));
+                                Store(store, selected_item),
+                    ));
                     },
                     child: const Text('Confirm',
                         style: TextStyle(fontSize: 20, color: Colors.white)),

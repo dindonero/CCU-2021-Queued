@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:Queued/app_screens/Widget/MainRowWidget.dart';
 import 'package:Queued/dto/StoreDto.dart';
+import 'package:Queued/dto/CounterDto.dart';
 import 'package:Queued/app_screens/Widget/navBarWidget.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'TicketScreen.dart';
 
 class Store extends StatefulWidget {
   final StoreDto store;
-  final int counter;
+  final CounterDto counter;
 
   Store(this.store, this.counter);
 
@@ -25,7 +26,7 @@ class _StoreState extends State<Store> {
   String name;
   Image img;
   final StoreDto store;
-  int counter;
+  CounterDto counter;
 
   _StoreState(this.store, this.counter);
 
@@ -114,9 +115,9 @@ class _StoreState extends State<Store> {
       children: [
         Icon(Icons.access_time_rounded, color: Color(0xFF000000), size: 32.0),
         Text(
-            formatSchedule(this.store.schedules[this.counter-1].openingTime) +
+            formatSchedule(this.store.schedules[0].openingTime) +
                 " - " +
-                formatSchedule(this.store.schedules[this.counter-1].closingTime),
+                formatSchedule(this.store.schedules[0].closingTime),
             style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         //Text(currentCounter.,style: TextStyle(color: Color(0xFF000000), fontSize: 20))
         Spacer(),
@@ -157,7 +158,7 @@ class _StoreState extends State<Store> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold)),
           Text(
-              this.store.counters[this.counter-1].peopleWaitingInLine.toString() + " people",
+              this.counter.peopleWaitingInLine.toString() + " people",
               style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         ],
       ),
@@ -183,8 +184,8 @@ class _StoreState extends State<Store> {
                   fontSize: 21,
                   fontWeight: FontWeight.bold)),
           Text(
-              (this.store.counters[this.counter-1].avgWaitingTime.hour * 60 +
-                          this.store.counters[this.counter-1].avgWaitingTime.minute)
+              (this.counter.avgWaitingTime.hour * 60 +
+                          this.counter.avgWaitingTime.minute)
                       .toString() +
                   " minutes",
               style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
@@ -206,7 +207,7 @@ class _StoreState extends State<Store> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => Ticket(
-                        ServerCommunicationService.getNewUserTicket(1, this.counter)))); // todo userid and counterId
+                        ServerCommunicationService.getNewUserTicket(1, this.counter.id)))); // todo userid and counterId
           },
           child: const Text('Get Ticket',
               style: TextStyle(fontSize: 25, color: Colors.white)),
