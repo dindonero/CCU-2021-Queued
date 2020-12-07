@@ -1,20 +1,24 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Company/domain/day.dart';
 import 'package:Company/dto/CounterDto.dart';
 import 'package:Company/dto/ScheduleDto.dart';
-
-import '../domain/store.dart';
 import 'package:flutter/cupertino.dart';
 
 class StoreDto {
   int id;
+
   String name;
+
   Image img;
+
   String address;
+
   int categoryId;
 
   List<CounterDto> counters;
+
   List<ScheduleDto> schedules;
 
   StoreDto.fromJson(Map<String, dynamic> json) {
@@ -32,7 +36,17 @@ class StoreDto {
         schedules.map((schedule) => ScheduleDto.fromJson(schedule)).toList();
   }
 
-  Store toDomain() {
-    return new Store(id: this.id, name: this.name);
+  bool isOpened() {
+    DateTime now = DateTime.now();
+    int weekDay = now.weekday;
+    Day day = Day.values[weekDay - 1]; // hack
+    ScheduleDto schedule =
+        schedules.firstWhere((schedule) => schedule.day == day);
+    if (schedule == null) return false;
+    if (now.isAfter(schedule.openingTime) &&
+        now.isBefore(schedule.closingTime)) {
+      return true;
+    }
+    return false;
   }
 }

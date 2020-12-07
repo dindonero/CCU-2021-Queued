@@ -1,42 +1,50 @@
+import 'package:Company/app_screens/Screen/CategoriesScreen.dart';
 import 'package:flutter/material.dart';
-import 'company.dart';
-import 'package:Company/app_screens/stores.dart';
+
+import '../Screen/AddStoreScreen.dart';
 
 class Nav extends StatefulWidget {
+  final int id;
+
+  Nav(this.id);
+
   @override
-  _NavState createState() => _NavState();
+  _NavState createState() => _NavState(this.id);
 }
 
 class _NavState extends State<Nav> {
-  int _selectedIndex = 0;
+  int id;
+
+  _NavState(this.id);
+
   List<Widget> _widgetOptions = <Widget>[
-    Stores(),
-    Text('No Added Stores',
-        style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 30)),
-    Text('Profile'),
+    Categories(),
+    AddStoreScreen(),
     Text('Ola')
   ];
 
   void _onItemTap(int index) {
     setState(() {
-      _selectedIndex = index;
+      int _selectedIndex = index;
     });
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => _widgetOptions.elementAt(index)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-        bottomNavigationBar: new Theme(
+    return Container(
+        child: new Theme(
             data: Theme.of(context).copyWith(
                 // sets the background color of the `BottomNavigationBar`
                 // canvasColor: Colors.green,
                 // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-                primaryColor: Color(0xff46D0D9),
+                primaryColor: Color(0xff1EA9B4),
                 textTheme: Theme.of(context).textTheme.copyWith(
-                    caption: new TextStyle(
-                        color: Color(
-                            0xffCCD3DB)))), // sets the inactive color of the `BottomNavigationBar`
+                    caption: new TextStyle(color: Color(0xffCCD3DB)))),
+            // sets the inactive color of the `BottomNavigationBar`
             child: Container(
                 decoration: BoxDecoration(boxShadow: [
                   BoxShadow(color: Colors.black54, blurRadius: 25)
@@ -46,12 +54,16 @@ class _NavState extends State<Nav> {
                     icon: new Icon(Icons.store_mall_directory_sharp),
                     title: new Text('Stores'),
                   ),
+                  // BottomNavigationBarItem(
+                  //   icon: new Icon(Icons.location_on),
+                  //   title: new Text('Location'),
+                  // ),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.add_circle_rounded,
                           color: Color(0xff13497b), size: 45.0),
                       title: Text('Add Store')),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.person), title: Text('Profile'))
-                ], currentIndex: _selectedIndex, onTap: _onItemTap))));
+                ], currentIndex: this.id, onTap: _onItemTap))));
   }
 }
