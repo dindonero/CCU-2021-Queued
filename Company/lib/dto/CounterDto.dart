@@ -1,12 +1,6 @@
 class CounterDto {
-  CounterDto(
-      {this.id,
-      this.name,
-      this.storeId,
-      this.hasStaff,
-      this.peopleWaitingInLine,
-      this.avgWaitingTime,
-      this.currentTicketId});
+
+  CounterDto({this.id,this.name,this.storeId,this.hasStaff,this.peopleWaitingInLine,this.avgWaitingTime,this.currentTicketId});
 
   int id;
 
@@ -18,17 +12,18 @@ class CounterDto {
 
   int peopleWaitingInLine;
 
-  String avgWaitingTime;
+  DateTime avgWaitingTime;
 
   int currentTicketId;
 
-  CounterDto.fromJson(Map<String, dynamic> json) {
+  CounterDto.fromJson(Map<String, dynamic> json){
     this.id = json['id'];
     this.name = json['name'];
     this.storeId = json['storeId'];
     this.hasStaff = json['hasStaff'];
     this.peopleWaitingInLine = json['peopleWaitingInLine'];
-    this.avgWaitingTime = json['avgWaitingTime'];
+    this.avgWaitingTime = DateTime.fromMillisecondsSinceEpoch(json['avgWaitingTime'], isUtc: true);
     this.currentTicketId = json['currentTicketId'];
   }
+
 }

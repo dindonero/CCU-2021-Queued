@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './app_screens/company.dart';
+import 'app_screens/Screen/QueuedLoadingScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Company',
+      title: 'Queued',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xff22bec8),
