@@ -4,7 +4,8 @@ https://flutter.dev/docs/get-started/install
 #### 1) Adicionar o Flutter path na PATH environment variable
 
 #### 2) Configurar a app no projeto e criar generated folders:
-  1) cd Client/
+### Exemplo para a app do cliente
+  1) cd Queued/
   2) flutter create .
   3) flutter pub get
   4) flutter pub run flutter_launcher_icons:main
