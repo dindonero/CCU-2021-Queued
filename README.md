@@ -10,7 +10,11 @@ https://flutter.dev/docs/get-started/install
   4) flutter pub run flutter_launcher_icons:main
 
 # Executar a App
-#### Executar o main.dart no Android Studio
+#### Primeira maneira
+  1) Executar o main.dart no Android Studio/VS Code
+
+#### Segunda maneira
+  1) flutter run
 
 
 # Instalar software -> Server
