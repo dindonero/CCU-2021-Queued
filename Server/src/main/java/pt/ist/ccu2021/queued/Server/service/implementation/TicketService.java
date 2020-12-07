@@ -37,7 +37,7 @@ public class TicketService implements ITicketService {
     public List<UserTicketDto> getAllUserTickets(int userId) {
         List<Ticket> tickets = new ArrayList<>(_ticketRepository.findByUserId(userId));
 
-        return tickets.stream().map(ticket -> getUserTicket(ticket.getId())).collect(Collectors.toList());
+        return tickets.stream().filter(ticket -> !ticket.isCanceled()).map(ticket -> getUserTicket(ticket.getId())).collect(Collectors.toList());
     }
 
 
