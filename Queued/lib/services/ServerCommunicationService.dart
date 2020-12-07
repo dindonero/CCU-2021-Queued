@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import '../domain/category.dart';
 
 class ServerCommunicationService {
-  static String url = "http://192.168.1.83:8080";
+  static String url = "http://192.168.1.4:8080";
   static String registerUrl = "/user/register";
   static String loginUrl = "/user/login";
   static String categoriesUrl = "/category/getAll";
@@ -72,6 +72,15 @@ class ServerCommunicationService {
     if (response.statusCode == 200 || response.statusCode == 202) {
       List<dynamic> responseJson = json.decode(response.body);
       return responseJson.map((ticket) => TicketDto.fromJson(ticket)).toList();
+    }
+    return null;
+  }
+
+  static Future<TicketDto> cancelUserTicketById(int ticketId) async {
+    var response = await http.get(url + "/" + ticketId.toString() + "/cancel",
+        headers: headers);
+    if (response.statusCode == 200 || response.statusCode == 202) {
+      return TicketDto.fromJson(json.decode(response.body));
     }
     return null;
   }
