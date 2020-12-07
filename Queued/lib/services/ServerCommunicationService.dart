@@ -77,7 +77,7 @@ class ServerCommunicationService {
   }
 
   static Future<TicketDto> cancelUserTicketById(int ticketId) async {
-    var response = await http.get(url + "/" + ticketId.toString() + "/cancel",
+    var response = await http.get(url + "/ticket/" + ticketId.toString() + "/cancel",
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
       return TicketDto.fromJson(json.decode(response.body));
