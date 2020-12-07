@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
-
+import 'package:Staff/app_screens/Screen/ProfileScreen.dart';
 class Nav extends StatefulWidget {
   final int id;
 
@@ -16,7 +16,7 @@ class _NavState extends State<Nav> {
 
   _NavState(this.id);
 
-  List<Widget> _widgetOptions = <Widget>[AllStaffStoresScreen(), Text('Ola')];
+  List<Widget> _widgetOptions = <Widget>[AllStaffStoresScreen(), ProfileScreen()];
 
   void _onItemTap(int index) {
     setState(() {

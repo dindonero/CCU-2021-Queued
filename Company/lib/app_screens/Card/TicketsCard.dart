@@ -1,23 +1,18 @@
-import 'package:Company/domain/store.dart';
-import 'package:Company/services/ServerCommunicationService.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'dart:math' as math;
 
-class Stores extends StatefulWidget {
-  @override
-  _StoresState createState() => _StoresState();
-}
+import 'package:Company/dto/TicketDto.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-class _StoresState extends State<Stores> {
-  Future<List<Store>> futureStores;
-  final Store store = null;
-  final Function press = null;
+class TicketsCard extends StatelessWidget {
+  final TicketDto ticket;
+  final Function press;
 
-  @override
-  void initState() {
-    futureStores = getAllStores();
-  }
+  const TicketsCard({
+    Key key,
+    this.ticket,
+    this.press,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +35,16 @@ class _StoresState extends State<Stores> {
                   children: <Widget>[
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Icon(Icons.store_mall_directory_sharp,
-                          color: Colors.black, size: 45.0),
+                      child: Transform.rotate(
+                        angle: 225 * math.pi / 180,
+                        child: Icon(Icons.confirmation_number_outlined,
+                            color: Colors.black, size: 45.0),
+                      ),
                     ),
                     Center(
                       child: Text(
-                        "Nome Loja",
+                        ticket.storeName,
+                        // category.title,
                         style: TextStyle(
                           color: Color(0xFF143656),
                           fontSize: 25,

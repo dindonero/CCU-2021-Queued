@@ -1,8 +1,9 @@
+import 'package:Company/app_screens/Screen/CategoriesScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'signup.dart';
-import 'navBar.dart';
+import 'SignupScreen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,54 +14,71 @@ class _LoginScreen extends State<LoginScreen> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         resizeToAvoidBottomPadding: false,
-        body: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("images/login_background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(children: [
-              Padding(padding: EdgeInsets.only(top: 80)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Image.asset('images/logo_branco.png', width: 120),
-                  Text('UEUED'),
-                ],
-              ),
-              SizedBox(height: screenSize().height / 10),
-              Text("Welcome",
-                  style: TextStyle(
-                      color: Color(0xff13497b), fontWeight: FontWeight.bold)),
-              Text("Login to start waiting online.",
-                  style: TextStyle(color: Color(0x50000000), fontSize: 25)),
-              Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenSize().width / 10,
-                      vertical: screenSize().width / 10),
-                  child: SignForm()),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                InkWell(
-                  onTap: signup,
-                  child: Text("Forgot password?",
-                      style: TextStyle(color: Color(0x50000000), fontSize: 18)),
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: screenSize().width / 8)),
-                InkWell(
-                  onTap: signup,
-                  child: Text("Sign up",
-                      style: TextStyle(color: Color(0xff13497b), fontSize: 18)),
-                ),
-              ])
-            ])));
+        body: SingleChildScrollView(
+            reverse: true,
+            child: Padding(
+                padding: EdgeInsets.only(bottom: bottom),
+                child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/login_background2.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: screenSize().height / 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              new Image.asset('images/logo_branco.png',
+                                  width: 120),
+                              Text('UEUED')
+                            ],
+                          )),
+                      SizedBox(height: screenSize().height / 10),
+                      Text("Welcome",
+                          style: TextStyle(
+                              color: Color(0xff13497b),
+                              fontWeight: FontWeight.bold)),
+                      Text("Login to start waiting online.",
+                          style: TextStyle(
+                              color: Color(0x50000000), fontSize: 25)),
+                      Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenSize().width / 10,
+                              vertical: screenSize().width / 10),
+                          child: SignForm()),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: signup,
+                              child: Text("Forgot password?",
+                                  style: TextStyle(
+                                      color: Color(0x50000000), fontSize: 18)),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: screenSize().width / 8)),
+                            InkWell(
+                              onTap: signup,
+                              child: Text("Sign up",
+                                  style: TextStyle(
+                                      color: Color(0xff13497b), fontSize: 18)),
+                            ),
+                          ])
+                    ])))));
   }
 
   void signup() {
@@ -103,8 +121,8 @@ class _SignFormState extends State<SignForm> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Nav()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Categories()));
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),

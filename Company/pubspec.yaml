@@ -24,7 +24,8 @@ dependencies:
   flutter_launcher_icons: 0.8.1
   flutter:
     sdk: flutter
-  http: ^0.12.0+2   
+  http: ^0.12.0+2  
+  url_launcher: ^5.4.0  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,6 +56,7 @@ flutter:
   assets:
     - images/logo_branco.png
     - images/login_background.png
+    - images/login_background2.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
