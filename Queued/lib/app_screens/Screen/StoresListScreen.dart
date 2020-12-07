@@ -106,7 +106,6 @@ class _StoresState extends State<Stores> {
             builder: (context) {
               return SelectQPopUp(stores[index]);})}
         else {
-          print(stores[index].counters[0].name),
          Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -141,7 +140,6 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
     String counter_name;
     void _changeValue(CounterDto counter) {
       setState(() {
-        print(counter.id);
         selected_item = counter;
         counter_id = counter.id;
         counter_name = counter.name;
@@ -179,7 +177,6 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
                     shape:
                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
-                    print(counter_id);
                     Navigator.pop(context);
                     Navigator.push(
                             context,

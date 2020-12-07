@@ -142,7 +142,7 @@ class _TicketState extends State<Ticket> {
         Padding(
           padding: EdgeInsets.symmetric(
           horizontal: screenSize().width / 8),
-          child: cancelButton()
+          child: cancelButton(ticket.userId)
         )
         ]
     );
@@ -265,7 +265,7 @@ class _TicketState extends State<Ticket> {
           ));
   }
 
-   Container cancelButton() {
+   Container cancelButton(int ticketId) {
     return Container(
         width: screenSize().width,
         height: screenSize().height / 12,
@@ -274,6 +274,8 @@ class _TicketState extends State<Ticket> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPressed: () {
+            ServerCommunicationService.cancelUserTicketById(ticketId);
+            Navigator.pop(context);
           },
           child: const Text('Leave Queue', style: TextStyle(fontSize: 25, color: Colors.white)),
           ));
