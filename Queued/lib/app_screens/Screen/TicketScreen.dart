@@ -142,7 +142,7 @@ class _TicketState extends State<Ticket> {
         Padding(
           padding: EdgeInsets.symmetric(
           horizontal: screenSize().width / 8),
-          child: cancelButton(ticket.userId)
+          child: cancelButton(ticket.id)
         )
         ]
     );

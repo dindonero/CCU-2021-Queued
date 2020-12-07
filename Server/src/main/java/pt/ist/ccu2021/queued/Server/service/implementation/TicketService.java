@@ -68,7 +68,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public UserTicketDto cancelUserTicket(int ticketId) {
-        Ticket ticket = _ticketRepository.findById((long) ticketId).orElseThrow();
+        Ticket ticket = _ticketRepository.findById(ticketId);
         ticket.setCanceled(true);
 
         return getUserTicket(_ticketRepository.save(ticket).getId());
