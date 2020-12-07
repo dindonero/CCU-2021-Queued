@@ -1,4 +1,5 @@
 import 'package:Queued/app_screens/Screen/CategoriesScreen.dart';
+import 'package:Queued/app_screens/Screen/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../Screen/AllUserTicketsScreen.dart';
@@ -17,7 +18,7 @@ class _NavState extends State<Nav> {
 
   _NavState(this.id);
 
-  List<Widget> _widgetOptions = <Widget>[Categories(), AllUserTicketsScreen(), Text('Ola')];
+  List<Widget> _widgetOptions = <Widget>[Categories(), AllUserTicketsScreen(),ProfileScreen()];
 
   void _onItemTap(int index) {
     setState(() {
