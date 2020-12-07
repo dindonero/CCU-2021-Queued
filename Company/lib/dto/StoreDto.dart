@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -7,6 +8,9 @@ import 'package:Company/dto/ScheduleDto.dart';
 import 'package:flutter/cupertino.dart';
 
 class StoreDto {
+
+  StoreDto({this.id, this.name, this.img, this.address, this.categoryId, this.counters, this.schedules});
+
   int id;
 
   String name;
@@ -34,6 +38,10 @@ class StoreDto {
     List<dynamic> schedules = json['schedules'];
     this.schedules =
         schedules.map((schedule) => ScheduleDto.fromJson(schedule)).toList();
+  }
+
+  Map<String, dynamic> toJson(){
+    return {'name': this.name, 'img': utf8.encode('foo'), 'address': this.address, 'categoryId': this.categoryId, 'counters': new List<CounterDto>(), 'schedules': new List<ScheduleDto>() };
   }
 
   bool isOpened() {

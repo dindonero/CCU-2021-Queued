@@ -7,6 +7,8 @@ import 'package:Company/dto/UserAccountDto.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/category.dart';
+import '../dto/StoreDto.dart';
+import '../dto/StoreDto.dart';
 
 class ServerCommunicationService {
   static String url = "http://192.168.1.109:8080";
@@ -76,12 +78,32 @@ class ServerCommunicationService {
     return null;
   }
 
+  static Future<List<StoreDto>> getAllCompanyStores(int companyId) async {
+    var response = await http.get(url + "/company/" + companyId.toString(),
+        headers: headers);
+    if (response.statusCode == 200 || response.statusCode == 202) {
+      List<dynamic> responseJson = json.decode(response.body);
+      return responseJson.map((store) => StoreDto.fromJson(store)).toList();
+    }
+    return null;
+  }
+
   static Future<List<StoreDto>> findStoresByName(String name) async {
     var response = await http.get(url + "/searchStores/" + name.toString(),
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
       List<dynamic> responseJson = json.decode(response.body);
       return responseJson.map((store) => StoreDto.fromJson(store)).toList();
+    }
+    return null;
+  }
+
+  static Future<int> addNewStore(int companyId, StoreDto store) async {
+    var jsonBody = json.encode(store.toJson());
+    var response = await http.post(url + "/company/" + companyId.toString() + "/store/register",
+        body: jsonBody, headers: headers);
+    if (response.statusCode == 201) {
+      return json.decode(response.body);
     }
     return null;
   }

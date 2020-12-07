@@ -1,13 +1,19 @@
 import 'dart:math' as math;
 
+import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../dto/StoreDto.dart';
 import '../Widget/navBarWidget.dart';
 import 'CategoriesScreen.dart';
 
 class AddStoreScreenNext extends StatefulWidget {
+  StoreDto store;
+
+  AddStoreScreenNext({this.store});
+
   @override
-  _AddStoreScreenNextState createState() => _AddStoreScreenNextState();
+  _AddStoreScreenNextState createState() => _AddStoreScreenNextState(store: this.store);
 }
 
 class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
@@ -16,6 +22,8 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
     borderSide: BorderSide(color: Color(0x50000000)),
     gapPadding: 10,
   );
+  StoreDto store;
+  _AddStoreScreenNextState({this.store});
 
   @override
   void initState() {}
@@ -116,6 +124,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   onPressed: () {
+                    ServerCommunicationService.addNewStore(1, store).then((id) => print("StoreAdded - id:" + id.toString())); //
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Categories()));
                   },
