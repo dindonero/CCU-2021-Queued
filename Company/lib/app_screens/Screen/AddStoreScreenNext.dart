@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../dto/StoreDto.dart';
 import '../Widget/navBarWidget.dart';
-import 'CategoriesScreen.dart';
+import 'package:Company/app_screens/Screen/StoresScreen.dart';
 
 class AddStoreScreenNext extends StatefulWidget {
   StoreDto store;
@@ -126,7 +126,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                   onPressed: () {
                     ServerCommunicationService.addNewStore(1, store).then((id) => print("StoreAdded - id:" + id.toString())); //
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Categories()));
+                        MaterialPageRoute(builder: (context) => Stores()));
                   },
                   child: const Text('Add Store',
                       style: TextStyle(fontSize: 18, color: Colors.white)),

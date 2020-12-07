@@ -1,4 +1,5 @@
-import 'package:Company/app_screens/Screen/CategoriesScreen.dart';
+import 'package:Company/app_screens/Screen/StoresScreen.dart';
+import 'package:Company/app_screens/Screen/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../Screen/AddStoreScreen.dart';
@@ -18,9 +19,9 @@ class _NavState extends State<Nav> {
   _NavState(this.id);
 
   List<Widget> _widgetOptions = <Widget>[
-    Categories(),
+    Stores(),
     AddStoreScreen(),
-    Text('Ola')
+    ProfileScreen()
   ];
 
   void _onItemTap(int index) {

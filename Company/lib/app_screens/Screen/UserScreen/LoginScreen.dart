@@ -1,4 +1,4 @@
-import 'package:Company/app_screens/Screen/CategoriesScreen.dart';
+import 'package:Company/app_screens/Screen/StoresScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -122,7 +122,7 @@ class _SignFormState extends State<SignForm> {
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Categories()));
+                      MaterialPageRoute(builder: (context) => Stores()));
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),
