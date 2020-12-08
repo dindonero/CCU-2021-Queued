@@ -28,9 +28,9 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<Integer> createNewUserAccount(@RequestBody UserAccountDto newUserAccountDto){
-        _logger.info(String.format("CreateNewUserAccount - FirstName:%s, LastName:%s, Email:%s, Password:%s, DateOfBirth:%s",
+        _logger.info(String.format("CreateNewUserAccount - FirstName:%s, LastName:%s, Email:%s, Password:%s",
                 newUserAccountDto.getFirstName(), newUserAccountDto.getLastName(), newUserAccountDto.getEmail(),
-                newUserAccountDto.getPassword(), newUserAccountDto.getDateOfBirth()));
+                newUserAccountDto.getPassword()));
         try {
             int id = _userAccountService.createNewUserAccount(newUserAccountDto);
             return new ResponseEntity<>(id, HttpStatus.CREATED);

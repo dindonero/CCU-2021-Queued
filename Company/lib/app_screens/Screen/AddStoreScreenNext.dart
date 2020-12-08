@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../../dto/StoreDto.dart';
 import '../Widget/navBarWidget.dart';
-import 'package:Company/app_screens/Screen/StoresScreen.dart';
 
 class AddStoreScreenNext extends StatefulWidget {
   StoreDto store;
@@ -13,7 +13,8 @@ class AddStoreScreenNext extends StatefulWidget {
   AddStoreScreenNext({this.store});
 
   @override
-  _AddStoreScreenNextState createState() => _AddStoreScreenNextState(store: this.store);
+  _AddStoreScreenNextState createState() =>
+      _AddStoreScreenNextState(store: this.store);
 }
 
 class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
@@ -22,7 +23,9 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
     borderSide: BorderSide(color: Color(0x50000000)),
     gapPadding: 10,
   );
+  List<TextFormField> textFormFields = new List<TextFormField>();
   StoreDto store;
+
   _AddStoreScreenNextState({this.store});
 
   @override
@@ -98,22 +101,33 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                       )),
                 ),
                 Spacer(),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                RaisedButton(
+                  onPressed: () {
+                    setState(() {
+                      textFormFields.add(
+                          buildField("Counter name"));
+                    });
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize().width / 25),
-                      child: Icon(
-                        Icons.add_circle,
-                        color: Colors.green,
-                        size: 30,
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenSize().width / 25),
+                        child: Icon(
+                          Icons.add_circle,
+                          color: Colors.green,
+                          size: 30,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ],
+            ),
+            Column(
+              children: buildCounters(),
             ),
             SizedBox(height: screenSize().height / 30),
             Container(
@@ -124,9 +138,12 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   onPressed: () {
-                    ServerCommunicationService.addNewStore(1, store).then((id) => print("StoreAdded - id:" + id.toString())); //
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Stores()));
+                    ServerCommunicationService.addNewStore(1, store).then(
+                        (id) => print("StoreAdded - id:" + id.toString())); //
+                    int count = 0;
+                    Navigator.popUntil(context, (route) {
+                      return count++ == 2;
+                    });
                   },
                   child: const Text('Add Store',
                       style: TextStyle(fontSize: 18, color: Colors.white)),
@@ -140,6 +157,32 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
 
   Size screenSize() {
     return MediaQuery.of(context).size;
+  }
+
+  List<Widget> buildCounters() {
+    return textFormFields
+        .map((counter) => Expanded(child: Row(
+              children: [
+                counter,
+                SizedBox(height: screenSize().height / 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize().width / 25),
+                      child: Icon(
+                        Icons.indeterminate_check_box,
+                        color: Colors.red,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            )))
+        .toList();
   }
 
   showAlertDialogCounters(BuildContext context) {
@@ -328,16 +371,20 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
 
   TextFormField buildField(String hintTextString) {
     return TextFormField(
-      keyboardType: TextInputType.name,
-      decoration: InputDecoration(
-          hintText: hintTextString,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-          enabledBorder: outlineInputBorder,
-          focusedBorder: outlineInputBorder,
-          suffixIcon: Icon(Icons.library_add_check,
-              color: Color(0xff27192B0), size: 32.0)),
-    );
+        controller: TextEditingController(),
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            labelText: "Email",
+            labelStyle: TextStyle(fontSize: 20),
+            hintText: "Enter your email",
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+            enabledBorder: outlineInputBorder,
+            focusedBorder: outlineInputBorder,
+            suffixIcon: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 27),
+              child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
+            )));
   }
 
   Row mainRow() {

@@ -53,7 +53,7 @@ class _NavState extends State<Nav> {
                 child: new BottomNavigationBar(items: [
                   BottomNavigationBarItem(
                     icon: new Icon(Icons.store_mall_directory_sharp),
-                    title: new Text('Stores'),
+                    label: 'Stores',
                   ),
                   // BottomNavigationBarItem(
                   //   icon: new Icon(Icons.location_on),
@@ -62,9 +62,9 @@ class _NavState extends State<Nav> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.add_circle_rounded,
                           color: Color(0xff13497b), size: 45.0),
-                      title: Text('Add Store')),
+                      label: 'Add Store'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.person), title: Text('Profile'))
+                      icon: Icon(Icons.person), label: 'Profile')
                 ], currentIndex: this.id, onTap: _onItemTap))));
   }
 }

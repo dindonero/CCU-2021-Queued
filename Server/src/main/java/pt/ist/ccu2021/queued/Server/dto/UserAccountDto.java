@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @Getter @Setter
 @ToString
-@JsonPropertyOrder({"id", "firstName", "lastName", "email", "password", "dateOfBirth"})
+@JsonPropertyOrder({"id", "firstName", "lastName", "email", "password"})
 public class UserAccountDto implements Serializable {
 
     @JsonProperty("id")
@@ -32,21 +32,18 @@ public class UserAccountDto implements Serializable {
     @JsonProperty("password")
     private String password;
 
-    @JsonProperty("dateOfBirth")
-    private long dateOfBirth;
-
     public UserAccountDto(UserAccount user){
         id = user.getId();
         firstName = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();
         password = user.getPassword();
-        dateOfBirth = user.getDateOfBirth().toInstant().toEpochMilli();
+        //dateOfBirth = user.getDateOfBirth().toInstant().toEpochMilli();
 
     }
 
     public UserAccount toDomain(){
         return UserAccount.builder().firstName(firstName).lastName(lastName).email(email)
-                .password(password).dateOfBirth(new Date(dateOfBirth)).build();
+                .password(password)/*.dateOfBirth(new Date(dateOfBirth))*/.build();
     }
 }

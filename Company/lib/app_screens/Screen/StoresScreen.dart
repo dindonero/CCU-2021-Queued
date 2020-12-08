@@ -20,6 +20,7 @@ class _StoresState extends State<Stores> {
     futureStores = ServerCommunicationService.getAllCompanyStores(1);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -9,13 +9,15 @@ import 'package:flutter/cupertino.dart';
 
 class StoreDto {
 
-  StoreDto({this.id, this.name, this.img, this.address, this.categoryId, this.counters, this.schedules});
+  StoreDto({this.id, this.name, this.img, this.imageBytes, this.address, this.categoryId, this.counters, this.schedules});
 
   int id;
 
   String name;
 
   Image img;
+
+  Uint8List imageBytes;
 
   String address;
 
@@ -41,7 +43,7 @@ class StoreDto {
   }
 
   Map<String, dynamic> toJson(){
-    return {'name': this.name, 'img': utf8.encode('foo'), 'address': this.address, 'categoryId': this.categoryId, 'counters': new List<CounterDto>(), 'schedules': new List<ScheduleDto>() };
+    return {'name': this.name, 'img': this.imageBytes, 'address': this.address, 'categoryId': this.categoryId, 'counters': new List<CounterDto>(), 'schedules': new List<ScheduleDto>() };
   }
 
   bool isOpened() {

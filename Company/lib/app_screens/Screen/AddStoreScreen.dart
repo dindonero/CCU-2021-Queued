@@ -1,18 +1,14 @@
 import 'dart:async';
-import 'dart:math' as math;
+import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:Company/dto/StoreDto.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../../domain/category.dart';
-import '../../domain/category.dart';
-import '../../dto/CategoryDto.dart';
-import '../../dto/CategoryDto.dart';
-import '../../dto/StoreDto.dart';
 import '../../dto/StoreDto.dart';
 import '../../services/ServerCommunicationService.dart';
-import '../Widget/TextSearchWidget.dart';
-import '../Widget/navBarWidget.dart';
-import 'package:Company/dto/StoreDto.dart';
-
 import 'AddStoreScreenNext.dart';
 
 class AddStoreScreen extends StatefulWidget {
@@ -25,6 +21,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
   TextEditingController storeAddressController = TextEditingController();
   int storeCategory = 0;
   Future<List<Category>> futureCategories;
+  Uint8List _image;
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -77,7 +74,8 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                 decoration: InputDecoration(
                     hintText: "Enter store name",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 45, vertical: 20),
                     enabledBorder: outlineInputBorder,
                     focusedBorder: outlineInputBorder,
                     suffixIcon: Icon(Icons.library_add_check,
@@ -107,7 +105,8 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                 decoration: InputDecoration(
                     hintText: "Enter store address",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 45, vertical: 20),
                     enabledBorder: outlineInputBorder,
                     focusedBorder: outlineInputBorder,
                     suffixIcon: Icon(Icons.library_add_check,
@@ -131,26 +130,29 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
             SizedBox(height: screenSize().height / 30),
             Container(
               width: 380,
-              child:
-              Column(children: <Widget>[FutureBuilder<List<Category>>(future:this.futureCategories, builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                    return Center(
-                        child: SizedBox(
-                            height: 70.0,
-                            width: 70.0,
-                            child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation(
-                                    Color(0xff22bec8)),
-                                strokeWidth: 5.0)));
-                  default:
-                    if (snapshot.hasError)
-                      return new Text('Error: ${snapshot.error}');
-                    else
-                      return buildDropdownField(snapshot.data);
-                }
-              })]),
+              child: Column(children: <Widget>[
+                FutureBuilder<List<Category>>(
+                    future: this.futureCategories,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Center(
+                              child: SizedBox(
+                                  height: 70.0,
+                                  width: 70.0,
+                                  child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation(
+                                          Color(0xff22bec8)),
+                                      strokeWidth: 5.0)));
+                        default:
+                          if (snapshot.hasError)
+                            return new Text('Error: ${snapshot.error}');
+                          else
+                            return buildDropdownField(snapshot.data);
+                      }
+                    })
+              ]),
             ), //("Restaurant")
             Align(
               alignment: Alignment.centerLeft,
@@ -167,42 +169,74 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                   )),
             ),
             SizedBox(height: screenSize().height / 30),
-            Container(
-              width: 60,
-              height: 60,
-              child: Icon(
-                Icons.add_a_photo_rounded,
-                color: Colors.white,
-                size: 30,
-              ),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xff13497b),
-              ),
-            ),
+            GestureDetector(
+                onTap: () {
+                  _showPicker(context);
+                },
+                child: _image == null
+                    ? Container(
+                        width: 60,
+                        height: 60,
+                        child: Icon(
+                          Icons.add_a_photo_rounded,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xff13497b),
+                        ),
+                      )
+                    : Container( width: 200, height: 200,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                        image: Image.memory(_image).image,
+                        fit: BoxFit.cover,
+                      )))),
             SizedBox(height: screenSize().height / 30),
             Container(
                 width: screenSize().width / 1.2,
                 height: screenSize().height / 15,
-                child: RaisedButton(
-                  color: Color(0xff13497B),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddStoreScreenNext(store: StoreDto(name: this.storeNameController.text, address: this.storeAddressController.text, categoryId: this.storeCategory), )));
-                  },
-                  child: const Text('Next',
-                      style: TextStyle(fontSize: 18, color: Colors.white)),
-                )),
+                child: allInserted()
+                    ? nextButtonReady()
+                    : nextButtonAwaitingInput()),
           ],
         )));
   }
 
   Size screenSize() {
     return MediaQuery.of(context).size;
+  }
+
+  RaisedButton nextButtonReady() {
+    return RaisedButton(
+      color: Color(0xff13497B),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddStoreScreenNext(
+                      store: StoreDto(
+                          name: this.storeNameController.text,
+                          address: this.storeAddressController.text,
+                          categoryId: this.storeCategory,
+                          imageBytes: _image),
+                    )));
+      },
+      child: const Text('Next',
+          style: TextStyle(fontSize: 18, color: Colors.white)),
+    );
+  }
+
+  RaisedButton nextButtonAwaitingInput() {
+    return RaisedButton(
+      color: Color(0xaaaaaa),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      onPressed: () {},
+      child: const Text('Next',
+          style: TextStyle(fontSize: 18, color: Colors.white)),
+    );
   }
 
   DropdownButtonFormField buildDropdownField(List<Category> categories) {
@@ -233,5 +267,62 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
       }).toList(),
     );
     return dropdownButtonFormField;
+  }
+
+  bool allInserted() {
+    return storeNameController.text.isNotEmpty &&
+        storeAddressController.text.isNotEmpty &&
+        _image != null;
+  }
+
+  _imgFromCamera() async {
+    PickedFile image = await ImagePicker()
+        .getImage(source: ImageSource.camera, imageQuality: 50);
+    Uint8List imageBytes = await image.readAsBytes();
+
+    setState(() {
+      print(imageBytes);
+      _image = imageBytes;
+    });
+  }
+
+  _imgFromGallery() async {
+    PickedFile image = await ImagePicker()
+        .getImage(source: ImageSource.gallery, imageQuality: 50);
+    Uint8List imageBytes = await image.readAsBytes();
+    setState(() {
+      print(imageBytes);
+      _image = imageBytes;
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

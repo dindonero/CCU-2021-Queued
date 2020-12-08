@@ -28,7 +28,4 @@ public class UserAccount {
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "dateofbirth")
-    private Date dateOfBirth;
 }
