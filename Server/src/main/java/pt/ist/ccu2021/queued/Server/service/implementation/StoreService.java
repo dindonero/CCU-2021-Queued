@@ -67,7 +67,7 @@ public class StoreService implements IStoreService {
     public int insertNewStore(StoreDto store, int companyId) {
         int id = _storeRepository.save(store.toDomain(companyId)).getId();
         store.getSchedules().forEach(scheduleDto -> _scheduleRepository.save(scheduleDto.toDomain(id)));
-        store.getCounters().forEach(counterDto -> _counterRepository.save(counterDto.toDomain(false)));
+        store.getCounters().forEach(counterDto -> _counterRepository.save(counterDto.toDomain(id)));
         return id;
     }
 

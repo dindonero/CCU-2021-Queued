@@ -59,7 +59,7 @@ public class CounterDto {
         currentTicketId = currentTicket;
     }
 
-    public Counter toDomain(boolean staff){
-        return Counter.builder().name(name).storeid(storeId).hasStaff(staff).build();
+    public Counter toDomain(int store){
+        return Counter.builder().name(name).storeid(store).hasStaff(hasStaff).build();
     }
 }
