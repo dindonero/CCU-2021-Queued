@@ -101,11 +101,11 @@ class _SignFormState extends State<SignForm> {
     gapPadding: 10,
   );
 
-  String firstName;
-  String lastName;
-  String email;
-  String password;
-  String repeatPassword;
+  TextEditingController firstNameController;
+  TextEditingController lastNameController;
+  TextEditingController emailController;
+  TextEditingController passwordController;
+  TextEditingController repeatPasswordController;
 
   _SignFormState(this.error, this.passError);
 
@@ -131,8 +131,8 @@ class _SignFormState extends State<SignForm> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
-                  if ( repeatPassword == password){
-                    UserAccountDto newUserAccount =  UserAccountDto(firstName: firstName, lastName: lastName, email: email, password:password);
+                  if ( firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty && emailController.text.isNotEmpty && passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty &&  repeatPasswordController.text == passwordController.text){
+                    UserAccountDto newUserAccount =  UserAccountDto(firstName: firstNameController.text, lastName: lastNameController.text, email: emailController.text, password:passwordController.text);
                     ServerCommunicationService.createNewUserAccount(newUserAccount).then((user) => onSignUpComplete(user)).catchError((error) => onSignUpError(error));
                   }else{
                     Navigator.push(context,
@@ -158,6 +158,7 @@ void onSignUpError(Exception user){
 
 TextFormField buildFirstName() {
     return TextFormField(
+      controller: firstNameController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
             labelText: "First Name",
@@ -170,12 +171,12 @@ TextFormField buildFirstName() {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )),
-            onChanged: saveFirstName,);
+            )),);
   }
 
 TextFormField buildLastName() {
     return TextFormField(
+      controller: lastNameController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
             labelText: "Last Name",
@@ -188,12 +189,12 @@ TextFormField buildLastName() {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )),
-            onChanged: saveLastName,);
+            )),);
   }
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
             labelText: "Email",
@@ -207,12 +208,12 @@ TextFormField buildLastName() {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )),
-            onChanged: saveEmail,);
+            )),);
   }
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      controller: passwordController,
         obscureText: true,
         decoration: InputDecoration(
             labelText: "Password",
@@ -225,12 +226,12 @@ TextFormField buildLastName() {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.lock_outline_rounded, color: Color(0xff22bec8)),
-            )), 
-            onChanged: savePassword,);
+            )),);
   }
 
   TextFormField repeatPasswordFormField() {
     return TextFormField(
+      controller: repeatPasswordController,
         obscureText: true,
         decoration: InputDecoration(
             labelText: "Repeat Password",
@@ -244,28 +245,7 @@ TextFormField buildLastName() {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.lock_outline_rounded, color: Color(0xff22bec8)),
-            )), 
-            onChanged: saveRepeatPassword,);
-  }
-
-  void saveFirstName(String name){
-      firstName = name;
-  }
-
-   void saveLastName(String name){
-      lastName = name;
-  }
-
-  void saveEmail(String mail){
-      email = mail;
-  }
-
-  void savePassword(String pass){
-      password = pass;
-  }
-
-  void saveRepeatPassword(String pass){
-      repeatPassword = pass;
+            )),);
   }
 
 

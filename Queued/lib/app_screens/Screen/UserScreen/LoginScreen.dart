@@ -3,13 +3,12 @@ import 'package:Queued/dto/UserAccountDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'SignupScreen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   //String accoutError;
-
 
   @override
   _LoginScreen createState() => _LoginScreen();
@@ -38,57 +37,60 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: screenSize().height / 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              new Image.asset('images/logo_branco.png',
-                                  width: 120),
-                              Text('UEUED')
-                            ],
-                          )),
-                      SizedBox(height: screenSize().height / 10),
-                      Text("Welcome",
-                          style: TextStyle(
-                              color: Color(0xff13497b),
-                              fontWeight: FontWeight.bold)),
-                      Text("Login to start waiting online.",
-                          style: TextStyle(
-                              color: Color(0x50000000), fontSize: 25)),
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenSize().width / 10,
-                              vertical: screenSize().width / 10),
-                          child: SignForm()),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              onTap: signup,
-                              child: Text("Forgot password?",
-                                  style: TextStyle(
-                                      color: Color(0x50000000), fontSize: 18)),
-                            ),
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: screenSize().width / 8)),
-                            InkWell(
-                              onTap: signup,
-                              child: Text("Sign up",
-                                  style: TextStyle(
-                                      color: Color(0xff13497b), fontSize: 18)),
-                            ),
-                          ])
-                    ])))));
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenSize().height / 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  new Image.asset('images/logo_branco.png',
+                                      width: 120),
+                                  Text('UEUED')
+                                ],
+                              )),
+                          SizedBox(height: screenSize().height / 10),
+                          Text("Welcome",
+                              style: TextStyle(
+                                  color: Color(0xff13497b),
+                                  fontWeight: FontWeight.bold)),
+                          Text("Login to start waiting online.",
+                              style: TextStyle(
+                                  color: Color(0x50000000), fontSize: 25)),
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: screenSize().width / 10,
+                                  vertical: screenSize().width / 10),
+                              child: SignForm()),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: signup,
+                                  child: Text("Forgot password?",
+                                      style: TextStyle(
+                                          color: Color(0x50000000),
+                                          fontSize: 18)),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenSize().width / 8)),
+                                InkWell(
+                                  onTap: signup,
+                                  child: Text("Sign up",
+                                      style: TextStyle(
+                                          color: Color(0xff13497b),
+                                          fontSize: 18)),
+                                ),
+                              ])
+                        ])))));
   }
 
   void signup() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SignUpScreen(null,null)));
+    Navigator.pop(context);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SignUpScreen(null, null)));
   }
 
   Size screenSize() {
@@ -102,8 +104,8 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
-  String email;
-  String password;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
@@ -124,14 +126,19 @@ class _SignFormState extends State<SignForm> {
               width: screenSize().width,
               height: screenSize().height / 15,
               child: RaisedButton(
-                color: Color(0xff13497B),
+                color: loginInfoAdded() ? Color(0xff13497B) : Color(0xaaaaaa),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
-                  //UserAccountDto newUserAccount =  UserAccountDto(email: email, password:password);
-                 //   ServerCommunicationService.loginUser(newUserAccount).then((user) => onLoginComplete(user)).catchError((error) => onLoginError(error));
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Categories()));
+                  if (loginInfoAdded()) {
+                    UserAccountDto newUserAccount = UserAccountDto(
+                        email: emailController.text,
+                        password: passwordController.text);
+                    ServerCommunicationService.loginUser(newUserAccount)
+                        .then((user) => onLoginComplete(user))
+                        .catchError((error) =>
+                            onLoginError(error.toString()));
+                  }
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),
@@ -141,58 +148,89 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  //void onLoginComplete(UserAccountDto user){
-   //Navigator.push(context,
-     //                   MaterialPageRoute(builder: (context) => Categories()));
-//}
+  bool loginInfoAdded() {
+    return emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
 
-//void onLoginError(Exception user){
-  //Navigator.push(context,
-    //                    MaterialPageRoute(builder: (context) => LoginScreen("Account doesn't exist")));
-//}
+  void onLoginComplete(UserAccountDto user) {
+    storeLoggedInUser(user);
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Categories()));
+  }
+
+  void onLoginError(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Align(
+              alignment: Alignment.center,
+              child: Text(errorMessage),
+            ),
+            content: Container(
+                width: MediaQuery.of(context).size.width / 3,
+                height: MediaQuery.of(context).size.height / 15,
+                child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Ok',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                )),
+          );
+        });
+  }
+
+  storeLoggedInUser(UserAccountDto user) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setInt('id', user.id);
+    prefs.setString('firstName', user.firstName);
+    prefs.setString('lastName', user.lastName);
+    prefs.setString('email', user.email);
+    prefs.setString('password', user.password);
+  }
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            labelText: "Email",
-            labelStyle: TextStyle(fontSize: 20),
-            hintText: "Enter your email",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
-            suffixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )),
-            onChanged: saveEmail,);
+      controller: emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          labelText: "Email",
+          labelStyle: TextStyle(fontSize: 20),
+          hintText: "Enter your email",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+          enabledBorder: outlineInputBorder,
+          focusedBorder: outlineInputBorder,
+          suffixIcon: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 27),
+            child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
+          )),
+    );
   }
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-        obscureText: true,
-        decoration: InputDecoration(
-            labelText: "Password",
-            labelStyle: TextStyle(fontSize: 20),
-            hintText: "Enter your password",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
-            suffixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.lock_outline_rounded, color: Color(0xff22bec8)),
-            )), 
-            onChanged: savePassword,);
-  }
-
-  void saveEmail(String mail){
-      email = mail;
-  }
-
-  void savePassword(String pass){
-      password = pass;
+      controller: passwordController,
+      obscureText: true,
+      decoration: InputDecoration(
+          labelText: "Password",
+          labelStyle: TextStyle(fontSize: 20),
+          hintText: "Enter your password",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+          enabledBorder: outlineInputBorder,
+          focusedBorder: outlineInputBorder,
+          suffixIcon: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 27),
+            child: Icon(Icons.lock_outline_rounded, color: Color(0xff22bec8)),
+          )),
+    );
   }
 
   Size screenSize() {

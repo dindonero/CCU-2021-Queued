@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-
+import 'package:Queued/app_screens/Exceptions/DataInException.dart';
+import 'package:Queued/app_screens/Exceptions/EmailNotRegisteredException.dart';
+import 'package:Queued/app_screens/Exceptions/WrongPasswordException.dart';
 import 'package:Queued/dto/CategoryDto.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/dto/TicketDto.dart';
@@ -10,7 +12,7 @@ import 'package:http/http.dart' as http;
 import '../domain/category.dart';
 
 class ServerCommunicationService {
-  static String url = "http://192.168.1.4:8080";
+  static String url = "http://192.168.1.72:8080";
   static String registerUrl = "/user/register";
   static String loginUrl = "/user/login";
   static String signinUrl = "/user/register";
@@ -27,21 +29,22 @@ class ServerCommunicationService {
     if (response.statusCode == 200 || response.statusCode == 202) {
       var responseJson = json.decode(response.body);
       return UserAccountDto.fromJson(responseJson);
-    }else{
-          throw DataInException("An error occured: Account doesn't exist");
     }
-
+    if (response.statusCode == 404) throw EmailNotRegisteredException();
+    if (response.statusCode == 401) throw WrongPasswordException();
+    throw DataInException("An unknown error occurred. Please try again later.");
   }
 
-  static Future<int> createNewUserAccount(UserAccountDto newUserAccountDto) async {
+  static Future<int> createNewUserAccount(
+      UserAccountDto newUserAccountDto) async {
     var user = json.encode(newUserAccountDto.toJson());
     var response =
         await http.post(url + signinUrl, body: user, headers: headers);
     if (response.statusCode == 201) {
       int responseJson = json.decode(response.body);
       return responseJson;
-    }else{
-       throw DataInException("An error occured: Account already exists");
+    } else {
+      throw DataInException("An error occured: Account already exists");
     }
   }
 
@@ -93,7 +96,8 @@ class ServerCommunicationService {
   }
 
   static Future<TicketDto> cancelUserTicketById(int ticketId) async {
-    var response = await http.get(url + "/ticket/" + ticketId.toString() + "/cancel",
+    var response = await http.get(
+        url + "/ticket/" + ticketId.toString() + "/cancel",
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
       return TicketDto.fromJson(json.decode(response.body));
@@ -112,12 +116,3 @@ class ServerCommunicationService {
   }
 }
 
-class DataInException implements Exception {
- final _message;
- DataInException([this._message]);
-
-String toString() {
-if (_message == null) return "Exception";
-  return "Exception: $_message";
- }
-}
