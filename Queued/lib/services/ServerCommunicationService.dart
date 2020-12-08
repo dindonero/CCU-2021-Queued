@@ -27,8 +27,10 @@ class ServerCommunicationService {
     if (response.statusCode == 200 || response.statusCode == 202) {
       var responseJson = json.decode(response.body);
       return UserAccountDto.fromJson(responseJson);
+    }else{
+          throw DataInException("An error occured: Account doesn't exist");
     }
-    return null;
+
   }
 
   static Future<int> createNewUserAccount(UserAccountDto newUserAccountDto) async {
@@ -39,7 +41,7 @@ class ServerCommunicationService {
       int responseJson = json.decode(response.body);
       return responseJson;
     }else{
-       throw SignInException("An error occured : Account already Exists");
+       throw DataInException("An error occured: Account already exists");
     }
   }
 
@@ -110,9 +112,9 @@ class ServerCommunicationService {
   }
 }
 
-class SignInException implements Exception {
+class DataInException implements Exception {
  final _message;
- SignInException([this._message]);
+ DataInException([this._message]);
 
 String toString() {
 if (_message == null) return "Exception";

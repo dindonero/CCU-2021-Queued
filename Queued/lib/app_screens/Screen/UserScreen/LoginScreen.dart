@@ -8,6 +8,9 @@ import 'SignupScreen.dart';
 
 
 class LoginScreen extends StatefulWidget {
+  //String accoutError;
+
+
   @override
   _LoginScreen createState() => _LoginScreen();
 }
@@ -99,6 +102,8 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
+  String email;
+  String password;
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
@@ -123,7 +128,8 @@ class _SignFormState extends State<SignForm> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
-                  //Future<UserAccountDto> userAccount = ServerCommunicationService.loginUser(new UserAccountDto(id, firstName, lastName, email, password, dateOfBirth));
+                  //UserAccountDto newUserAccount =  UserAccountDto(email: email, password:password);
+                 //   ServerCommunicationService.loginUser(newUserAccount).then((user) => onLoginComplete(user)).catchError((error) => onLoginError(error));
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Categories()));
                 },
@@ -134,6 +140,16 @@ class _SignFormState extends State<SignForm> {
       ),
     );
   }
+
+  //void onLoginComplete(UserAccountDto user){
+   //Navigator.push(context,
+     //                   MaterialPageRoute(builder: (context) => Categories()));
+//}
+
+//void onLoginError(Exception user){
+  //Navigator.push(context,
+    //                    MaterialPageRoute(builder: (context) => LoginScreen("Account doesn't exist")));
+//}
 
   TextFormField buildEmailFormField() {
     return TextFormField(
@@ -171,12 +187,12 @@ class _SignFormState extends State<SignForm> {
             onChanged: savePassword,);
   }
 
-  void saveEmail(String email){
-      
+  void saveEmail(String mail){
+      email = mail;
   }
 
-  void savePassword(String password){
-      
+  void savePassword(String pass){
+      password = pass;
   }
 
   Size screenSize() {

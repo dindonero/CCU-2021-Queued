@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
   String error;
-   String passError;
+  String passError;
 
   SignUpScreen(this.error, this.passError);
 
@@ -132,8 +132,8 @@ class _SignFormState extends State<SignForm> {
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
                   if ( repeatPassword == password){
-                    UserAccountDto newUserAccount = new UserAccountDto(null, firstName, lastName, email, password, null);
-                    ServerCommunicationService.createNewUserAccount(newUserAccount).then((user) => onLoginComplete(user)).catchError((error) => onLoginError(error));
+                    UserAccountDto newUserAccount =  UserAccountDto(firstName: firstName, lastName: lastName, email: email, password:password);
+                    ServerCommunicationService.createNewUserAccount(newUserAccount).then((user) => onSignUpComplete(user)).catchError((error) => onSignUpError(error));
                   }else{
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SignUpScreen(null,'Password needs to be the same!')));
@@ -146,12 +146,12 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-void onLoginComplete(int userIndex){
+void onSignUpComplete(int userIndex){
    Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Categories()));
 }
 
-void onLoginError(Exception user){
+void onSignUpError(Exception user){
   Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SignUpScreen('An account already exist with this email', null)));
 }

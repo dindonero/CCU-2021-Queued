@@ -1,6 +1,6 @@
 class UserAccountDto {
 
-  UserAccountDto(this.id, this.firstName, this.lastName, this.email, this.password, this.dateOfBirth);
+  UserAccountDto({this.id, this.firstName, this.lastName, this.email, this.password});
 
   int id;
 
@@ -12,7 +12,6 @@ class UserAccountDto {
 
   String password;
 
-  DateTime dateOfBirth;
 
   UserAccountDto.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
@@ -20,11 +19,10 @@ class UserAccountDto {
     this.lastName = json['lastName'];
     this.email = json['email'];
     this.password = json['password'];
-    this.dateOfBirth = DateTime.fromMillisecondsSinceEpoch(json['dateOfBirth']);
   }
 
   Map<String, dynamic> toJson(){
-      return {'id': this.id.toString(), 'firstName': this.firstName, 'lastName': this.lastName, 'email': this.email, 'password': this.password, 'dateOfBirth': this.dateOfBirth.toString()};
+      return {'id': this.id.toString(), 'firstName': this.firstName, 'lastName': this.lastName, 'email': this.email, 'password': this.password};
   }
 
 
