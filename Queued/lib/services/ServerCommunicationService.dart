@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+
 import 'package:Queued/dto/CategoryDto.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/dto/TicketDto.dart';
@@ -12,6 +13,7 @@ class ServerCommunicationService {
   static String url = "http://192.168.1.4:8080";
   static String registerUrl = "/user/register";
   static String loginUrl = "/user/login";
+  static String signinUrl = "/user/register";
   static String categoriesUrl = "/category/getAll";
   static Map<String, String> headers = {
     'Content-type': 'application/json',
@@ -27,6 +29,18 @@ class ServerCommunicationService {
       return UserAccountDto.fromJson(responseJson);
     }
     return null;
+  }
+
+  static Future<int> createNewUserAccount(UserAccountDto newUserAccountDto) async {
+    var user = json.encode(newUserAccountDto.toJson());
+    var response =
+        await http.post(url + signinUrl, body: user, headers: headers);
+    if (response.statusCode == 201) {
+      int responseJson = json.decode(response.body);
+      return responseJson;
+    }else{
+       throw SignInException("An error occured : Account already Exists");
+    }
   }
 
   static Future<List<Category>> getAllCategories() async {
@@ -94,4 +108,14 @@ class ServerCommunicationService {
     }
     return null;
   }
+}
+
+class SignInException implements Exception {
+ final _message;
+ SignInException([this._message]);
+
+String toString() {
+if (_message == null) return "Exception";
+  return "Exception: $_message";
+ }
 }

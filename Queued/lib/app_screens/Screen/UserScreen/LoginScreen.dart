@@ -1,4 +1,6 @@
 import 'package:Queued/app_screens/Screen/CategoriesScreen.dart';
+import 'package:Queued/dto/UserAccountDto.dart';
+import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -83,7 +85,7 @@ class _LoginScreen extends State<LoginScreen> {
 
   void signup() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+        context, MaterialPageRoute(builder: (context) => SignUpScreen(null,null)));
   }
 
   Size screenSize() {
@@ -97,7 +99,7 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
-  final _formKey = GlobalKey<FormState>();
+
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -121,6 +123,7 @@ class _SignFormState extends State<SignForm> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
+                  //Future<UserAccountDto> userAccount = ServerCommunicationService.loginUser(new UserAccountDto(id, firstName, lastName, email, password, dateOfBirth));
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Categories()));
                 },
@@ -146,7 +149,8 @@ class _SignFormState extends State<SignForm> {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )));
+            )),
+            onChanged: saveEmail,);
   }
 
   TextFormField buildPasswordFormField() {
@@ -163,7 +167,16 @@ class _SignFormState extends State<SignForm> {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.lock_outline_rounded, color: Color(0xff22bec8)),
-            )));
+            )), 
+            onChanged: savePassword,);
+  }
+
+  void saveEmail(String email){
+      
+  }
+
+  void savePassword(String password){
+      
   }
 
   Size screenSize() {
