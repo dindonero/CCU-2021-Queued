@@ -7,6 +7,8 @@ import 'package:Queued/app_screens/Widget/navBarWidget.dart';
 import 'package:Queued/domain/category.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
+import 'package:Queued/dto/UserAccountDto.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -15,10 +17,12 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   Future<List<Category>> futureCategories;
+  UserAccountDto user = UserAccountDto(firstName: '', lastName: '');
 
   @override
   void initState() {
     futureCategories = ServerCommunicationService.getAllCategories();
+    loadProfile();
   }
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
@@ -48,7 +52,7 @@ class _CategoriesState extends State<Categories> {
             SizedBox(height: screenSize().height / 40),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("    Hello Maurício!",
+              child: Text("    Hello " + user.firstName + "!",
                   style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
             ),
             Align(
@@ -108,6 +112,18 @@ class _CategoriesState extends State<Categories> {
                     ),
                   )),
             ));
+  }
+
+  loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      user = UserAccountDto(
+          id: prefs.getInt('id'),
+          firstName: prefs.getString('firstName'),
+          lastName: prefs.getString('lastName'),
+          email: prefs.getString('email'),
+          password: prefs.getString('password'));
+    });
   }
 
   Size screenSize() {
