@@ -72,46 +72,6 @@ class _TicketState extends State<Ticket> {
     return MediaQuery.of(context).size;
   }
 
-  Row mainRow() {
-    return Row(
-      children: [
-        Transform.rotate(
-          angle: 180 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
-            ),
-            onPressed: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => Store(this.ticket.storeId)));
-            },
-          ),
-        ),
-        Spacer(),
-        Icon(Icons.location_on_outlined, color: Color(0xff13497B), size: 32.0),
-        Text(" IST, Lisboa",
-            style: TextStyle(color: Color(0xFF1143656), fontSize: 20)),
-        Transform.rotate(
-          angle: 90 * math.pi / 180,
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF143656),
-            ),
-            onPressed: null,
-          ),
-        ),
-        Spacer(),
-        Icon(Icons.notifications_none_outlined,
-            color: Color(0xff13497B), size: 32.0),
-        Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),
-      ],
-    );
-  }
-
   Widget _buildScreen(BuildContext context, TicketDto ticket) {
     return Column(
       children: <Widget>[
