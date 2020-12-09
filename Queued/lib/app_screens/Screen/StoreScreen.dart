@@ -1,14 +1,11 @@
-import 'dart:math' as math;
 
 import 'package:Queued/app_screens/Widget/MainRowWidget.dart';
-import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/dto/CounterDto.dart';
-import 'package:Queued/app_screens/Widget/navBarWidget.dart';
+import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'StoresListScreen.dart';
 import 'TicketScreen.dart';
 
 class Store extends StatefulWidget {
@@ -115,6 +112,7 @@ class _StoreState extends State<Store> {
     return Row(
       children: [
         Icon(Icons.access_time_rounded, color: Color(0xFF000000), size: 32.0),
+        this.store.schedules.isEmpty ? Text('Unknown', style: TextStyle(color: Color(0xFF000000), fontSize: 20)) :
         Text(
             formatSchedule(this.store.schedules[0].openingTime) +
                 " - " +
@@ -131,8 +129,9 @@ class _StoreState extends State<Store> {
     );
   }
 
-  Future<void> openMaps() async{
-    String url = "https://www.google.com/maps/search/?api=1&query=" + store.address.replaceAll(" ", "+");
+  openMaps() async {
+    String url = "https://www.google.com/maps/search/?api=1&query=" +
+        store.address.replaceAll(" ", "+");
     print("launching = " + url);
     if (await canLaunch(url)) {
       await launch(url);

@@ -1,11 +1,10 @@
 import 'dart:math' as math;
 
-import 'package:Queued/app_screens/Screen/StoreScreen.dart';
+import 'package:Queued/app_screens/Widget/MainRowWidget.dart';
 import 'package:Queued/dto/TicketDto.dart';
-import 'package:Queued/dto/CounterDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
-import 'package:Queued/app_screens/Widget/MainRowWidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Ticket extends StatefulWidget {
   Future<TicketDto> ticket;
@@ -22,11 +21,14 @@ class _TicketState extends State<Ticket> {
   // Image img;
   int storeId;
   Future<TicketDto> ticket;
+
   _TicketState(this.ticket);
+
+  String storeAddress;
 
   @override
   void initState() {
-      ticket = this.ticket;
+    ticket = this.ticket;
   }
 
   @override
@@ -58,7 +60,7 @@ class _TicketState extends State<Ticket> {
                           default:
                             if (snapshot.hasError)
                               return new Text('Error: ${snapshot.error}');
-                            else{
+                            else {
                               return _buildScreen(context, snapshot.data);
                             }
                         }
@@ -113,40 +115,43 @@ class _TicketState extends State<Ticket> {
   }
 
   Widget _buildScreen(BuildContext context, TicketDto ticket) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: screenSize().height / 30),
-        Text("Ticket " + ticket.userId.toString() + " - " + ticket.storeName.toString(), style: TextStyle(fontSize: 25,
-              fontWeight: FontWeight.bold, color: Color(0xFF1143656),),textAlign: TextAlign.center,),
-        SizedBox(height: 10),
-        Divider(color: Colors.black, thickness: 3),
-        SizedBox(height: screenSize().height / 20),
-        aheadRow(ticket),
-        SizedBox(height: screenSize().height / 50),
-        estimatedWaitingTimeRow(ticket),
-        SizedBox(height: screenSize().height / 50),
-        currentTicketNumberRow(ticket),
-        SizedBox(height: screenSize().height / 15),
-        Padding(
-          padding: EdgeInsets.symmetric(
-          horizontal: screenSize().width / 8),
-        child: notificationsButton(),
-         ),
-        SizedBox(height: screenSize().height / 35),
-        Padding(
-          padding: EdgeInsets.symmetric(
-          horizontal: screenSize().width / 8),
-          child: directionsButton()
+    storeAddress = ticket.storeAddress;
+    return Column(children: <Widget>[
+      SizedBox(height: screenSize().height / 30),
+      Text(
+        "Ticket " +
+            ticket.userId.toString() +
+            " - " +
+            ticket.storeName.toString(),
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFF1143656),
         ),
-        SizedBox(height: screenSize().height / 35),
-        Padding(
-          padding: EdgeInsets.symmetric(
-          horizontal: screenSize().width / 8),
-          child: cancelButton(ticket.id)
-        )
-        ]
-    );
-      
+        textAlign: TextAlign.center,
+      ),
+      SizedBox(height: 10),
+      Divider(color: Colors.black, thickness: 3),
+      SizedBox(height: screenSize().height / 20),
+      aheadRow(ticket),
+      SizedBox(height: screenSize().height / 50),
+      estimatedWaitingTimeRow(ticket),
+      SizedBox(height: screenSize().height / 50),
+      currentTicketNumberRow(ticket),
+      SizedBox(height: screenSize().height / 15),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenSize().width / 8),
+        child: notificationsButton(),
+      ),
+      SizedBox(height: screenSize().height / 35),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenSize().width / 8),
+          child: directionsButton()),
+      SizedBox(height: screenSize().height / 35),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenSize().width / 8),
+          child: cancelButton(ticket.id))
+    ]);
   }
 
   Row aheadRow(TicketDto ticket) {
@@ -166,8 +171,7 @@ class _TicketState extends State<Ticket> {
                   color: Color(0xFF143656),
                   fontSize: 22,
                   fontWeight: FontWeight.bold)),
-          Text(
-              ticket.peopleAheadInLine.toString() + " people",
+          Text(ticket.peopleAheadInLine.toString() + " people",
               style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         ],
       ),
@@ -221,8 +225,7 @@ class _TicketState extends State<Ticket> {
                   color: Color(0xFF143656),
                   fontSize: 21,
                   fontWeight: FontWeight.bold)),
-          Text(
-              ticket.staffCounter.toString() + " - " + ticket.id.toString(),
+          Text(ticket.staffCounter.toString() + " - " + ticket.id.toString(),
               style: TextStyle(color: Color(0xFF000000), fontSize: 20)),
         ],
       ),
@@ -234,17 +237,15 @@ class _TicketState extends State<Ticket> {
         width: screenSize().width,
         height: screenSize().height / 12,
         child: RaisedButton(
-          color: Color(0xff13497B),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          onPressed: () {
-          },
-          child: Row(mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            Icon(Icons.add_alert, color: Color(0xFFFFFFFF), size: 40),
-            const Text('Notify Me', style: TextStyle(fontSize: 25, color: Colors.white)),
-                ])
-          ));
+            color: Color(0xff13497B),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onPressed: () {},
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(Icons.add_alert, color: Color(0xFFFFFFFF), size: 40),
+              const Text('Notify Me',
+                  style: TextStyle(fontSize: 25, color: Colors.white)),
+            ])));
   }
 
   Container directionsButton() {
@@ -252,20 +253,30 @@ class _TicketState extends State<Ticket> {
         width: screenSize().width,
         height: screenSize().height / 12,
         child: RaisedButton(
-          color: Color(0xff13497B),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          onPressed: () {
-          },
-          child: Row(mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            Icon(Icons.location_on_outlined, color: Color(0xFFFFFFFF), size: 40),
-            const Text('Directions', style: TextStyle(fontSize: 25, color: Colors.white)),
-                ])
-          ));
+            color: Color(0xff13497B),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onPressed: () => openMaps(),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(Icons.location_on_outlined,
+                  color: Color(0xFFFFFFFF), size: 40),
+              const Text('Directions',
+                  style: TextStyle(fontSize: 25, color: Colors.white)),
+            ])));
   }
 
-   Container cancelButton(int ticketId) {
+  openMaps() async {
+    String url = "https://www.google.com/maps/search/?api=1&query=" +
+        storeAddress.replaceAll(" ", "+");
+    print("launching = " + url);
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Container cancelButton(int ticketId) {
     return Container(
         width: screenSize().width,
         height: screenSize().height / 12,
@@ -277,8 +288,8 @@ class _TicketState extends State<Ticket> {
             ServerCommunicationService.cancelUserTicketById(ticketId);
             Navigator.pop(context);
           },
-          child: const Text('Leave Queue', style: TextStyle(fontSize: 25, color: Colors.white)),
-          ));
+          child: const Text('Leave Queue',
+              style: TextStyle(fontSize: 25, color: Colors.white)),
+        ));
   }
-
 }

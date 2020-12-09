@@ -306,7 +306,6 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
     Uint8List imageBytes = await image.readAsBytes();
 
     setState(() {
-      print(imageBytes);
       _image = imageBytes;
     });
   }
@@ -316,7 +315,6 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
         .getImage(source: ImageSource.gallery, imageQuality: 50);
     Uint8List imageBytes = await image.readAsBytes();
     setState(() {
-      print(imageBytes);
       _image = imageBytes;
     });
   }

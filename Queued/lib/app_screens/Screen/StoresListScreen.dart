@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 
 import 'package:Queued/app_screens/Card/StoreCard.dart';
 import 'package:Queued/app_screens/Widget/MainRowWidget.dart';
@@ -176,7 +175,7 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
               items: store.counters.map((CounterDto value) {
                 return new DropdownMenuItem<CounterDto>(
                   value: value,
-                  child: new Text(value.name),
+                  child:  value.hasStaff ? new Text(value.name) : new Text(value.name, style: TextStyle(color: Color(0xAAAAAAAA)),),
                 );
               }).toList(),
               onChanged: _changeValue,
@@ -186,16 +185,20 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
                 width: MediaQuery.of(context).size.width / 3,
                 height: MediaQuery.of(context).size.height / 15,
                 child: RaisedButton(
-                  color: Color(0xff13497B),
+                  color: selected_item == null || !selected_item.hasStaff
+                      ? Color(0xaaaaaaaa)
+                      : Color(0xff13497B),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
                   onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Store(store, selected_item),
-                        ));
+                    if (selected_item != null && selected_item.hasStaff) {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Store(store, selected_item),
+                          ));
+                    }
                   },
                   child: const Text('Confirm',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
