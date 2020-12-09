@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:Company/app_screens/Card/StoresCard.dart';
+import 'package:Company/app_screens/Widget/TextSearchWidget.dart';
 import 'package:Company/app_screens/Widget/navBarWidget.dart';
 import 'package:Company/dto/StoreDto.dart';
 import 'package:Company/services/ServerCommunicationService.dart';
@@ -29,28 +30,30 @@ class _StoresState extends State<Stores> {
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: screenSize().height / 25),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: screenSize().width / 25),
-                    child: mainRow(),
-                  )),
-            ),
             SizedBox(height: screenSize().height / 40),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Hello Maurício!",
-                  style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Please choose your store",
-                  style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
+            Row(
+              children: [
+                Padding(
+                       padding:  EdgeInsets.only(left: 0),
+                         child:
+                Column(
+                  children: [
+                     Text("Hello Maurício!       ",
+                          style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
+                     Text("     These are your stores:",
+                              style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
+
+                  ],
+                ),),
+                Spacer(),
+                Icon(Icons.notifications_none_outlined,color: Color(0xff13497B), size: 32.0),
+                  Padding(
+                       padding:  EdgeInsets.only(right: 20),
+                         child: Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),),
+              ],
             ),
             SizedBox(height: screenSize().height / 30),
+            TextSearchField(),
             //
             Expanded(
                 child: Padding(

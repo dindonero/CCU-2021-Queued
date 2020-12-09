@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:Company/app_screens/Card/CountersCard.dart';
 import '../../dto/StoreDto.dart';
 import '../Widget/navBarWidget.dart';
 
@@ -24,6 +24,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
     gapPadding: 10,
   );
   List<TextFormField> textFormFields = new List<TextFormField>();
+  List<String> counterNames = new List<String>();
   StoreDto store;
 
   _AddStoreScreenNextState({this.store});
@@ -33,6 +34,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
 
   @override
   Widget build(BuildContext context) {
+    print(counterNames);
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
         body: SingleChildScrollView(
@@ -40,24 +42,39 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: screenSize().height / 25),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: screenSize().width / 25),
-                    child: mainRow(),
-                  )),
-            ),
             SizedBox(height: screenSize().height / 40),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Hello Maurício!",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFB2B2B2),
-                      fontSize: 20)),
+             Align(
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [  Transform.rotate(
+                          angle: 180 * math.pi / 180,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Color(0xFF143656),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      Text("Maurício",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF13497B),
+                              fontSize: 30)),
+                       Container(width: 50,),
+                    ],
+                  ),
+                  Container( width:360,
+                    child:
+                      Divider(height: 20, thickness: 2 ,color: Colors.black,),
+
+                  ),
+                ],
+              ),
             ),
             Align(
               alignment: Alignment.centerLeft,
@@ -93,7 +110,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenSize().width / 25),
-                        child: Text(" Queue - Counters",
+                        child: Text(" Queues",
                             style: TextStyle(
                                 color: Color(0xff13497b),
                                 fontWeight: FontWeight.bold,
@@ -101,35 +118,29 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                       )),
                 ),
                 Spacer(),
-                RaisedButton(
-                  onPressed: () {
-                    setState(() {
-                      textFormFields.add(
-                          buildField("Counter name"));
-                    });
-                  },
-                  child: Align(
+                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenSize().width / 25),
-                        child: Icon(
+                        child: IconButton(icon: Icon(
                           Icons.add_circle,
                           color: Colors.green,
                           size: 30,
                         ),
+                        onPressed:() {
+                    setState(() {
+                      textFormFields.add(buildField("Counter name"));
+                    });
+                  },),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
-            Column(
-              children: buildCounters(),
-            ),
-            SizedBox(height: screenSize().height / 30),
+            _buildGridView(context),
             Container(
                 width: screenSize().width / 1.2,
                 height: screenSize().height / 15,
@@ -138,6 +149,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   onPressed: () {
+                    print(counterNames);
                     ServerCommunicationService.addNewStore(1, store).then(
                         (id) => print("StoreAdded - id:" + id.toString())); //
                     int count = 0;
@@ -150,7 +162,6 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                 )),
             SizedBox(height: screenSize().height / 30),
             SizedBox(height: screenSize().height / 30),
-            Nav(1),
           ],
         )));
   }
@@ -159,31 +170,40 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
     return MediaQuery.of(context).size;
   }
 
-  List<Widget> buildCounters() {
-    return textFormFields
-        .map((counter) => Expanded(child: Row(
-              children: [
-                counter,
-                SizedBox(height: screenSize().height / 20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize().width / 25),
-                      child: Icon(
-                        Icons.indeterminate_check_box,
-                        color: Colors.red,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            )))
-        .toList();
+  void removeCounter( TextFormField index) {
+    setState(() {
+      counterNames.remove(counterNames[textFormFields.indexOf(index)]);
+      textFormFields.remove(index);
+    });
   }
+
+Widget _buildGridView(BuildContext context) {
+  if (textFormFields.length > 0){
+    return GridView.builder(
+      shrinkWrap: true,
+      itemCount: textFormFields.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+        mainAxisSpacing: screenSize().width / 20,
+        crossAxisSpacing: screenSize().width / 25,
+        childAspectRatio: 5,
+      ),
+      itemBuilder: (context, index) => CountersCards(removeCounter,
+            textFormFields[index])
+            
+            //press: () => null
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => Store(
+          //           getTicket(stores[index]),
+          //         ),
+          //       )),
+          ); 
+  }else{
+    return Container();
+   }
+ }
 
   showAlertDialogCounters(BuildContext context) {
     // configura o button
@@ -255,20 +275,6 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                             ]),
                             alignment: Alignment.center,
                           )
-                          /*Container(
-                              width: screenSize().width / 1.8,
-                              height: screenSize().height / 12,
-                              child: RaisedButton(
-                                color: Color(0xffF8FBFF),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                onPressed: () {
-                                  //
-                                },
-                                child: const Text('Monday - Friday',
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.black)),
-                              ))*/
                         ],
                       ),
                       SizedBox(height: screenSize().height / 40),
@@ -373,10 +379,9 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
     return TextFormField(
         controller: TextEditingController(),
         keyboardType: TextInputType.emailAddress,
+
         decoration: InputDecoration(
-            labelText: "Email",
-            labelStyle: TextStyle(fontSize: 20),
-            hintText: "Enter your email",
+            hintText: hintTextString,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
             enabledBorder: outlineInputBorder,
@@ -384,7 +389,18 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
             suffixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 27),
               child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )));
+            )),
+            onChanged: saveCounterName ,);
+  }
+
+  void saveCounterName(String name){
+    print('supppp');
+    print(name);
+      if (textFormFields.length ==  counterNames.length){
+       counterNames[textFormFields.length - 1 ] = name;
+      }else {
+        counterNames.add(name);
+      }
   }
 
   Row mainRow() {

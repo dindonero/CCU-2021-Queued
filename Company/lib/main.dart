@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Queued',
+      title: 'Company',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xff22bec8),

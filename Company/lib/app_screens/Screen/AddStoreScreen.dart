@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'dart:math' as math;
 import 'package:Company/dto/StoreDto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,12 +44,37 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
             SizedBox(height: screenSize().height / 25),
             SizedBox(height: screenSize().height / 40),
             Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Hello Maurício!",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFB2B2B2),
-                      fontSize: 20)),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [  Transform.rotate(
+                          angle: 180 * math.pi / 180,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Color(0xFF143656),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      Text("Maurício",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF13497B),
+                              fontSize: 30)),
+                       Container(width: 50,),
+                    ],
+                  ),
+                  Container( width:360,
+                    child:
+                      Divider(height: 20, thickness: 2 ,color: Colors.black,),
+
+                  ),
+                ],
+              ),
             ),
             Align(
               alignment: Alignment.centerLeft,

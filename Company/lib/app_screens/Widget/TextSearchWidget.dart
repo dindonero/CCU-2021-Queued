@@ -20,7 +20,7 @@ class _TextSearchField extends State<TextSearchField> {
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 25),
+            horizontal: MediaQuery.of(context).size.width / 20),
         child: TextFormField(
           //controller: textInput,
           onFieldSubmitted: searchStoresQuery,
