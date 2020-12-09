@@ -99,7 +99,8 @@ class _StoresState extends State<Stores> {
       itemCount: stores.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
-        childAspectRatio: 2.5,
+        mainAxisSpacing: screenSize().width / 20,
+        childAspectRatio: 2.8,
       ),
       itemBuilder: (context, index) => StoreCard(
           store: stores[index],

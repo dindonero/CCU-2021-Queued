@@ -20,8 +20,12 @@ class StoreCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child: Container(
+            child:  Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 25),
+                child: Container(
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
                     image: store.img.image,
                     fit: BoxFit.cover,
@@ -58,7 +62,7 @@ class StoreCard extends StatelessWidget {
                 // Now we dont need them
 
                 ),
-          ),
+          )),
         ],
       ),
     );

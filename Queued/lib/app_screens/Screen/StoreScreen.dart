@@ -50,7 +50,7 @@ class _StoreState extends State<Store> {
                     SizedBox(height: screenSize().height / 25),
                     MainRowWidget(),
                     Container(
-                        height: (screenSize().width / 2) + 25,
+                        height: (screenSize().width / 3),
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: img.image, fit: BoxFit.cover)),
@@ -81,6 +81,7 @@ class _StoreState extends State<Store> {
                             ),
                           ],
                         )),
+                    SizedBox(height: screenSize().height / 50),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenSize().width / 25),
