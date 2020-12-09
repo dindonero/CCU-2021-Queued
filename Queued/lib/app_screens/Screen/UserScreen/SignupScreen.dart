@@ -34,23 +34,22 @@ _SignUpScreen(this.error, this.passError);
         resizeToAvoidBottomInset: false,
         resizeToAvoidBottomPadding: false,
         body: SingleChildScrollView(
-            reverse: true,
+            reverse: false,
             child: Padding(
                 padding: EdgeInsets.only(bottom: bottom),
                 child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("images/login_background2.png"),
+                        image: AssetImage("images/login_background3.png"),
                         fit: BoxFit.cover,
                       ),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: screenSize().height / 10),
                       Padding(
                           padding: EdgeInsets.symmetric( horizontal: 50,
-                              vertical: screenSize().height / 50),
+                              vertical: screenSize().height / 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -59,6 +58,7 @@ _SignUpScreen(this.error, this.passError);
                               Text('UEUED')
                             ],
                           )),
+                          SizedBox(height: screenSize().height / 20),
                       Text("Welcome",
                           style: TextStyle(
                               color: Color(0xff13497b),
