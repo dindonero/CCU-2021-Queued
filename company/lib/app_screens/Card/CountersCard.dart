@@ -36,7 +36,7 @@ class CountersCards extends StatelessWidget {
     ),
     IconButton(icon: Icon(
                           Icons.remove_circle ,
-                          color: Colors.green,
+                          color: Colors.red,
                           size: 32,
                           
                         ), onPressed:  () {

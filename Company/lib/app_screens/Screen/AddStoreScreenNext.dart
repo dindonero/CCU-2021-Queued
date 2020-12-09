@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:Company/dto/CounterDto.dart';
 import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,6 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
 
   @override
   Widget build(BuildContext context) {
-    print(counterNames);
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
         body: SingleChildScrollView(
@@ -149,8 +149,12 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   onPressed: () {
-                    print(counterNames);
-                    ServerCommunicationService.addNewStore(1, store).then(
+                    List<CounterDto> newCounters =  new List<CounterDto>();
+                    for (String name in counterNames){
+                        newCounters.add(CounterDto(name: name, hasStaff: false, peopleWaitingInLine: 0));
+                    }
+                    StoreDto updatedStore = StoreDto(name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: store.schedules);
+                    ServerCommunicationService.addNewStore(1, updatedStore).then(
                         (id) => print("StoreAdded - id:" + id.toString())); //
                     int count = 0;
                     Navigator.popUntil(context, (route) {
@@ -378,7 +382,7 @@ Widget _buildGridView(BuildContext context) {
   TextFormField buildField(String hintTextString) {
     return TextFormField(
         controller: TextEditingController(),
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.name,
 
         decoration: InputDecoration(
             hintText: hintTextString,
@@ -386,16 +390,11 @@ Widget _buildGridView(BuildContext context) {
             contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
             enabledBorder: outlineInputBorder,
             focusedBorder: outlineInputBorder,
-            suffixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )),
+            ),
             onChanged: saveCounterName ,);
   }
 
   void saveCounterName(String name){
-    print('supppp');
-    print(name);
       if (textFormFields.length ==  counterNames.length){
        counterNames[textFormFields.length - 1 ] = name;
       }else {
