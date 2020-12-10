@@ -114,12 +114,14 @@ class _StoresState extends State<Stores> {
                   }
                 else
                   {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Store(stores[index], stores[index].counters[0]),
-                        )),
+                    if (stores[index].counters[0].hasStaff){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                Store(stores[index], stores[index].counters[0]),
+                          )),
+                    }
                   }
               }),
     );
@@ -175,7 +177,7 @@ class _SelectQPopUpState extends State<SelectQPopUp> {
               items: store.counters.map((CounterDto value) {
                 return new DropdownMenuItem<CounterDto>(
                   value: value,
-                  child:  value.hasStaff ? new Text(value.name) : new Text(value.name, style: TextStyle(color: Color(0xAAAAAAAA)),),
+                  child:  value.hasStaff ? new Text(value.name) : new Text(value.name + " - Closed", style: TextStyle(color: Color(0xFFFF0000)),),
                 );
               }).toList(),
               onChanged: _changeValue,

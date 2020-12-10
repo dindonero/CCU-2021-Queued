@@ -19,7 +19,7 @@ class AddStoreScreen extends StatefulWidget {
 class _AddStoreScreenState extends State<AddStoreScreen> {
   TextEditingController storeNameController = TextEditingController();
   TextEditingController storeAddressController = TextEditingController();
-  int storeCategory = 0;
+  int storeCategory;
   Future<List<Category>> futureCategories;
   Uint8List _image;
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
@@ -47,31 +47,38 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
               alignment: Alignment.center,
               child: Column(
                 children: [
-                  Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [  Transform.rotate(
-                          angle: 180 * math.pi / 180,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: Color(0xFF143656),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Transform.rotate(
+                        angle: 180 * math.pi / 180,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Color(0xFF143656),
                           ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
+                      ),
                       Text("Maurício",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF13497B),
                               fontSize: 30)),
-                       Container(width: 50,),
+                      Container(
+                        width: 50,
+                      ),
                     ],
                   ),
-                  Container( width:360,
-                    child:
-                      Divider(height: 20, thickness: 2 ,color: Colors.black,),
-
+                  Container(
+                    width: 360,
+                    child: Divider(
+                      height: 20,
+                      thickness: 2,
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -173,8 +180,9 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                         default:
                           if (snapshot.hasError)
                             return new Text('Error: ${snapshot.error}');
-                          else
+                          else {
                             return buildDropdownField(snapshot.data);
+                          }
                       }
                     })
               ]),
@@ -212,12 +220,14 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                           color: Color(0xff13497b),
                         ),
                       )
-                    : Container( width: 200, height: 200,
+                    : Container(
+                        width: 200,
+                        height: 200,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                        image: Image.memory(_image).image,
-                        fit: BoxFit.cover,
-                      )))),
+                          image: Image.memory(_image).image,
+                          fit: BoxFit.cover,
+                        )))),
             SizedBox(height: screenSize().height / 30),
             Container(
                 width: screenSize().width / 1.2,
@@ -265,7 +275,6 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
   }
 
   DropdownButtonFormField buildDropdownField(List<Category> categories) {
-    this.storeCategory = categories[0].id;
     var dropdownButtonFormField = DropdownButtonFormField(
       decoration: InputDecoration(
           contentPadding:
@@ -278,6 +287,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
           ),
           filled: true,
           fillColor: Color(0xffF8FBFF)),
+      hint: Text("Select Category"),
       value: this.storeCategory,
       onChanged: (int newValue) {
         setState(() {
@@ -297,9 +307,10 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
   bool allInserted() {
     return storeNameController.text.isNotEmpty &&
         storeAddressController.text.isNotEmpty &&
-        _image != null;
+        _image != null && storeCategory != null;
   }
 
+  //todo change to account for exception of user not taking photo
   _imgFromCamera() async {
     PickedFile image = await ImagePicker()
         .getImage(source: ImageSource.camera, imageQuality: 50);

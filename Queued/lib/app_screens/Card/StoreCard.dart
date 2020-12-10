@@ -20,40 +20,61 @@ class StoreCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child:  Padding(
+              child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width / 25),
-                child: Container(
+            child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                    image: store.img.image,
-                    fit: BoxFit.cover,
-                )),
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                      image: store.img.image,
+                      fit: BoxFit.cover,
+                    )),
                 child: Stack(
                   children: <Widget>[
                     // Stroked text as border.
                     Center(
-                      child: Text(
-                        store.name,
-                        style: TextStyle(
-                          fontSize: 35,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 5
-                            ..color = Colors.black,
-                        ),
-                      ),
+                      child: store.counters.length == 1 &&
+                              !store.counters[0].hasStaff
+                          ? Text(
+                              store.name +  "   - Closed",
+                              style: TextStyle(
+                                fontSize: 35,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 5
+                                  ..color = Colors.black,
+                              ),
+                            )
+                          : Text(
+                              store.name,
+                              style: TextStyle(
+                                fontSize: 35,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 5
+                                  ..color = Colors.black,
+                              ),
+                            ),
                     ),
                     // solid text
                     Center(
-                      child: Text(
-                        store.name,
-                        style: TextStyle(
-                          color: Color(0xFFFFFFFF),
-                          fontSize: 35,
-                        ),
-                      ),
+                      child: store.counters.length == 1 &&
+                              !store.counters[0].hasStaff
+                          ? Text(
+                              store.name + "   - Closed",
+                              style: TextStyle(
+                                color: Color(0xFFFF0000),
+                                fontSize: 35,
+                              ),
+                            )
+                          : Text(
+                              store.name,
+                              style: TextStyle(
+                                color: Color(0xFFFFFFFF),
+                                fontSize: 35,
+                              ),
+                            ),
                     ),
                   ],
                 )
