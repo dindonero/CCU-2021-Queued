@@ -1,6 +1,6 @@
 class CompanyAccountDto {
 
-  CompanyAccountDto(this.id, this.name, this.email, this.password, this.staffEmail, this.staffPassword);
+  CompanyAccountDto({this.id, this.name, this.email, this.password, this.staffEmail, this.staffPassword});
 
   int id;
 

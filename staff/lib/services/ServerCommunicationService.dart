@@ -6,9 +6,9 @@ import 'package:Staff/dto/CounterDto.dart';
 import 'package:http/http.dart' as http;
 
 class ServerCommunicationService {
-  static String url = "http://192.168.1.83:8080";
+  static String url = "http://192.168.1.9:8080";
   static String registerUrl = "/user/register";
-  static String loginUrl = "/user/login";
+  static String loginUrl = "/company/staff/login";
   static String categoriesUrl = "/category/getAll";
   static String storesUrl = "/stores/getAll";
   static String staffUrl = "/staff/getStores";

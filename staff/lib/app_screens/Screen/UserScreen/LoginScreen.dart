@@ -1,8 +1,9 @@
 import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
+import 'package:Staff/dto/CompanyAccountDto.dart';
+import 'package:Staff/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'SignupScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class _LoginScreen extends State<LoginScreen> {
                         children: [
                           Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: screenSize().height / 20),
+                                  vertical: screenSize().height / 35),
                               child: Column(
                                 children: [
                                   Row(
@@ -51,12 +52,12 @@ class _LoginScreen extends State<LoginScreen> {
                                   //  color: Color(0xff13497b),) )
                                 ],
                               )),
-                          SizedBox(height: screenSize().height / 8),
+                          SizedBox(height: screenSize().height / 7),
                           Text("Welcome",
                               style: TextStyle(
                                   color: Color(0xff13497b),
                                   fontWeight: FontWeight.bold)),
-                          Text("Login to start waiting online.",
+                          Text("Login to serve your clientes online.",
                               style: TextStyle(
                                   color: Color(0x50000000), fontSize: 25)),
                           Padding(
@@ -68,29 +69,14 @@ class _LoginScreen extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 InkWell(
-                                  onTap: signup,
+                                  onTap: null,
                                   child: Text("Forgot password?",
                                       style: TextStyle(
                                           color: Color(0x50000000),
                                           fontSize: 18)),
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenSize().width / 8)),
-                                InkWell(
-                                  onTap: signup,
-                                  child: Text("Sign up",
-                                      style: TextStyle(
-                                          color: Color(0xff13497b),
-                                          fontSize: 18)),
-                                ),
                               ])
                         ])))));
-  }
-
-  void signup() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SignUpScreen()));
   }
 
   Size screenSize() {
@@ -104,7 +90,11 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
-  final _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  bool _showPassword=false;
+
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -124,14 +114,19 @@ class _SignFormState extends State<SignForm> {
               width: screenSize().width,
               height: screenSize().height / 15,
               child: RaisedButton(
-                color: Color(0xff13497B),
+                color: loginInfoAdded() ? Color(0xff13497B) : Color(0xaaaaaa),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AllStaffStoresScreen()));
+                  if (loginInfoAdded()) {
+                    CompanyAccountDto newUserAccount = CompanyAccountDto(
+                      email: emailController.text,
+                      password: passwordController.text);
+                    ServerCommunicationService.loginStaff(newUserAccount)
+                        .then((user) => onLoginComplete(user))
+                        .catchError((error) =>
+                            onLoginError(error.toString()));
+                  }
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),
@@ -141,38 +136,87 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
+  bool loginInfoAdded() {
+    return emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
+
+  void onLoginComplete(CompanyAccountDto user) {
+    storeLoggedInUser(user);
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AllStaffStoresScreen()));
+  }
+
+  void onLoginError(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Align(
+              alignment: Alignment.center,
+              child: Text(errorMessage),
+            ),
+            content: Container(
+                width: MediaQuery.of(context).size.width / 3,
+                height: MediaQuery.of(context).size.height / 15,
+                child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Ok',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                )),
+          );
+        });
+  }
+
+  storeLoggedInUser(CompanyAccountDto user) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setInt('id', user.id);
+    prefs.setString('name', user.name);
+    prefs.setString('email', user.email);
+    prefs.setString('password', user.password);
+    prefs.setString('staffEmail', user.staffEmail);
+     prefs.setString('staffPassword', user.staffPassword);
+  }
+
   TextFormField buildEmailFormField() {
     return TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            labelText: "Email",
-            labelStyle: TextStyle(fontSize: 20),
-            hintText: "Enter your email",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
-            suffixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )));
+      controller: emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          labelText: "Email",
+          labelStyle: TextStyle(fontSize: 20),
+          hintText: "Enter your email",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+          enabledBorder: outlineInputBorder,
+          focusedBorder: outlineInputBorder,
+          suffixIcon: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
+          ));
   }
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-        obscureText: true,
-        decoration: InputDecoration(
-            labelText: "Password",
-            labelStyle: TextStyle(fontSize: 20),
-            hintText: "Enter your password",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
-            suffixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.lock_outline_rounded, color: Color(0xff22bec8)),
-            )));
+      controller: passwordController,
+      obscureText: !this._showPassword,
+      decoration: InputDecoration(
+          labelText: "Password",
+          labelStyle: TextStyle(fontSize: 20),
+          hintText: "Enter your password",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+          enabledBorder: outlineInputBorder,
+          focusedBorder: outlineInputBorder,
+          suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye, 
+            color: this._showPassword ? Color(0xff22bec8) : Colors.grey),
+          onPressed: () {
+            setState(() => this._showPassword = !this._showPassword);
+          },)));
   }
 
   Size screenSize() {
