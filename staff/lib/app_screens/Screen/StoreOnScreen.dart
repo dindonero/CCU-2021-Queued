@@ -226,7 +226,7 @@ class _StoreOnState extends State<StoreOn> {
      if (this.counter != null){
        counter = this.counter;
      } else{
-       counter =  this.store.counters[this.sector_id-1];
+       counter =  this.store.counters.firstWhere((counter) => counter.id == this.sector_id);
      }
 
       ticket_number =   "Number " + counter.currentTicketId.toString();
@@ -240,7 +240,7 @@ class _StoreOnState extends State<StoreOn> {
      if (this.counter != null){
        counter = this.counter;
      } else{
-       counter =  this.store.counters[this.sector_id-1];
+       counter =  this.store.counters.firstWhere((counter) => counter.id == this.sector_id);
      }
       return Row(children: [
       Align(
