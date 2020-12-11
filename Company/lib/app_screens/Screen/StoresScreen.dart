@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:Company/app_screens/Card/StoresCard.dart';
 import 'package:Company/app_screens/Widget/TextSearchWidget.dart';
 import 'package:Company/app_screens/Widget/navBarWidget.dart';
+import 'package:Company/dto/CompanyAccountDto.dart';
 import 'package:Company/dto/StoreDto.dart';
 import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class Stores extends StatefulWidget {
 class _StoresState extends State<Stores> {
   //Future<List<StoreDto>> futureStores;
   Future<List<StoreDto>> futureStores;
+  CompanyAccountDto user = CompanyAccountDto(name: '');
 
   @override
   void initState() {
@@ -58,7 +60,7 @@ class _StoresState extends State<Stores> {
             Expanded(
                 child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: screenSize().width / 25),
+                        horizontal: 1),
                     child: FutureBuilder<List<StoreDto>>(
                       future: this.futureStores,
                       builder: (context, snapshot) {
@@ -87,25 +89,11 @@ class _StoresState extends State<Stores> {
   }
 
 Widget _buildGridView(BuildContext context, List<StoreDto> stores) {
-  return GridView.builder(
-      itemCount: stores.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-        mainAxisSpacing: screenSize().width / 20,
-        crossAxisSpacing: screenSize().width / 25,
-        childAspectRatio: 5,
-      ),
-      itemBuilder: (context, index) => StoresCards(
-            store: stores[index],
-            press: () => null
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => Store(
-          //           getTicket(stores[index]),
-          //         ),
-          //       )),
-          ));
+  return ListView.builder(
+        itemCount: stores.length,
+        itemBuilder: (context, index) =>Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: StoresCards(stores[index])));
   }
 
   Size screenSize() {
