@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:Staff/app_screens/Exceptions/DataInException.dart';
+import 'package:Staff/app_screens/Exceptions/EmailNotRegisteredException.dart';
+import 'package:Staff/app_screens/Exceptions/WrongPasswordException.dart';
 import 'package:Staff/dto/CompanyAccountDto.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/dto/CounterDto.dart';
 import 'package:http/http.dart' as http;
 
 class ServerCommunicationService {
-  static String url = "http://192.168.1.9:8080";
+  static String url = "http://192.168.1.253:8080";
   static String registerUrl = "/user/register";
   static String loginUrl = "/company/staff/login";
   static String categoriesUrl = "/category/getAll";
@@ -26,7 +29,9 @@ class ServerCommunicationService {
       var responseJson = json.decode(response.body);
       return CompanyAccountDto.fromJson(responseJson);
     }
-    return null;
+    if (response.statusCode == 404) throw EmailNotRegisteredException();
+    if (response.statusCode == 401) throw WrongPasswordException();
+    throw DataInException("An unknown error occurred. Please try again later.");
   }
 
   static Future<List<StoreDto>> getAllStoresFromStaffEmail(String email) async {
