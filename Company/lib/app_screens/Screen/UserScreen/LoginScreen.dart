@@ -1,6 +1,9 @@
 import 'package:Company/app_screens/Screen/StoresScreen.dart';
+import 'package:Company/dto/CompanyAccountDto.dart';
+import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'SignupScreen.dart';
 
@@ -37,23 +40,28 @@ class _LoginScreen extends State<LoginScreen> {
                       children: [
                       Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: screenSize().height / 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              new Image.asset('images/logo_branco.png',
-                                  width: 120),
-                              Text('UEUED')
-                            ],
-                          )),
-                      SizedBox(height: screenSize().height / 10),
+                              vertical: screenSize().height / 35),
+                          child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      new Image.asset('images/logo_branco.png',
+                                          width: 120),
+                                      Text('UEUED'),
+                                    ],
+                                  ),
+                                  Text('Company')
+                                ],
+                              )),
+                      SizedBox(height: screenSize().height / 7),
                       Text("Welcome",
                           style: TextStyle(
                               color: Color(0xff13497b),
                               fontWeight: FontWeight.bold)),
-                      Text("Login to start waiting online.",
+                      Text("Login to help your clients wait online.",
                           style: TextStyle(
-                              color: Color(0x50000000), fontSize: 25)),
+                              color: Color(0x50000000), fontSize: 22)),
                       Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: screenSize().width / 10,
@@ -97,7 +105,11 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
-  final _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  bool _showPassword=false;
+
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -117,12 +129,19 @@ class _SignFormState extends State<SignForm> {
               width: screenSize().width,
               height: screenSize().height / 15,
               child: RaisedButton(
-                color: Color(0xff13497B),
+                color:loginInfoAdded() ? Color(0xff13497B) : Color(0xaaaaaa),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Stores()));
+                  if (loginInfoAdded()) {
+                    CompanyAccountDto newUserAccount = CompanyAccountDto(
+                      email: emailController.text,
+                      password: passwordController.text);
+                    ServerCommunicationService.loginCompany(newUserAccount)
+                        .then((user) => onLoginComplete(user))
+                        .catchError((error) =>
+                            onLoginError(error.toString()));
+                  }
                 },
                 child: const Text('LOGIN',
                     style: TextStyle(fontSize: 18, color: Colors.white)),
@@ -132,8 +151,57 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
+  bool loginInfoAdded() {
+    return emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
+
+  void onLoginComplete(CompanyAccountDto user) {
+    storeLoggedInUser(user);
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Stores()));
+  }
+
+  void onLoginError(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Align(
+              alignment: Alignment.center,
+              child: Text(errorMessage),
+            ),
+            content: Container(
+                width: MediaQuery.of(context).size.width / 3,
+                height: MediaQuery.of(context).size.height / 15,
+                child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Ok',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                )),
+          );
+        });
+  }
+
+  storeLoggedInUser(CompanyAccountDto user) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setInt('id', user.id);
+    prefs.setString('name', user.name);
+    prefs.setString('email', user.email);
+    prefs.setString('password', user.password);
+    prefs.setString('staffEmail', user.staffEmail);
+     prefs.setString('staffPassword', user.staffPassword);
+  }
+
   TextFormField buildEmailFormField() {
     return TextFormField(
+        controller: emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
             labelText: "Email",
@@ -143,15 +211,14 @@ class _SignFormState extends State<SignForm> {
             contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
             enabledBorder: outlineInputBorder,
             focusedBorder: outlineInputBorder,
-            suffixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
-            )));
+            suffixIcon: Icon(Icons.email_outlined, color: Color(0xff22bec8)),
+            ));
   }
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-        obscureText: true,
+        controller: passwordController,
+        obscureText: !this._showPassword,
         decoration: InputDecoration(
             labelText: "Password",
             labelStyle: TextStyle(fontSize: 20),
@@ -160,10 +227,11 @@ class _SignFormState extends State<SignForm> {
             contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
             enabledBorder: outlineInputBorder,
             focusedBorder: outlineInputBorder,
-            suffixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 27),
-              child: Icon(Icons.lock_outline_rounded, color: Color(0xff22bec8)),
-            )));
+            suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye, 
+              color: this._showPassword ? Color(0xff22bec8) : Colors.grey),
+              onPressed: () {
+                setState(() => this._showPassword = !this._showPassword);
+            },)));
   }
 
   Size screenSize() {

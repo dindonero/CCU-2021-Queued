@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:Company/app_screens/Exceptions/DataInException.dart';
+import 'package:Company/app_screens/Exceptions/EmailNotRegisteredException.dart';
+import 'package:Company/app_screens/Exceptions/WrongPasswordException.dart';
 import 'package:Company/dto/CategoryDto.dart';
+import 'package:Company/dto/CompanyAccountDto.dart';
 import 'package:Company/dto/StoreDto.dart';
 import 'package:Company/dto/TicketDto.dart';
 import 'package:Company/dto/UserAccountDto.dart';
@@ -11,24 +15,27 @@ import '../dto/StoreDto.dart';
 import '../dto/StoreDto.dart';
 
 class ServerCommunicationService {
-  static String url = "http://192.168.1.72:8080";
+  static String url = "http://192.168.1.253:8080";
   static String registerUrl = "/user/register";
-  static String loginUrl = "/user/login";
+  static String loginUrl = "/company/login";
   static String categoriesUrl = "/category/getAll";
   static Map<String, String> headers = {
     'Content-type': 'application/json',
     'Accept': 'application/json',
   };
 
-  static Future<UserAccountDto> loginUser(UserAccountDto userToLogin) async {
-    var user = json.encode(userToLogin.toJson());
+  static Future<CompanyAccountDto> loginCompany(
+      CompanyAccountDto companyToLogin) async {
+    var staff = json.encode(companyToLogin.toJson());
     var response =
-        await http.post(url + loginUrl, body: user, headers: headers);
+        await http.post(url + loginUrl, body: staff, headers: headers);
     if (response.statusCode == 200 || response.statusCode == 202) {
       var responseJson = json.decode(response.body);
-      return UserAccountDto.fromJson(responseJson);
+      return CompanyAccountDto.fromJson(responseJson);
     }
-    return null;
+    if (response.statusCode == 404) throw EmailNotRegisteredException();
+    if (response.statusCode == 401) throw WrongPasswordException();
+    throw DataInException("An unknown error occurred. Please try again later.");
   }
 
   static Future<List<Category>> getAllCategories() async {
