@@ -47,13 +47,16 @@ class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
 
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     this.schedules = store.schedules;
+    print('init');
     print(store.schedules);
+    print(store.counters);
     checkBoxValues = [false,false,false,false,false,false,false];
     for (var i = 0; i < store.schedules.length; i += 1) {
 
       if (days.indexWhere((element) => days.contains(schedules[i].day)) != null)
         this.checkBoxValues[i] = true;
-
+    }for (var i = 0; i < store.counters.length; i += 1){
+         textFormFields.add(buildField(store.counters[i].name));
     }
     print(this.checkBoxValues);
   }
@@ -501,11 +504,10 @@ Widget _buildGridView(BuildContext context) {
 
   TextFormField buildField(String hintTextString) {
     return TextFormField(
-        controller: TextEditingController(),
+        controller: TextEditingController(text: hintTextString),
         keyboardType: TextInputType.name,
 
         decoration: InputDecoration(
-            hintText: hintTextString,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             contentPadding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
             enabledBorder: outlineInputBorder,
