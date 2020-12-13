@@ -106,7 +106,7 @@ class _StoreOnNextState extends State<StoreOnNext> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 25),
               Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenSize().width / 25),
@@ -117,7 +117,7 @@ class _StoreOnNextState extends State<StoreOnNext> {
              Text(this.sector_name, style: TextStyle(color: Color(0xFF000000), fontSize: 18, fontWeight: FontWeight.bold)),
              SizedBox(height: MediaQuery.of(context).size.height / 30),  
              Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenSize().width / 25),
@@ -132,7 +132,7 @@ class _StoreOnNextState extends State<StoreOnNext> {
                     Text("Slide to close your counter:", style: TextStyle(color: Color(0xFF13497B), fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: MediaQuery.of(context).size.height / 30),
                     
-                    Row(
+                    Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: [           
                         Align (  alignment: Alignment.centerLeft,
                           child: Padding(

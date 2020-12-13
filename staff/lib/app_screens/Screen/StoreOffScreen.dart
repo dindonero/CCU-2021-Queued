@@ -40,9 +40,11 @@ class _StoreState extends State<StoreOff> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF8FBFF),
-      body: Column(children: <Widget>[
+      body: Column(
+        children: <Widget>[
         Expanded(
           child: Column(
+
             children: <Widget>[
               SizedBox(height: screenSize().height / 15),
               mainRow(),
@@ -53,7 +55,7 @@ class _StoreState extends State<StoreOff> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 25),
               Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenSize().width / 25),
@@ -79,11 +81,11 @@ class _StoreState extends State<StoreOff> {
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height / 30),
                     Text("Slide to open your counter:", style: TextStyle(color: Color(0xFF13497B), fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: MediaQuery.of(context).size.height / 30),
-                    
+                    SizedBox(height: MediaQuery.of(context).size.height / 30),       
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [           
-                        Align (  alignment: Alignment.centerLeft,
+                        Align (  alignment: Alignment.center,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 15),
                                       child:

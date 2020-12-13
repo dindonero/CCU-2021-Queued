@@ -61,7 +61,7 @@ class _StoreOnState extends State<StoreOn> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 25),
               Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenSize().width / 25),
@@ -72,7 +72,7 @@ class _StoreOnState extends State<StoreOn> {
              Text(this.sector_name, style: TextStyle(color: Color(0xFF000000), fontSize: 18, fontWeight: FontWeight.bold)),
              SizedBox(height: MediaQuery.of(context).size.height / 30),  
              Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenSize().width / 25),
@@ -88,6 +88,7 @@ class _StoreOnState extends State<StoreOn> {
                     SizedBox(height: MediaQuery.of(context).size.height / 30),
                     
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [           
                         Align (  alignment: Alignment.centerLeft,
                           child: Padding(
@@ -198,13 +199,14 @@ class _StoreOnState extends State<StoreOn> {
    
       return Row(children: [
       Align(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: screenSize().width / 10),
-          child: Icon(Icons.people_alt, color: Color(0xFF143656), size: 60.0),
+          child: Icon(Icons.people_alt, color: Color(0xFF000000), size: 60.0),
         ),
       ),
       Column(
+       mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text("Current customer:",
               style: TextStyle(
@@ -252,6 +254,7 @@ class _StoreOnState extends State<StoreOn> {
         ),
       ),
       Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text("Average waiting time:",
               style: TextStyle(
