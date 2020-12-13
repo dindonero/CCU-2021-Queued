@@ -7,6 +7,8 @@ import 'package:Queued/dto/CounterDto.dart';
 import 'package:Queued/dto/StoreDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
+import 'package:Queued/dto/UserAccountDto.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'StoreScreen.dart';
 
@@ -26,6 +28,7 @@ class Stores extends StatefulWidget {
 
 class _StoresState extends State<Stores> {
   Future<List<StoreDto>> futureStores;
+  UserAccountDto user = UserAccountDto(firstName: '', lastName: '');
   int id;
 
   _StoresState(this.id);
@@ -36,6 +39,7 @@ class _StoresState extends State<Stores> {
   void initState() {
     if (this.futureStores == null)
       futureStores = ServerCommunicationService.getStoresFromCategory(this.id);
+    loadProfile();
   }
 
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
@@ -49,14 +53,14 @@ class _StoresState extends State<Stores> {
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
         body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: screenSize().height / 25),
             MainRowWidget(),
             SizedBox(height: screenSize().height / 40),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("    Hello Maurício!",
+              child: Text("    Hello " + user.firstName + "!",
                   style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
             ),
             Align(
@@ -125,6 +129,18 @@ class _StoresState extends State<Stores> {
                   }
               }),
     );
+  }
+
+  loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      user = UserAccountDto(
+          id: prefs.getInt('id'),
+          firstName: prefs.getString('firstName'),
+          lastName: prefs.getString('lastName'),
+          email: prefs.getString('email'),
+          password: prefs.getString('password'));
+    });
   }
 
   Size screenSize() {

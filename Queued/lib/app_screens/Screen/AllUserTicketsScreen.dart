@@ -29,7 +29,7 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
         body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: screenSize().height / 25),
             Align(
@@ -87,7 +87,7 @@ class _AllUserTicketsScreenState extends State<AllUserTicketsScreen> {
     return ListView.builder(
         itemCount: tickets.length,
         itemBuilder: (context, index) =>Padding(
-        padding: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.only(bottom: 20, left: 15, right: 15),
         child: TicketsCard(tickets[index])));
   }
 

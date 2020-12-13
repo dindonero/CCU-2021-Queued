@@ -41,7 +41,7 @@ class _NavState extends State<Nav> {
                 // sets the active color of the `BottomNavigationBar` if `Brightness` is light
                 primaryColor: Color(0xff1EA9B4),
                 textTheme: Theme.of(context).textTheme.copyWith(
-                    caption: new TextStyle(color: Color(0xffCCD3DB)))),
+                    caption: new TextStyle(color: Color(0xFFB2B2B2)))),
             // sets the inactive color of the `BottomNavigationBar`
             child: Container(
                 decoration: BoxDecoration(boxShadow: [

@@ -37,7 +37,7 @@ class _TicketsCard extends State<TicketsCard> {
             child: Transform.rotate(
               angle: 225 * math.pi / 180,
               child: Icon(Icons.confirmation_number_outlined,
-                  color: Colors.black, size: 45.0),
+                  color: Colors.black, size: 40.0),
             ),
           ),
           Spacer(),
@@ -47,7 +47,7 @@ class _TicketsCard extends State<TicketsCard> {
               // category.title,
               style: TextStyle(
                 color: Color(0xFF143656),
-                fontSize: 25,
+                fontSize: 22,
                 fontWeight: FontWeight.bold
               ),
             ),
@@ -81,7 +81,7 @@ class _TicketsCard extends State<TicketsCard> {
         ]),
         SizedBox(height: MediaQuery.of(context).size.height / 50),
         Row(children: [
-          Text("Estimated Waiting Time:",
+          Text("Est. Waiting Time:",
               style: TextStyle(
                   color: Color(0xFF143656),
                   fontSize: 21,
@@ -90,7 +90,7 @@ class _TicketsCard extends State<TicketsCard> {
           Text((ticket.estimatedWaitingTime.hour * 60 +
                           ticket.estimatedWaitingTime.minute)
                       .toString() +
-                  " minutes",
+                  " min",
               style: TextStyle(color: Color(0xFF000000), fontSize: 21)),
         ]),
         SizedBox(height: MediaQuery.of(context).size.height / 40),

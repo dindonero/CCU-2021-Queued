@@ -25,9 +25,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF8FBFF),
-      body: Column(children: <Widget>[
+      body: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
         Expanded(
           child: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: screenSize().height / 15),
               mainRow(),
@@ -155,22 +157,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Row mainRow() {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: screenSize().width / 25),
-          child: Padding(
-            padding: EdgeInsets.only(right: 0),
-            child: Icon(
-              Icons.account_circle_rounded,
-              color: Color(0xFFBFBFBF),
-              size: 80,
-            ),
-          ),
+        Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: screenSize().width / 25, ),
+              child: Icon(
+                  Icons.account_circle_rounded,
+                  color: Color(0xFFBFBFBF),
+                  size: 80,
+                ),
+              ),
+          ],
         ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Column(
+         Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
@@ -181,29 +182,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Row(children: [
-                Text(
-                  '      View Account',
+              Text("View Account",
                   style: TextStyle(
                     color: Color(0xFF22BEC8),
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: screenSize().width / 15),
-                InkWell(
+              InkWell( 
                   onTap: () => logoutUser(),
                   child: Text("Logout",
                       style: TextStyle(
-                        color: Color(0xFF22BEC8),
+                        color: Colors.red,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )),
-                )
-              ])
+                ),
             ],
           ),
-        ),
       ],
     );
   }

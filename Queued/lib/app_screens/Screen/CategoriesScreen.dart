@@ -36,7 +36,7 @@ class _CategoriesState extends State<Categories> {
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
         body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: screenSize().height / 25),
             Align(
