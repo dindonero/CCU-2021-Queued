@@ -28,75 +28,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF8FBFF),
-      body: Column(children: <Widget>[
+      body: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
         Expanded(
-          child: Column( 
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: screenSize().height / 15),
               mainRow(),
-              Container( width: 350, child: Divider(thickness: 2, color: Color(0xFF676666),)),
+              Container(
+                  width: 350,
+                  child: Divider(
+                    thickness: 2,
+                    color: Color(0xFF676666),
+                  )),
               SizedBox(height: screenSize().height / 30),
-              Container( alignment: Alignment.center,
-                width: 350,
-                height: 60,
-                decoration: BoxDecoration(
-                                          border: Border.all(color: Color(0xFF13497B),),
-                                          color:  Color(0xFF13497B),
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                           boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.grey.withOpacity(0.5),
-                                                          spreadRadius: 5,
-                                                          blurRadius: 7,
-                                                          offset: Offset(0, 3), // changes position of shadow
-                                                        ),
-                                                      ],
-                                        ),
-                child: Padding(padding:  EdgeInsets.symmetric(horizontal: screenSize().width / 5),
-                        child: Row(children: [ 
-                              Icon(Icons.notifications_outlined, color: Colors.white, size: 30,),
-                              Text(' Notifications', style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold,),),
-               
-                        ]),
-
-                       ),
-               ),
+              Container(
+                  width: 350,
+                  height: 65,
+                  child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape:
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  onPressed: () {},
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(Icons.notifications_outlined, color: Color(0xFFFFFFFF), size: 40),
+                    const Text(' Notifications',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+              ]))),
               SizedBox(height: screenSize().height / 30),
-              Container( alignment: Alignment.center,
+               Container(
+                  width: 350,
+                  height: 65,
+                  child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape:
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  onPressed: () {},
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(Icons.favorite_outline_rounded, color: Color(0xFFFFFFFF), size: 40),
+                    const Text(' Favorites',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+              ]))),
+              SizedBox(height: screenSize().height / 30),
+              Container(
                 width: 350,
-                height: 60,
-                decoration: BoxDecoration(
-                                          border: Border.all(color: Color(0xFF13497B),),
-                                          color:  Color(0xFF13497B),
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                           boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.grey.withOpacity(0.5),
-                                                          spreadRadius: 5,
-                                                          blurRadius: 7,
-                                                          offset: Offset(0, 3), // changes position of shadow
-                                                        ),
-                                                      ],
-                                        ),
-                child: Padding(padding:  EdgeInsets.symmetric(horizontal: screenSize().width / 4),
-                        child: Row(children: [ 
-                              Icon(Icons.favorite_outline_rounded, color: Colors.white, size: 30,),
-                              Text(' Favorites', style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold,),),
-               
-                        ]),
-
-                       ),
-               ),
-               SizedBox(width: screenSize().width / 15),
-                InkWell(
-                  onTap: () => logoutUser(),
-                  child: Text("Logout",
-                      style: TextStyle(
-                        color: Color(0xFF22BEC8),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                )
+                height: 65,
+                child: RaisedButton(
+                color: Color(0xffCC1F1F),
+                shape:
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                onPressed: () {logoutUser();},
+                child: Text('Log Out',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+            )),
             ],
           ),
         ),
