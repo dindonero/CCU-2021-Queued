@@ -170,7 +170,6 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                         newCounters.add(CounterDto(name: name, hasStaff: false, peopleWaitingInLine: 0));
                     }
                     createSchedules();
-                    print(schedules);
                     StoreDto updatedStore = StoreDto(name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: schedules);
                     ServerCommunicationService.addNewStore(1, updatedStore).then(
                         (id) => print("StoreAdded - id:" + id.toString())); //
@@ -477,11 +476,9 @@ Widget _buildGridView(BuildContext context) {
 
   void createSchedules() {
     for (var i = 0; i < checkBoxValues.length; i += 1) {
-      print(checkBoxValues[i]);
       if (checkBoxValues[i])
         this.schedules.add(ScheduleDto(Day.values[i], this.openHour, this.closeHour));
     }
-    print(this.schedules);
   }
 
   TextFormField buildField(String hintTextString) {
