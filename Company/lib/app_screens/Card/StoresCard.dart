@@ -76,7 +76,7 @@ class _StoresCards extends State<StoresCards> {
          Divider(color: Colors.black, thickness: 3),
       SizedBox(height: MediaQuery.of(context).size.height / 30),
          Row(children: [
-          Text("Avg. Customers in counters:",
+          Text("Avg. Customers:",
             style: TextStyle(
                 color: Color(0xFF143656),
                 fontSize: 21,
@@ -88,7 +88,7 @@ class _StoresCards extends State<StoresCards> {
         ]),
         SizedBox(height: MediaQuery.of(context).size.height / 50),
         Row(children: [
-          Text("Average Waiting Time:",
+          Text("Avg. Waiting Time:",
               style: TextStyle(
                   color: Color(0xFF143656),
                   fontSize: 21,
@@ -97,7 +97,7 @@ class _StoresCards extends State<StoresCards> {
           Text((getAvgWaitingTime(store).hour * 60 +
                           getAvgWaitingTime(store).minute)
                       .toString() +
-                  " minutes",
+                  " min",
               style: TextStyle(color: Color(0xFF000000), fontSize: 21)),
         ]),
         SizedBox(height: MediaQuery.of(context).size.height / 40),
@@ -152,6 +152,8 @@ class _StoresCards extends State<StoresCards> {
   }
 
   void editScreen() {
+    print('lets go to edit screen');
+    print(store.schedules.length);
     Navigator.push(
       context,
       MaterialPageRoute(

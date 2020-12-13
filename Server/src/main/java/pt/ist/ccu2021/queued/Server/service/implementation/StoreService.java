@@ -6,6 +6,7 @@ import pt.ist.ccu2021.queued.Server.domain.CompanyAccount;
 import pt.ist.ccu2021.queued.Server.domain.Counter;
 import pt.ist.ccu2021.queued.Server.domain.Store;
 import pt.ist.ccu2021.queued.Server.dto.CounterDto;
+import pt.ist.ccu2021.queued.Server.dto.ScheduleDto;
 import pt.ist.ccu2021.queued.Server.dto.StoreDto;
 import pt.ist.ccu2021.queued.Server.repository.contract.ICounterRepository;
 import pt.ist.ccu2021.queued.Server.repository.contract.IScheduleRepository;
@@ -68,6 +69,7 @@ public class StoreService implements IStoreService {
         int id = _storeRepository.save(store.toDomain(companyId)).getId();
         System.out.println(store.getSchedules());
         store.getSchedules().forEach(scheduleDto -> _scheduleRepository.save(scheduleDto.toDomain(id)));
+        System.out.println('h');
         if (store.getCounters().isEmpty()) _counterRepository.save(Counter.builder().name("General").storeid(id).hasStaff(false).build());
         store.getCounters().forEach(counterDto -> _counterRepository.save(counterDto.toDomain(id)));
         return id;

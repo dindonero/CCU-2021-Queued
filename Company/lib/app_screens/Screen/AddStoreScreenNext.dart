@@ -33,8 +33,8 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
   List<String> counterNames = new List<String>();
   StoreDto store;
   List<ScheduleDto> schedules;
-  DateTime openHour;
-  DateTime closeHour;
+  DateTime openHour = DateTime(1970,1,1,8,20);
+  DateTime closeHour = DateTime(1970,1,1,23);
 
   List<String> days;
   List<bool> checkBoxValues;
@@ -171,8 +171,10 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                         newCounters.add(CounterDto(name: name, hasStaff: false, peopleWaitingInLine: 0));
                     }
                     createSchedules();
+                    print('before calling addstore and creating updated store');
                     print(schedules);
                     StoreDto updatedStore = StoreDto(name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: schedules);
+                    print('before calling addstore');
                     print(updatedStore.schedules);
                     ServerCommunicationService.addNewStore(1, updatedStore).then(
                         (id) => print("StoreAdded - id:" + id.toString())); //

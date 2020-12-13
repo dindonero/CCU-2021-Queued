@@ -37,22 +37,23 @@ class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
   DateTime closeHour;
 
   List<String> days;
-  List<bool> checkBoxValues;
+ List<bool> checkBoxValues;
   String companyName;
 
   _EditStoreScreenNextState(this.store, this.companyName);
 
   @override
   void initState() {
+
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     this.schedules = store.schedules;
     print(store.schedules);
-    checkBoxValues = [];
+    checkBoxValues = [false,false,false,false,false,false,false];
     for (var i = 0; i < store.schedules.length; i += 1) {
+
       if (days.indexWhere((element) => days.contains(schedules[i].day)) != null)
-        this.checkBoxValues.add(true);
-      else
-        this.checkBoxValues.add(false);
+        this.checkBoxValues[i] = true;
+
     }
     print(this.checkBoxValues);
   }
@@ -190,7 +191,7 @@ class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
                           builder: (context) => Stores(),
                       ));
                   },
-                  child: const Text('Add Store',
+                  child: const Text('Edit Store',
                       style: TextStyle(fontSize: 18, color: Colors.white)),
                 )),
             SizedBox(height: screenSize().height / 30),
@@ -346,7 +347,7 @@ Widget _buildGridView(BuildContext context) {
                           Container(
                             width: screenSize().width / 1.8,
                             child: Column(children: <Widget>[
-                              buildDropdownField([new DateTime(0, 0, 0, 8, 20) , new DateTime(0, 0, 0, 8,30), new DateTime(0, 0, 0, 9,30)], "open")
+                              buildDropdownField([new DateTime(1970, 1, 1, 8, 20) , new DateTime(1970, 1, 1, 8,30), new DateTime(1970, 1, 1, 9,30)], "open")
                             ]),
                             alignment: Alignment.center,
                           )
@@ -367,7 +368,7 @@ Widget _buildGridView(BuildContext context) {
                           Container(
                             width: screenSize().width / 1.8,
                             child: Column(children: <Widget>[
-                              buildDropdownField([new DateTime(0, 0, 0, 23, 0) , new DateTime(0, 0, 0, 23,30), new DateTime(0, 0, 0, 23,45)], "close")
+                              buildDropdownField([new DateTime(1970, 1, 1, 23, 0) , new DateTime(1970, 1, 1, 23,30), new DateTime(1970, 1, 1, 23,45)], "close")
                             ]),
                             alignment: Alignment.center,
                           )
@@ -392,6 +393,8 @@ Widget _buildGridView(BuildContext context) {
   }
 
   void buildCheckBoxField(List<bool> items, List<String> days) {
+    print('items jhgfd');
+    print(items);
     showDialog(
       context: context,
       builder: (context) {
@@ -449,7 +452,13 @@ Widget _buildGridView(BuildContext context) {
   }
 
   DropdownButtonFormField buildDropdownField(List<DateTime> lstvalues, String flag) {
-    var dropdownValue = lstvalues.first;
+    DateTime dropdownValue;
+    if (flag == "open"){
+         dropdownValue = this.store.schedules[0].openingTime;
+    }
+    else{
+      dropdownValue = this.store.schedules[0].closingTime;
+    }
     var dropdownButtonFormField = DropdownButtonFormField(
       decoration: InputDecoration(
           contentPadding:
@@ -462,8 +471,8 @@ Widget _buildGridView(BuildContext context) {
           ),
           filled: true,
           fillColor: Color(0xffF8FBFF)),
-      hint: Text(this.store.schedules[0].openingTime.hour.toString() + ":" + this.store.schedules[0].openingTime.minute.toString()),
-      value: this.store.schedules[0].openingTime,
+      hint: Text(dropdownValue.hour.toString() + ":" + dropdownValue.minute.toString()),
+      value: dropdownValue,
       onChanged: (DateTime newValue) {
         setState(() {
           if (flag == "open")

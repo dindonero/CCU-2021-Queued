@@ -255,7 +255,9 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
                           name: this.storeNameController.text,
                           address: this.storeAddressController.text,
                           categoryId: this.storeCategory,
-                          img: _image),
+                          img: _image,
+                          counters: this.store.counters,
+                          schedules: this.store.schedules),
                           this.companyName
                     )));
       },
