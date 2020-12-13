@@ -16,10 +16,11 @@ class Stores extends StatefulWidget {
 
 class _StoresState extends State<Stores> {
   CompanyAccountDto user = CompanyAccountDto(name: '');
+  Future<List<StoreDto>> stores;
 
   @override
   void initState() {
-    loadProfile();
+    loadProfile().then((user) => stores = ServerCommunicationService.getAllCompanyStores(user.id));
   }
 
   @override
@@ -33,36 +34,40 @@ class _StoresState extends State<Stores> {
             SizedBox(height: screenSize().height / 40),
             Row(
               children: [
-               Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    
-                     Text("Hello " + user.name + "!",
-                          style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
-                     Text("These are your stores:",
-                              style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
-
-                  ],
-                ),),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Hello " + user.name + "!",
+                          style: TextStyle(
+                              color: Color(0xFFB2B2B2), fontSize: 20)),
+                      Text("These are your stores:",
+                          style: TextStyle(
+                              color: Color(0xFF143656), fontSize: 20)),
+                    ],
+                  ),
+                ),
                 Spacer(),
-                Icon(Icons.notifications_none_outlined,color: Color(0xff13497B), size: 32.0),
-                  Padding(
-                       padding:  EdgeInsets.only(right: 20),
-                         child: Icon(Icons.settings_outlined, color: Color(0xff13497B), size: 32.0),),
+                Icon(Icons.notifications_none_outlined,
+                    color: Color(0xff13497B), size: 32.0),
+                Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: Icon(Icons.settings_outlined,
+                      color: Color(0xff13497B), size: 32.0),
+                ),
               ],
             ),
             SizedBox(height: screenSize().height / 30),
             TextSearchField(),
             SizedBox(height: screenSize().height / 30),
             Expanded(
-                child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width / 25),
-                    child: FutureBuilder<List<StoreDto>>(
-                      future: ServerCommunicationService.getAllCompanyStores(user.id),
+              child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 25),
+                  child: FutureBuilder<List<StoreDto>>(
+                      future: stores,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -82,29 +87,28 @@ class _StoresState extends State<Stores> {
                               return _buildGridView(context, snapshot.data);
                         }
                       })),
-                    ),
+            ),
             Nav(0)
           ],
         ));
   }
 
-Widget _buildGridView(BuildContext context, List<StoreDto> stores) {
-  return ListView.builder(
+  Widget _buildGridView(BuildContext context, List<StoreDto> stores) {
+    return ListView.builder(
         itemCount: stores.length,
-        itemBuilder: (context, index) =>Padding(
-        padding: EdgeInsets.only(bottom: 20),
-        child: StoresCards(stores[index], user.name)));
+        itemBuilder: (context, index) => Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: StoresCards(stores[index], user.name)));
   }
 
-  loadProfile() async {
+  Future<CompanyAccountDto> loadProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      user = CompanyAccountDto(
-          id: prefs.getInt('id'),
-          name: prefs.getString('name'),
-          email: prefs.getString('email'),
-          password: prefs.getString('password'));
-      });
+    setState(() => user = CompanyAccountDto(
+        id: prefs.getInt('id'),
+        name: prefs.getString('name'),
+        email: prefs.getString('email'),
+        password: prefs.getString('password')));
+    return user;
   }
 
   Size screenSize() {
