@@ -22,27 +22,25 @@ class CountersCards extends StatelessWidget {
     gapPadding: 10,
   );
     return GestureDetector(
-      child: Row(
+      child: Padding(
+                padding: EdgeInsets.symmetric(
+                horizontal: screenSize(context).width / 15), child:Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-                padding: EdgeInsets.symmetric(
-                horizontal: screenSize(context).width / 20 ),
-                child: Container(
-                width: 307,
-                height: 70,
-                //color: Colors.white,
-                child: counter),
-    ),
-    IconButton(icon: Icon(
-                          Icons.remove_circle ,
-                          color: Colors.red,
-                          size: 32,
-                          
-                        ), onPressed:  () {
-            removeCounter(counter);
-          },),
-    ]));
+          Container(
+            width: 290,
+            height: 70,
+            //color: Colors.white,
+            child: counter),
+          IconButton(icon: Icon(
+                                Icons.remove_circle ,
+                                color: Colors.red,
+                                size: 30,
+                                
+                              ), onPressed:  () {
+                  removeCounter(counter);
+                },),
+    ])));
   }  
 
    Size screenSize(BuildContext context) {

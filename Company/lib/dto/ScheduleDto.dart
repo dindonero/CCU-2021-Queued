@@ -14,4 +14,9 @@ class ScheduleDto {
     this.openingTime = DateTime.parse("1970-01-01 " + json['openingTime']);
     this.closingTime = DateTime.parse("1970-01-01 " + json['closingTime']);
   }
+  Map<String, dynamic> toJson(){
+    print(this.openingTime.toString());
+    print(this.closingTime.toString());
+    return {'day': this.day.toString().split(".")[1], 'openingTime': (this.openingTime.hour).toString() + ":" + (this.openingTime.minute).toString() + ":00", 'closingTime': (this.closingTime.hour).toString() + ":" + (this.closingTime.minute).toString() + ":00"};
+  }
 }
