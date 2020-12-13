@@ -9,27 +9,28 @@ import 'package:image_picker/image_picker.dart';
 import '../../domain/category.dart';
 import '../../dto/StoreDto.dart';
 import '../../services/ServerCommunicationService.dart';
-import 'AddStoreScreenNext.dart';
+import 'EditStoreScreenNext.dart';
 
 class EditStoreScreen extends StatefulWidget {
  StoreDto store;
+ String companyName;
 
- EditStoreScreen(this.store);
+ EditStoreScreen(this.store, this.companyName);
 
   @override
-  _EditStoreScreenState createState() => _EditStoreScreenState(this.store);
+  _EditStoreScreenState createState() => _EditStoreScreenState(this.store, this.companyName);
 }
 
 class _EditStoreScreenState extends State<EditStoreScreen> {
   StoreDto store;
+  String companyName;
 
- _EditStoreScreenState(this.store);
-
-  TextEditingController storeNameController = TextEditingController();
-  TextEditingController storeAddressController = TextEditingController();
+ _EditStoreScreenState(this.store, this.companyName);
+  TextEditingController storeNameController;
+  TextEditingController storeAddressController;
   int storeCategory;
   Future<List<Category>> futureCategories;
-  Uint8List _image;
+  Image _image;
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Color(0x50000000)),
@@ -39,6 +40,9 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
   @override
   void initState() {
     futureCategories = ServerCommunicationService.getAllCategories();
+    _image = this.store.img;
+    storeNameController = TextEditingController(text: this.store.name);
+    storeAddressController = TextEditingController(text: this.store.address);
   }
 
   @override
@@ -70,7 +74,7 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
                           },
                         ),
                       ),
-                      Text("Maurício",
+                      Text(this.companyName,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF13497B),
@@ -112,7 +116,6 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
                 keyboardType: TextInputType.name,
                 controller: storeNameController,
                 decoration: InputDecoration(
-                    hintText: this.store.name,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 45, vertical: 20),
@@ -143,7 +146,7 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
                 controller: storeAddressController,
                 keyboardType: TextInputType.streetAddress,
                 decoration: InputDecoration(
-                    hintText: store.address,
+                    // hintText: store.address,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 45, vertical: 20),
@@ -214,26 +217,12 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
                 onTap: () {
                   _showPicker(context);
                 },
-                child: _image == null
-                    ? Container(
-                        width: 60,
-                        height: 60,
-                        child: Icon(
-                          Icons.add_a_photo_rounded,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xff13497b),
-                        ),
-                      )
-                    : Container(
+                child: Container(
                         width: 200,
                         height: 200,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                          image: Image.memory(_image).image,
+                          image: _image.image,
                           fit: BoxFit.cover,
                         )))),
             SizedBox(height: screenSize().height / 30),
@@ -254,28 +243,18 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
     return RaisedButton(
       color: Color(0xff13497B),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      /*onPressed: () {
+      onPressed: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => AddStoreScreenNext(
+                builder: (context) => EditStoreScreenNext(
                       store: StoreDto(
-                          name: editStoreName(),
-                          address: editStoreAdress(),
-                          categoryId: editStoreCategory(),
-                          imageBytes: editStoreImage()),
+                          name: this.storeNameController.text,
+                          address: this.storeAddressController.text,
+                          categoryId: this.storeCategory,
+                          img: _image),
                     )));
-      },*/
-      child: const Text('Next',
-          style: TextStyle(fontSize: 18, color: Colors.white)),
-    );
-  }
-
-  RaisedButton nextButtonAwaitingInput() {
-    return RaisedButton(
-      color: Color(0xaaaaaa),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      onPressed: () {},
+      },
       child: const Text('Next',
           style: TextStyle(fontSize: 18, color: Colors.white)),
     );
@@ -311,42 +290,6 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
     return dropdownButtonFormField;
   }
 
-  String editStoreName() {
-    if (storeNameController.text.isNotEmpty){
-      return storeNameController.text;
-    }
-    return this.store.name;
-  }
-
-  String editStoreAdress() {
-    if (storeAddressController.text.isNotEmpty){
-      return storeAddressController.text;
-    }
-    return this.store.address;
-  }
-
-  Uint8List editStoreImage() {
-    if (_image != null){
-      return _image;
-    }
-    return this.store.imageBytes;
-  }
-
-  int editStoreCategory() {
-    if (storeCategory != null){
-      return storeCategory;
-    }
-    return this.store.categoryId;
-  }
-
-  bool allInserted() {
-    return storeNameController.text.isNotEmpty &&
-        storeAddressController.text.isNotEmpty &&
-        _image != null && storeCategory != null;
-  }
-
-
-
   //todo change to account for exception of user not taking photo
   _imgFromCamera() async {
     PickedFile image = await ImagePicker()
@@ -354,7 +297,7 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
     Uint8List imageBytes = await image.readAsBytes();
 
     setState(() {
-      _image = imageBytes;
+      _image = Image.memory(imageBytes);
     });
   }
 
@@ -363,7 +306,7 @@ class _EditStoreScreenState extends State<EditStoreScreen> {
         .getImage(source: ImageSource.gallery, imageQuality: 50);
     Uint8List imageBytes = await image.readAsBytes();
     setState(() {
-      _image = imageBytes;
+      _image = Image.memory(imageBytes);
     });
   }
 
