@@ -1,9 +1,12 @@
 import 'dart:math' as math;
+import 'package:Staff/app_screens/Screen/UserScreen/LoginScreen.dart';
+import 'package:Staff/dto/CompanyAccountDto.dart';
 import 'package:Staff/services/ServerCommunicationService.dart';
 import 'package:Staff/app_screens/Screen/AllStaffStoresScreen.dart';
 import 'package:Staff/app_screens/Screen/StoreOnScreen.dart';
 import 'package:Staff/app_screens/Widget/navBarWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -14,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {  
-
+  CompanyAccountDto user = CompanyAccountDto(staffEmail: '');
   _ProfileScreenState();
 
   @override
@@ -54,7 +57,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                        ),
                ),
-            
+               SizedBox(height: screenSize().height / 30),
+                Container(
+                  width: 350,
+                  height: 65,
+                  child: RaisedButton(
+                  color: Color(0xffCC1F1F),
+                  shape:
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  onPressed: () {logoutUser();},
+                  child: Text('Log Out',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+              )),
             ],
           ),
         ),
@@ -63,7 +77,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  
+  logoutUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+    prefs.remove('name');
+    prefs.remove('email');
+    prefs.remove('password');
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }    
 
   Size screenSize() {
     return MediaQuery.of(context).size;

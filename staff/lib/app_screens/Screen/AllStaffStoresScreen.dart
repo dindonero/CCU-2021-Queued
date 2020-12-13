@@ -3,9 +3,11 @@ import 'dart:math' as math;
 import 'package:Staff/app_screens/Screen/StoreOffScreen.dart';
 import 'package:Staff/app_screens/Widget/MainRowWidget.dart';
 import 'package:Staff/app_screens/Widget/TextSearchWidget.dart';
+import 'package:Staff/dto/CompanyAccountDto.dart';
 import 'package:Staff/dto/StoreDto.dart';
 import 'package:Staff/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Widget/navBarWidget.dart';
 import '../Card/StoresCard.dart';
@@ -22,6 +24,8 @@ class AllStaffStoresScreen extends StatefulWidget {
 }
 
 class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
+  CompanyAccountDto user = CompanyAccountDto(staffEmail: '');
+
   Future<List<StoreDto>> futureStores;
 
   _AllStaffStoresScreenState.fromFutureStores(this.futureStores);
@@ -34,7 +38,7 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
 
   @override
   void initState() {
-    if (futureStores == null) futureStores = ServerCommunicationService.getAllStoresFromStaffEmail('staff@gmail.com'); // todo insert user id
+    loadProfile().then((user) => futureStores = ServerCommunicationService.getAllStoresFromStaffEmail(user.staffEmail));
   }
 
   @override
@@ -48,9 +52,10 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
             MainRowWidget(),
             SizedBox(height: screenSize().height / 30),
             TextSearchField(),
+            SizedBox(height: screenSize().height / 30),
             Expanded(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 1),
+                  padding: EdgeInsets.symmetric(horizontal: screenSize().width / 25),
                   child: FutureBuilder<List<StoreDto>>(
                       future: this.futureStores,
                       builder: (context, snapshot) {
@@ -97,6 +102,17 @@ class _AllStaffStoresScreenState extends State<AllStaffStoresScreen> {
                      ),
                   )),
             );
+  }
+
+  Future<CompanyAccountDto> loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() => user = CompanyAccountDto(
+        id: prefs.getInt('id'),
+        name: prefs.getString('name'),
+        email: prefs.getString('email'),
+        staffEmail: prefs.getString('staffEmail'),
+        password: prefs.getString('password')));
+    return user;
   }
 
   Size screenSize() {
