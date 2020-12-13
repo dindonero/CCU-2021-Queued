@@ -58,18 +58,21 @@ class _StoresState extends State<Stores> {
             SizedBox(height: screenSize().height / 25),
             MainRowWidget(),
             SizedBox(height: screenSize().height / 40),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Hello " + user.firstName + "!",
+             Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenSize().width / 25),
+              child: Text("Hello " + user.firstName + "!",
                   style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Please choose your store",
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenSize().width / 25),
+              child: Text("Please choose your store",
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
             TextSearchField(),
+            SizedBox(height: screenSize().height / 30),
             Expanded(
                 child: FutureBuilder<List<StoreDto>>(
                     future: this.futureStores,

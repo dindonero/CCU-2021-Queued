@@ -50,18 +50,21 @@ class _CategoriesState extends State<Categories> {
                   )),
             ),
             SizedBox(height: screenSize().height / 40),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Hello " + user.firstName + "!",
+           Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenSize().width / 25),
+              child: Text("Hello " + user.firstName + "!",
                   style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("    Please choose your category",
+           Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenSize().width / 25),
+              child: Text("Please choose your category",
                   style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
             ),
             SizedBox(height: screenSize().height / 30),
             TextSearchField(),
+            SizedBox(height: screenSize().height / 30),
             Expanded(
               child: Padding(
                   padding:

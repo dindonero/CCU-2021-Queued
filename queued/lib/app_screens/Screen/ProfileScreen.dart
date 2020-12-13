@@ -41,84 +41,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )),
               SizedBox(height: screenSize().height / 30),
               Container(
-                alignment: Alignment.center,
-                width: 350,
-                height: 60,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Color(0xFF13497B),
-                  ),
-                  color: Color(0xFF13497B),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: screenSize().width / 5),
-                  child: Row(children: [
-                    Icon(
-                      Icons.notifications_outlined,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    Text(
-                      ' Notifications',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
+                  width: 350,
+                  height: 65,
+                  child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape:
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  onPressed: () {},
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(Icons.notifications_outlined, color: Color(0xFFFFFFFF), size: 40),
+                    const Text(' Notifications',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+              ]))),
+              SizedBox(height: screenSize().height / 30),
+               Container(
+                  width: 350,
+                  height: 65,
+                  child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape:
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  onPressed: () {},
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(Icons.favorite_outline_rounded, color: Color(0xFFFFFFFF), size: 40),
+                    const Text(' Favorites',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+              ]))),
               SizedBox(height: screenSize().height / 30),
               Container(
-                alignment: Alignment.center,
                 width: 350,
-                height: 60,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Color(0xFF13497B),
-                  ),
-                  color: Color(0xFF13497B),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: screenSize().width / 4),
-                  child: Row(children: [
-                    Icon(
-                      Icons.favorite_outline_rounded,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    Text(
-                      ' Favorites',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
+                height: 65,
+                child: RaisedButton(
+                color: Color(0xffCC1F1F),
+                shape:
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                onPressed: () {logoutUser();},
+                child: Text('Log Out',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+            )),
             ],
           ),
         ),
@@ -157,50 +117,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Row mainRow() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: screenSize().width / 25, ),
-              child: Icon(
-                  Icons.account_circle_rounded,
-                  color: Color(0xFFBFBFBF),
-                  size: 80,
-                ),
+      children: [   
+        Padding(padding:  EdgeInsets.only(left: screenSize().width / 25),
+              child:  Padding(padding: EdgeInsets.only(right: 10),
+                      child:  Icon(Icons.account_circle_rounded,color: Color(0xFFBFBFBF),size: 80, ),
               ),
-          ],
         ),
-         Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                user.firstName + " " + user.lastName,
-                style: TextStyle(
-                  color: Color(0xFF000000),
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text("View Account",
-                  style: TextStyle(
-                    color: Color(0xFF22BEC8),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              InkWell( 
-                  onTap: () => logoutUser(),
-                  child: Text("Logout",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ),
-            ],
-          ),
-      ],
-    );
+        Align(alignment: Alignment.centerLeft,
+              child: Column(mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                      Text(user.firstName + " " + user.lastName,style: TextStyle(color: Color(0xFF000000),fontSize: 22, fontWeight: FontWeight.bold,),),
+                      Text('View Account', style: TextStyle(color: Color(0xFF22BEC8),fontSize: 20,fontWeight: FontWeight.bold,),),
+                ],),
+         ),],
+     );
   }
 }
