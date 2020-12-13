@@ -110,20 +110,19 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
             SizedBox(height: screenSize().height / 30),
             Container(
               width: 380,
-              child: TextFormField(
+              child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize().width / 25), child:TextFormField(
                 keyboardType: TextInputType.name,
                 controller: storeNameController,
                 decoration: InputDecoration(
                     hintText: "Enter store name",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 45, vertical: 20),
                     enabledBorder: outlineInputBorder,
                     focusedBorder: outlineInputBorder,
-                    suffixIcon: Icon(Icons.library_add_check,
-                        color: Color(0xff27192B0), size: 32.0)),
-              ),
-            ),
+                    suffixIcon: Icon(Icons.check_circle_rounded,
+                        color: storeNameController.text.isNotEmpty ? Color(0xff1EA9B4) : Color(0xaaaaaa), size: 28)),
+              ))),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -141,20 +140,20 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
             SizedBox(height: screenSize().height / 30),
             Container(
               width: 380,
-              child: TextFormField(
+              child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize().width / 25), child: TextFormField(
                 controller: storeAddressController,
                 keyboardType: TextInputType.streetAddress,
                 decoration: InputDecoration(
                     hintText: "Enter store address",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 45, vertical: 20),
                     enabledBorder: outlineInputBorder,
                     focusedBorder: outlineInputBorder,
-                    suffixIcon: Icon(Icons.library_add_check,
-                        color: Color(0xff27192B0), size: 32.0)),
+                    suffixIcon: Icon(Icons.check_circle_rounded,
+                        color: storeAddressController.text.isNotEmpty ? Color(0xff1EA9B4) : Color(0xaaaaaa), size: 28)),
               ),
-            ),
+            )),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -191,7 +190,9 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                           if (snapshot.hasError)
                             return new Text('Error: ${snapshot.error}');
                           else {
-                            return buildDropdownField(snapshot.data);
+                            return Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize().width / 25), child: buildDropdownField(snapshot.data));
                           }
                       }
                     })
@@ -245,6 +246,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                 child: allInserted()
                     ? nextButtonReady()
                     : nextButtonAwaitingInput()),
+            SizedBox(height: screenSize().height / 30),
           ],
         )));
   }
@@ -298,8 +300,6 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
   DropdownButtonFormField buildDropdownField(List<Category> categories) {
     var dropdownButtonFormField = DropdownButtonFormField(
       decoration: InputDecoration(
-          contentPadding:
-              EdgeInsets.only(left: 45, right: 10, top: 20, bottom: 20),
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               const Radius.circular(10),

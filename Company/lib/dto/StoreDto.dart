@@ -43,7 +43,7 @@ class StoreDto {
   }
 
   Map<String, dynamic> toJson(){
-    return {'name': this.name, 'img': this.imageBytes, 'address': this.address, 'categoryId': this.categoryId, 'counters': this.counters, 'schedules': new List<ScheduleDto>() };
+    return {'name': this.name, 'img': this.imageBytes, 'address': this.address, 'categoryId': this.categoryId, 'counters': this.counters, 'schedules': this.schedules.map((schedule) => schedule.toJson()).toList()};
   }
 
   bool isOpened() {

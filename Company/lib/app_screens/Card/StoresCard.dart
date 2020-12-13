@@ -54,7 +54,7 @@ class _StoresCards extends State<StoresCards> {
               // category.title,
               style: TextStyle(
                 color: Color(0xFF143656),
-                fontSize: 25,
+                fontSize: 22,
                 fontWeight: FontWeight.bold
               ),
             ),

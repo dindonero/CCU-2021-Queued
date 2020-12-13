@@ -6,6 +6,8 @@ import lombok.*;
 import pt.ist.ccu2021.queued.Server.domain.Day;
 import pt.ist.ccu2021.queued.Server.domain.Schedule;
 
+import java.sql.Time;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +22,10 @@ public class ScheduleDto {
     private Day day;
 
     @JsonProperty("openingTime")
-    private String openingTime;
+    private Time openingTime;
 
     @JsonProperty("closingTime")
-    private String closingTime;
+    private Time closingTime;
 
     public ScheduleDto(Schedule schedule){
         day = Day.valueOf(schedule.getDay());

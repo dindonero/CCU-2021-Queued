@@ -133,10 +133,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Row mainRow() {
     return Row(
-     // mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [   
         Padding(padding:  EdgeInsets.only(left: screenSize().width / 25),
-              child:  Padding(padding: EdgeInsets.only(right: 0),
+              child:  Padding(padding: EdgeInsets.only(right: 10),
                       child:  Icon(Icons.account_circle_rounded,color: Color(0xFFBFBFBF),size: 80, ),
               ),
         ),
@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                       Text(user.name,style: TextStyle(color: Color(0xFF000000),fontSize: 22, fontWeight: FontWeight.bold,),),
-                      Text('      View Account', style: TextStyle(color: Color(0xFF22BEC8),fontSize: 20,fontWeight: FontWeight.bold,),),
+                      Text('View Account', style: TextStyle(color: Color(0xFF22BEC8),fontSize: 20,fontWeight: FontWeight.bold,),),
                 ],),
          ),],
      );

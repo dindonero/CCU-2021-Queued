@@ -1,20 +1,26 @@
+import 'dart:collection';
 import 'dart:math' as math;
 
+import 'package:Company/app_screens/Screen/StoresScreen.dart';
 import 'package:Company/dto/CounterDto.dart';
+import 'package:Company/dto/ScheduleDto.dart';
 import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Company/app_screens/Card/CountersCard.dart';
 import '../../dto/StoreDto.dart';
+import 'package:Company/domain/day.dart';
+import '../Widget/navBarWidget.dart';
 
 class EditStoreScreenNext extends StatefulWidget {
   StoreDto store;
+  String companyName;
 
-  EditStoreScreenNext({this.store});
+  EditStoreScreenNext(this.store, this.companyName);
 
   @override
   _EditStoreScreenNextState createState() =>
-      _EditStoreScreenNextState(store: this.store);
+      _EditStoreScreenNextState(this.store, this.companyName);
 }
 
 class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
@@ -26,11 +32,30 @@ class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
   List<TextFormField> textFormFields = new List<TextFormField>();
   List<String> counterNames = new List<String>();
   StoreDto store;
+  List<ScheduleDto> schedules;
+  DateTime openHour;
+  DateTime closeHour;
 
-  _EditStoreScreenNextState({this.store});
+  List<String> days;
+  List<bool> checkBoxValues;
+  String companyName;
+
+  _EditStoreScreenNextState(this.store, this.companyName);
 
   @override
-  void initState() {}
+  void initState() {
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    this.schedules = store.schedules;
+    print(store.schedules);
+    checkBoxValues = [];
+    for (var i = 0; i < store.schedules.length; i += 1) {
+      if (days.indexWhere((element) => days.contains(schedules[i].day)) != null)
+        this.checkBoxValues.add(true);
+      else
+        this.checkBoxValues.add(false);
+    }
+    print(this.checkBoxValues);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +84,7 @@ class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
                             },
                           ),
                         ),
-                      Text("Maurício",
+                      Text(this.companyName,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF13497B),
@@ -152,13 +177,18 @@ class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
                     for (String name in counterNames){
                         newCounters.add(CounterDto(name: name, hasStaff: false, peopleWaitingInLine: 0));
                     }
-                    StoreDto updatedStore = StoreDto(name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: store.schedules);
+                    createSchedules();
+                    StoreDto updatedStore = StoreDto(name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: schedules);
                     ServerCommunicationService.addNewStore(1, updatedStore).then(
                         (id) => print("StoreAdded - id:" + id.toString())); //
                     int count = 0;
                     Navigator.popUntil(context, (route) {
                       return count++ == 2;
                     });
+                     Navigator.push(context,
+                        MaterialPageRoute(
+                          builder: (context) => Stores(),
+                      ));
                   },
                   child: const Text('Add Store',
                       style: TextStyle(fontSize: 18, color: Colors.white)),
@@ -266,15 +296,28 @@ Widget _buildGridView(BuildContext context) {
                             //TODO: https://pub.dev/packages/weekday_selector
                             width: screenSize().width / 1.8,
                             child: Column(children: <Widget>[
-                              buildDropdownField([
-                                "Monday",
-                                "Tuesday",
-                                "Wednesday",
-                                "Thursday",
-                                "Friday",
-                                "Saturday",
-                                "Sunday"
-                              ])
+                              Container(
+                              width: screenSize().width,
+                              height: screenSize().height / 15,
+                              child: RaisedButton(
+                                color:Color(0xffF8FBFF),
+                                shape: RoundedRectangleBorder(
+                                    side: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Text('Select Days',
+                                style: TextStyle(fontSize: 15, color: Color(0xfc0000000))),
+                                onPressed: () {
+                                  buildCheckBoxField(checkBoxValues, days);
+                                })),
+                              // buildDropdownField([
+                              //   "Monday",
+                              //   "Tuesday",
+                              //   "Wednesday",
+                              //   "Thursday",
+                              //   "Friday",
+                              //   "Saturday",
+                              //   "Sunday"
+                              // ])
                             ]),
                             alignment: Alignment.center,
                           )
@@ -303,7 +346,7 @@ Widget _buildGridView(BuildContext context) {
                           Container(
                             width: screenSize().width / 1.8,
                             child: Column(children: <Widget>[
-                              buildDropdownField(["08:20", "08:30", "09:30"])
+                              buildDropdownField([new DateTime(0, 0, 0, 8, 20) , new DateTime(0, 0, 0, 8,30), new DateTime(0, 0, 0, 9,30)], "open")
                             ]),
                             alignment: Alignment.center,
                           )
@@ -324,7 +367,7 @@ Widget _buildGridView(BuildContext context) {
                           Container(
                             width: screenSize().width / 1.8,
                             child: Column(children: <Widget>[
-                              buildDropdownField(["23:00", "23:30", "23:45"])
+                              buildDropdownField([new DateTime(0, 0, 0, 23, 0) , new DateTime(0, 0, 0, 23,30), new DateTime(0, 0, 0, 23,45)], "close")
                             ]),
                             alignment: Alignment.center,
                           )
@@ -348,7 +391,64 @@ Widget _buildGridView(BuildContext context) {
     );
   }
 
-  DropdownButtonFormField buildDropdownField(List<String> lstvalues) {
+  void buildCheckBoxField(List<bool> items, List<String> days) {
+    showDialog(
+      context: context,
+      builder: (context) {
+    return AlertDialog(
+      scrollable: true,
+      title: Align(
+        alignment: Alignment.center,
+        child: Text('Select all days of the week:'),
+      ),
+      content:  StatefulBuilder(  // You need this, notice the parameters below:
+        builder: (BuildContext context, StateSetter setState) {
+        return Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenSize().width / 10),
+        child: Column(
+          children: [
+            for (var i = 0; i < items.length; i += 1)
+              Row(
+                children: [
+                  Checkbox(
+                    value: items[i],
+                    onChanged: (bool newValue) {
+                      setState(() {
+                        items[i] = newValue;
+                      });
+                    },
+                    activeColor:Color(0xff13497B),
+                  ),
+                  Text(
+                    days[i],
+                    style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.black),
+                  ),
+                ],
+                mainAxisAlignment: MainAxisAlignment.start,
+              ),
+              SizedBox(height: screenSize().height / 50),
+               RaisedButton(
+                  color: items.contains(true)
+                      ? Color(0xff13497B)
+                      : Color(0xaaaaaaaa),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  onPressed: () {
+                    if (items.contains(true)) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: const Text('Confirm',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                )
+            ],
+        )
+      );}
+    ));
+    });
+  }
+
+  DropdownButtonFormField buildDropdownField(List<DateTime> lstvalues, String flag) {
     var dropdownValue = lstvalues.first;
     var dropdownButtonFormField = DropdownButtonFormField(
       decoration: InputDecoration(
@@ -362,20 +462,32 @@ Widget _buildGridView(BuildContext context) {
           ),
           filled: true,
           fillColor: Color(0xffF8FBFF)),
-      value: lstvalues.first,
-      onChanged: (String newValue) {
+      hint: Text(this.store.schedules[0].openingTime.hour.toString() + ":" + this.store.schedules[0].openingTime.minute.toString()),
+      value: this.store.schedules[0].openingTime,
+      onChanged: (DateTime newValue) {
         setState(() {
-          dropdownValue = newValue;
+          if (flag == "open")
+            this.openHour = newValue;
+          else
+             this.closeHour = newValue;
         });
       },
-      items: lstvalues.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
+      items: lstvalues.map<DropdownMenuItem<DateTime>>((DateTime value) {
+        return DropdownMenuItem<DateTime>(
           value: value,
-          child: Text(value),
+          child: Text((value.hour).toString() + ":" + (value.minute).toString()),
         );
       }).toList(),
     );
     return dropdownButtonFormField;
+  }
+
+
+  void createSchedules() {
+    for (var i = 0; i < checkBoxValues.length; i += 1) {
+      if (checkBoxValues[i])
+        this.schedules.add(ScheduleDto(Day.values[i], this.openHour, this.closeHour));
+    }
   }
 
   TextFormField buildField(String hintTextString) {

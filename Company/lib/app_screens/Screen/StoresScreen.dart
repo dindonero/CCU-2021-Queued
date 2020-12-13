@@ -27,20 +27,22 @@ class _StoresState extends State<Stores> {
     return Scaffold(
         backgroundColor: const Color(0xffF8FBFF),
         body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: screenSize().height / 25),
             SizedBox(height: screenSize().height / 40),
             Row(
               children: [
-                Padding(
-                       padding:  EdgeInsets.only(left: 0),
-                         child:
-                Column(
+               Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text("    Hello " + user.name + "!",
+                    
+                     Text("Hello " + user.name + "!",
                           style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
-                     Text("     These are your stores:",
+                     Text("These are your stores:",
                               style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
 
                   ],
@@ -54,11 +56,11 @@ class _StoresState extends State<Stores> {
             ),
             SizedBox(height: screenSize().height / 30),
             TextSearchField(),
-            //
+            SizedBox(height: screenSize().height / 30),
             Expanded(
                 child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: 1),
+                        horizontal: MediaQuery.of(context).size.width / 25),
                     child: FutureBuilder<List<StoreDto>>(
                       future: ServerCommunicationService.getAllCompanyStores(user.id),
                       builder: (context, snapshot) {

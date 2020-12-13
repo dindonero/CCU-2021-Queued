@@ -3,6 +3,7 @@ package pt.ist.ccu2021.queued.Server.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Time;
 
 @Builder
 @Setter
@@ -25,8 +26,8 @@ public class Schedule {
     private String day;
 
     @Column(name = "openingtime")
-    private String openingTime;
+    private Time openingTime;
 
     @Column(name = "closingtime")
-    private String closingTime;
+    private Time closingTime;
 }

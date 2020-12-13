@@ -98,8 +98,8 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: screenSize().width / 25),
-                    child: Text(" Store Schedule",
+                        horizontal: screenSize().width / 20),
+                    child: Text("Store Schedule",
                         style: TextStyle(
                             color: Color(0xff13497b),
                             fontWeight: FontWeight.bold,
@@ -125,8 +125,8 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: screenSize().width / 25),
-                        child: Text(" Queues",
+                            horizontal: screenSize().width / 15),
+                        child: Text("Queues",
                             style: TextStyle(
                                 color: Color(0xff13497b),
                                 fontWeight: FontWeight.bold,
@@ -140,7 +140,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                       padding: const EdgeInsets.only(top: 20.0),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: screenSize().width / 25),
+                            horizontal: screenSize().width / 15),
                         child: IconButton(icon: Icon(
                           Icons.add_circle,
                           color: Colors.green,
@@ -157,6 +157,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
               ],
             ),
             _buildGridView(context),
+            SizedBox(height: screenSize().height / 30),
             Container(
                 width: screenSize().width / 1.2,
                 height: screenSize().height / 15,
@@ -170,7 +171,9 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                         newCounters.add(CounterDto(name: name, hasStaff: false, peopleWaitingInLine: 0));
                     }
                     createSchedules();
+                    print(schedules);
                     StoreDto updatedStore = StoreDto(name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: schedules);
+                    print(updatedStore.schedules);
                     ServerCommunicationService.addNewStore(1, updatedStore).then(
                         (id) => print("StoreAdded - id:" + id.toString())); //
                     int count = 0;
@@ -301,15 +304,6 @@ Widget _buildGridView(BuildContext context) {
                                 onPressed: () {
                                   buildCheckBoxField(checkBoxValues, days);
                                 })),
-                              // buildDropdownField([
-                              //   "Monday",
-                              //   "Tuesday",
-                              //   "Wednesday",
-                              //   "Thursday",
-                              //   "Friday",
-                              //   "Saturday",
-                              //   "Sunday"
-                              // ])
                             ]),
                             alignment: Alignment.center,
                           )
@@ -338,7 +332,7 @@ Widget _buildGridView(BuildContext context) {
                           Container(
                             width: screenSize().width / 1.8,
                             child: Column(children: <Widget>[
-                              buildDropdownField([new DateTime(0, 0, 0, 8, 20) , new DateTime(0, 0, 0, 8,30), new DateTime(0, 0, 0, 9,30)], "open")
+                              buildDropdownField([new DateTime(1970, 1, 1, 8, 20) , new DateTime(1970, 1, 1, 8,30), new DateTime(1970, 1, 1, 9,30)], "open")
                             ]),
                             alignment: Alignment.center,
                           )
@@ -359,7 +353,7 @@ Widget _buildGridView(BuildContext context) {
                           Container(
                             width: screenSize().width / 1.8,
                             child: Column(children: <Widget>[
-                              buildDropdownField([new DateTime(0, 0, 0, 23, 0) , new DateTime(0, 0, 0, 23,30), new DateTime(0, 0, 0, 23,45)], "close")
+                              buildDropdownField([new DateTime(1970, 1, 1, 23, 0) , new DateTime(1970, 1, 1, 23,30), new DateTime(1970, 1, 1, 23,45)], "close")
                             ]),
                             alignment: Alignment.center,
                           )
@@ -409,7 +403,7 @@ Widget _buildGridView(BuildContext context) {
                         items[i] = newValue;
                       });
                     },
-                    activeColor:Color(0xff13497B),
+                    activeColor:Color(0xff1EA9B4),
                   ),
                   Text(
                     days[i],
@@ -460,7 +454,7 @@ Widget _buildGridView(BuildContext context) {
           if (flag == "open")
             this.openHour = newValue;
           else
-             this.closeHour = newValue;
+            this.closeHour = newValue;
         });
       },
       items: lstvalues.map<DropdownMenuItem<DateTime>>((DateTime value) {
@@ -477,7 +471,7 @@ Widget _buildGridView(BuildContext context) {
   void createSchedules() {
     for (var i = 0; i < checkBoxValues.length; i += 1) {
       if (checkBoxValues[i])
-        this.schedules.add(ScheduleDto(Day.values[i], this.openHour, this.closeHour));
+        this.schedules.add(new ScheduleDto(Day.values[i], this.openHour, this.closeHour));
     }
   }
 
