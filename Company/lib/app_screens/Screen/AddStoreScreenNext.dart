@@ -180,7 +180,7 @@ class _AddStoreScreenNextState extends State<AddStoreScreenNext> {
                         (id) => print("StoreAdded - id:" + id.toString())); //
                     int count = 0;
                     Navigator.popUntil(context, (route) {
-                      return count++ == 2;
+                      return count++ == 3;
                     });
                      Navigator.push(context,
                         MaterialPageRoute(
