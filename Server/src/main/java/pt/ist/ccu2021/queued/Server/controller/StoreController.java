@@ -37,8 +37,8 @@ public class StoreController {
 
     @PostMapping(value = "/company/{companyid}/store/register")
     public ResponseEntity<Integer> addNewStore(@PathVariable("companyid") int companyId, @RequestBody StoreDto storeDto){
-        _logger.info(String.format("AddNewStore - CompanyId:%s, Name:%s, CategoryId:%s, Counters:%s, address:%s",
-                companyId, storeDto.getName(), storeDto.getCategoryId(), storeDto.getCounters(), storeDto.getAddress()));
+        _logger.info(String.format("AddNewStore - CompanyId:%s, Name:%s, CategoryId:%s, Counters:%s, address:%s, Schedules:%s",
+                companyId, storeDto.getName(), storeDto.getCategoryId(), storeDto.getCounters(), storeDto.getAddress(), storeDto.getSchedules()));
 
         return new ResponseEntity<>(_storeService.insertNewStore(storeDto, companyId), HttpStatus.CREATED);
     }
