@@ -1,7 +1,10 @@
 import 'dart:math' as math;
+import 'package:Company/app_screens/Screen/UserScreen/LoginScreen.dart';
+import 'package:Company/dto/CompanyAccountDto.dart';
 import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:Company/app_screens/Widget/navBarWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -12,6 +15,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {  
+  CompanyAccountDto user = CompanyAccountDto(name: '');
+
+  @override
+  void initState() {
+    loadProfile();
+  }
 
   _ProfileScreenState();
 
@@ -78,6 +87,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                        ),
                ),
+               SizedBox(width: screenSize().width / 15),
+                InkWell(
+                  onTap: () => logoutUser(),
+                  child: Text("Logout",
+                      style: TextStyle(
+                        color: Color(0xFF22BEC8),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                )
             ],
           ),
         ),
@@ -86,7 +105,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  
+  loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      user = CompanyAccountDto(
+          id: prefs.getInt('id'),
+          name: prefs.getString('name'),
+          email: prefs.getString('email'),
+          password: prefs.getString('password'));
+    });
+  }
+
+  logoutUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+    prefs.remove('name');
+    prefs.remove('email');
+    prefs.remove('password');
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }  
 
   Size screenSize() {
     return MediaQuery.of(context).size;
@@ -104,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Align(alignment: Alignment.centerLeft,
               child: Column(mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                      Text('Maurício ',style: TextStyle(color: Color(0xFF000000),fontSize: 22, fontWeight: FontWeight.bold,),),
+                      Text(user.name,style: TextStyle(color: Color(0xFF000000),fontSize: 22, fontWeight: FontWeight.bold,),),
                       Text('      View Account', style: TextStyle(color: Color(0xFF22BEC8),fontSize: 20,fontWeight: FontWeight.bold,),),
                 ],),
          ),],

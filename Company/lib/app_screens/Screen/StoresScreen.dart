@@ -7,6 +7,7 @@ import 'package:Company/dto/CompanyAccountDto.dart';
 import 'package:Company/dto/StoreDto.dart';
 import 'package:Company/services/ServerCommunicationService.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Stores extends StatefulWidget {
   @override
@@ -14,15 +15,12 @@ class Stores extends StatefulWidget {
 }
 
 class _StoresState extends State<Stores> {
-  //Future<List<StoreDto>> futureStores;
-  Future<List<StoreDto>> futureStores;
   CompanyAccountDto user = CompanyAccountDto(name: '');
 
   @override
   void initState() {
-    futureStores = ServerCommunicationService.getAllCompanyStores(1);
+    loadProfile();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,7 @@ class _StoresState extends State<Stores> {
                          child:
                 Column(
                   children: [
-                     Text("Hello Maurício!       ",
+                     Text("    Hello " + user.name + "!",
                           style: TextStyle(color: Color(0xFFB2B2B2), fontSize: 20)),
                      Text("     These are your stores:",
                               style: TextStyle(color: Color(0xFF143656), fontSize: 20)),
@@ -62,7 +60,7 @@ class _StoresState extends State<Stores> {
                     padding: EdgeInsets.symmetric(
                         horizontal: 1),
                     child: FutureBuilder<List<StoreDto>>(
-                      future: this.futureStores,
+                      future: ServerCommunicationService.getAllCompanyStores(user.id),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -93,7 +91,18 @@ Widget _buildGridView(BuildContext context, List<StoreDto> stores) {
         itemCount: stores.length,
         itemBuilder: (context, index) =>Padding(
         padding: EdgeInsets.only(bottom: 20),
-        child: StoresCards(stores[index])));
+        child: StoresCards(stores[index], user.name)));
+  }
+
+  loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      user = CompanyAccountDto(
+          id: prefs.getInt('id'),
+          name: prefs.getString('name'),
+          email: prefs.getString('email'),
+          password: prefs.getString('password'));
+      });
   }
 
   Size screenSize() {

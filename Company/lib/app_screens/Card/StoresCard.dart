@@ -10,16 +10,18 @@ import 'package:flutter/widgets.dart';
 
 class StoresCards extends StatefulWidget {
   StoreDto store;
+  String companyName;
 
-  StoresCards(this.store);
+  StoresCards(this.store, this.companyName);
 
   @override
-  _StoresCards createState() => _StoresCards(this.store);
+  _StoresCards createState() => _StoresCards(this.store, this.companyName);
 }
 
 class _StoresCards extends State<StoresCards> {
   StoreDto store;
-  _StoresCards(this.store);
+  String companyName;
+  _StoresCards(this.store, this.companyName);
 
 
   @override
@@ -155,6 +157,7 @@ class _StoresCards extends State<StoresCards> {
       MaterialPageRoute(
         builder: (context) => EditStoreScreen(
          this.store,
+         this.companyName
         ),
     ));
   }

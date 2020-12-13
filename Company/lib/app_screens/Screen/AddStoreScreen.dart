@@ -10,8 +10,12 @@ import '../../domain/category.dart';
 import '../../dto/StoreDto.dart';
 import '../../services/ServerCommunicationService.dart';
 import 'AddStoreScreenNext.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:Company/dto/CompanyAccountDto.dart';
 
 class AddStoreScreen extends StatefulWidget {
+  AddStoreScreen();
+
   @override
   _AddStoreScreenState createState() => _AddStoreScreenState();
 }
@@ -28,9 +32,15 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
     gapPadding: 10,
   );
 
+  _AddStoreScreenState();
+
+  CompanyAccountDto user = CompanyAccountDto(name: '');
+
+
   @override
   void initState() {
     futureCategories = ServerCommunicationService.getAllCategories();
+    loadProfile();
   }
 
   @override
@@ -62,7 +72,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
                           },
                         ),
                       ),
-                      Text("Maurício",
+                      Text(user.name,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF13497B),
@@ -239,6 +249,17 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
         )));
   }
 
+  loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      user = CompanyAccountDto(
+          id: prefs.getInt('id'),
+          name: prefs.getString('name'),
+          email: prefs.getString('email'),
+          password: prefs.getString('password'));
+      });
+  }
+
   Size screenSize() {
     return MediaQuery.of(context).size;
   }
@@ -252,12 +273,12 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
             context,
             MaterialPageRoute(
                 builder: (context) => AddStoreScreenNext(
-                      store: StoreDto(
+                      StoreDto(
                           name: this.storeNameController.text,
                           address: this.storeAddressController.text,
                           categoryId: this.storeCategory,
                           imageBytes: _image),
-                    )));
+                       user.name)));
       },
       child: const Text('Next',
           style: TextStyle(fontSize: 18, color: Colors.white)),
