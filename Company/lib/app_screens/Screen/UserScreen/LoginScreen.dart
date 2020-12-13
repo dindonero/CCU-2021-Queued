@@ -47,7 +47,7 @@ class _LoginScreen extends State<LoginScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       new Image.asset('images/logo_branco.png',
-                                          width: 120),
+                                          width: 90),
                                       Text('UEUED'),
                                     ],
                                   ),
