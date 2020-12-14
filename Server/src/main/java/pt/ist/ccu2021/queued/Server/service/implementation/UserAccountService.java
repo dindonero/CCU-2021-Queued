@@ -18,9 +18,9 @@ public class UserAccountService implements IUserAccountService {
     private IUserAccountRepository _userAccountRepository;
 
     @Override
-    public int createNewUserAccount(UserAccountDto newUser) throws DuplicateEmailException {
+    public UserAccountDto createNewUserAccount(UserAccountDto newUser) throws DuplicateEmailException {
         if (_userAccountRepository.findByEmail(newUser.getEmail()) != null) throw new DuplicateEmailException(newUser.getEmail());
-        return _userAccountRepository.save(newUser.toDomain()).getId();
+        return new UserAccountDto(_userAccountRepository.save(newUser.toDomain()));
     }
 
     @Override

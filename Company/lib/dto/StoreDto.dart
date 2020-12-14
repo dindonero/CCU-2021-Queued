@@ -31,6 +31,7 @@ class StoreDto {
     this.id = json['id'];
     this.name = json['name'];
     this.img = new Image.memory(Uint8List.fromList(json['img'].cast<int>()));
+    this.imageBytes = Uint8List.fromList(json['img'].cast<int>());
     this.address = json['address'];
     this.categoryId = json['categoryId'];
     List<dynamic> counters = json['counters'];
@@ -43,7 +44,7 @@ class StoreDto {
   }
 
   Map<String, dynamic> toJson(){
-    return {'name': this.name, 'img': this.imageBytes, 'address': this.address, 'categoryId': this.categoryId, 'counters': this.counters, 'schedules': this.schedules.map((schedule) => schedule.toJson()).toList()};
+    return {'id': this.id ,'name': this.name, 'img': this.imageBytes, 'address': this.address, 'categoryId': this.categoryId, 'counters': this.counters, 'schedules': this.schedules.map((schedule) => schedule.toJson()).toList()};
   }
 
   bool isOpened() {

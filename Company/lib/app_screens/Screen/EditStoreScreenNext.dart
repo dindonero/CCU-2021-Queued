@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:Company/app_screens/Screen/StoresScreen.dart';
 import 'package:Company/dto/CounterDto.dart';
@@ -182,9 +183,9 @@ class _EditStoreScreenNextState extends State<EditStoreScreenNext> {
                         newCounters.add(CounterDto(name: name, hasStaff: false, peopleWaitingInLine: 0));
                     }
                     createSchedules();
-                    StoreDto updatedStore = StoreDto(name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: schedules);
-                    ServerCommunicationService.addNewStore(1, updatedStore).then(
-                        (id) => print("StoreAdded - id:" + id.toString())); //
+                    StoreDto updatedStore = StoreDto(id: this.store.id, name: store.name, imageBytes: store.imageBytes, address: store.address, categoryId: store.categoryId, counters: newCounters, schedules: schedules);
+                    ServerCommunicationService.updateStoreInfo(1, updatedStore).then(
+                        (id) => print("StoreEdited - Store:" + id.toString())); //
                     int count = 0;
                     Navigator.popUntil(context, (route) {
                       return count++ == 3;
@@ -458,9 +459,11 @@ Widget _buildGridView(BuildContext context) {
     DateTime dropdownValue;
     if (flag == "open"){
          dropdownValue = this.store.schedules[0].openingTime;
+         this.openHour = this.store.schedules[0].openingTime;
     }
     else{
       dropdownValue = this.store.schedules[0].closingTime;
+      this.closeHour = this.store.schedules[0].closingTime;
     }
     var dropdownButtonFormField = DropdownButtonFormField(
       decoration: InputDecoration(
@@ -498,7 +501,7 @@ Widget _buildGridView(BuildContext context) {
   void createSchedules() {
     for (var i = 0; i < checkBoxValues.length; i += 1) {
       if (checkBoxValues[i])
-        this.schedules.add(ScheduleDto(Day.values[i], this.openHour, this.closeHour));
+        this.schedules.add(ScheduleDto(day: Day.values[i], openingTime: this.openHour, closingTime: this.closeHour));
     }
   }
 

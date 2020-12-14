@@ -16,7 +16,7 @@ import java.sql.Time;
 @Getter
 @Setter
 @ToString
-@JsonPropertyOrder({"id", "name", "img"})
+@JsonPropertyOrder({"id", "name", "storeid", "hasStaff", "peopleWaitingInLine", "avgWaitingTime", "currentTicketId"})
 public class CounterDto {
 
     @JsonProperty("id")

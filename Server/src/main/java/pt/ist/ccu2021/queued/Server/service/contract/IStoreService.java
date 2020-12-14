@@ -23,4 +23,6 @@ public interface IStoreService {
 
     CounterDto staffHasLeftCounter(int counterId);
 
+    StoreDto updateStoreInfo(int companyId, StoreDto storeDto);
+
 }

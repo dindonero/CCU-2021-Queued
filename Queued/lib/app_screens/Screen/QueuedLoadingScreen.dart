@@ -46,7 +46,7 @@ class _QueuedScreen extends State<QueuedScreen> {
 
   Future<bool> isStoredUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('firstName') != null;
+    return prefs.containsKey('firstName');
   }
 
   @override

@@ -49,6 +49,7 @@ CREATE TABLE Counter (
 	hasStaff BOOLEAN NOT NULL,
 
 	CONSTRAINT PK_Counter PRIMARY KEY (id),
+	CONSTRAINT UNI_Store_CounterName UNIQUE (name, storeId),
 	CONSTRAINT FK_Counter_Store FOREIGN KEY (storeId) REFERENCES Store(id) ON DELETE CASCADE
 );
 

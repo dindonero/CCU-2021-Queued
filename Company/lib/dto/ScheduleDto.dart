@@ -1,7 +1,7 @@
 import 'package:Company/domain/day.dart';
 
 class ScheduleDto {
-  ScheduleDto(this.day, this.openingTime, this.closingTime);
+  ScheduleDto({this.day, this.openingTime, this.closingTime});
 
   Day day;
 

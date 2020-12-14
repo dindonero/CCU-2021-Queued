@@ -27,17 +27,17 @@ public class UserController {
     private IUserAccountService _userAccountService;
 
     @PostMapping(value = "/register")
-    public ResponseEntity<Integer> createNewUserAccount(@RequestBody UserAccountDto newUserAccountDto){
+    public ResponseEntity<UserAccountDto> createNewUserAccount(@RequestBody UserAccountDto newUserAccountDto){
         _logger.info(String.format("CreateNewUserAccount - FirstName:%s, LastName:%s, Email:%s, Password:%s",
                 newUserAccountDto.getFirstName(), newUserAccountDto.getLastName(), newUserAccountDto.getEmail(),
                 newUserAccountDto.getPassword()));
         try {
-            int id = _userAccountService.createNewUserAccount(newUserAccountDto);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+            UserAccountDto user = _userAccountService.createNewUserAccount(newUserAccountDto);
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
         catch (DuplicateEmailException e){
             _logger.error(e.getMessage());
-            return new ResponseEntity<>(-1, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
     }
 

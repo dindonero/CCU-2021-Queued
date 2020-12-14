@@ -55,4 +55,9 @@ public class StoreDto {
         return Store.builder().name(name).img(img).address(address).categoryId(categoryId)
                 .companyId(companyId).build();
     }
+
+    @Override
+    public String toString(){
+        return "Id:" + id + ", Name:" + name + ", Address:" + address + ", CategoryId:" + categoryId + ", Counters:" + counters + ", Schedules:" + schedules;
+    }
 }

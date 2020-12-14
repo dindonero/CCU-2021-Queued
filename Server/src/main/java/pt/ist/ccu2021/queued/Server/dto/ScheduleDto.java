@@ -15,7 +15,7 @@ import java.sql.Time;
 @Getter
 @Setter
 @ToString
-@JsonPropertyOrder({"dayId", "openingTime", "closingTime"})
+@JsonPropertyOrder({"day", "openingTime", "closingTime"})
 public class ScheduleDto {
 
     @JsonProperty("day")

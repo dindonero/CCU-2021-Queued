@@ -473,7 +473,7 @@ Widget _buildGridView(BuildContext context) {
   void createSchedules() {
     for (var i = 0; i < checkBoxValues.length; i += 1) {
       if (checkBoxValues[i])
-        this.schedules.add(new ScheduleDto(Day.values[i], this.openHour, this.closeHour));
+        this.schedules.add(new ScheduleDto(day: Day.values[i], openingTime: this.openHour, closingTime: this.closeHour));
     }
   }
 

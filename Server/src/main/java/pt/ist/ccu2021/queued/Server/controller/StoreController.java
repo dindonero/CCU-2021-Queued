@@ -77,4 +77,11 @@ public class StoreController {
 
         return new ResponseEntity<>(_storeService.staffHasLeftCounter(counterId), HttpStatus.ACCEPTED);
     }
+
+    @PatchMapping(value = "/company/{companyid}/store/edit")
+    public ResponseEntity<StoreDto> updateStoreInfo(@PathVariable("companyid") int companyId, @RequestBody StoreDto storeDto){
+        _logger.info("UpdateStoreInfo - CompanyId:" + companyId + ", Store:" + storeDto);
+
+        return new ResponseEntity<>(_storeService.updateStoreInfo(companyId, storeDto), HttpStatus.ACCEPTED);
+    }
 }

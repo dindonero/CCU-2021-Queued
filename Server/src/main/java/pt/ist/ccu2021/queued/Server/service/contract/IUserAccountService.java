@@ -9,7 +9,7 @@ import pt.ist.ccu2021.queued.Server.dto.UserAccountDto;
 
 public interface IUserAccountService {
 
-    int createNewUserAccount(UserAccountDto newUser) throws DuplicateEmailException;
+    UserAccountDto createNewUserAccount(UserAccountDto newUser) throws DuplicateEmailException;
 
     UserAccountDto loginUser(LoginUserAccountDto userLogin) throws EmailNotFoundException, WrongPasswordException;
 

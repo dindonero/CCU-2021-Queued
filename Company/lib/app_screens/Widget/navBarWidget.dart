@@ -28,6 +28,7 @@ class _NavState extends State<Nav> {
     setState(() {
       int _selectedIndex = index;
     });
+    Navigator.pop(context);
     Navigator.push(
         context,
         MaterialPageRoute(

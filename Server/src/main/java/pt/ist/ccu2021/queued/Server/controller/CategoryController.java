@@ -12,7 +12,6 @@ import pt.ist.ccu2021.queued.Server.dto.CategoryDto;
 import pt.ist.ccu2021.queued.Server.service.contract.ICategoryService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/category")

@@ -20,7 +20,7 @@ class _StoresState extends State<Stores> {
 
   @override
   void initState() {
-    loadProfile().then((user) => stores = ServerCommunicationService.getAllCompanyStores(user.id));
+    loadProfile().then((user) => stores = ServerCommunicationService.getAllCompanyStores(user.id).then((value) { setState(() {}); return value;}));
   }
 
   @override

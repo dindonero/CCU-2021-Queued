@@ -114,4 +114,14 @@ class ServerCommunicationService {
     }
     return null;
   }
+
+  static Future<StoreDto> updateStoreInfo(int companyId, StoreDto store) async {
+    var jsonBody = json.encode(store.toJson());
+    var response = await http.patch(url + "/company/" + companyId.toString() + "/store/edit",
+        body: jsonBody, headers: headers);
+    if (response.statusCode == 202) {
+      return StoreDto.fromJson(json.decode(response.body));
+    }
+    return null;
+  }
 }
