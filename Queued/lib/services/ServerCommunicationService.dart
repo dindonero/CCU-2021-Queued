@@ -35,14 +35,14 @@ class ServerCommunicationService {
     throw DataInException("An unknown error occurred. Please try again later.");
   }
 
-  static Future<int> createNewUserAccount(
+  static Future<UserAccountDto> createNewUserAccount(
       UserAccountDto newUserAccountDto) async {
     var user = json.encode(newUserAccountDto.toJson());
     var response =
         await http.post(url + signinUrl, body: user, headers: headers);
     if (response.statusCode == 201) {
-      int responseJson = json.decode(response.body);
-      return responseJson;
+      var responseJson = json.decode(response.body);
+      return UserAccountDto.fromJson(responseJson);
     } else {
       throw DataInException("An error occured: Account already exists");
     }

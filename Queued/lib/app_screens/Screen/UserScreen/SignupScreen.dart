@@ -3,6 +3,7 @@ import 'package:Queued/dto/UserAccountDto.dart';
 import 'package:Queued/services/ServerCommunicationService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -101,11 +102,11 @@ class _SignFormState extends State<SignForm> {
     gapPadding: 10,
   );
 
-  TextEditingController firstNameController;
-  TextEditingController lastNameController;
-  TextEditingController emailController;
-  TextEditingController passwordController;
-  TextEditingController repeatPasswordController;
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatPasswordController = TextEditingController();
 
   _SignFormState(this.error, this.passError);
 
@@ -146,15 +147,47 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-void onSignUpComplete(int userIndex){
-   Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Categories()));
-}
+  void onSignUpComplete(UserAccountDto user) {
+    storeLoggedInUser(user);
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Categories()));
+  }
 
-void onSignUpError(Exception user){
-  Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen('An account already exist with this email', null)));
-}
+  void onSignUpError(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Align(
+              alignment: Alignment.center,
+              child: Text(errorMessage),
+            ),
+            content: Container(
+                width: MediaQuery.of(context).size.width / 3,
+                height: MediaQuery.of(context).size.height / 15,
+                child: RaisedButton(
+                  color: Color(0xff13497B),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Ok',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                )),
+          );
+        });
+  }
+
+  storeLoggedInUser(UserAccountDto user) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setInt('id', user.id);
+    prefs.setString('firstName', user.firstName);
+    prefs.setString('lastName', user.lastName);
+    prefs.setString('email', user.email);
+    prefs.setString('password', user.password);
+  }
 
 TextFormField buildFirstName() {
     return TextFormField(
