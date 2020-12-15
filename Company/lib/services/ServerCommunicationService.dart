@@ -15,7 +15,7 @@ import '../dto/StoreDto.dart';
 import '../dto/StoreDto.dart';
 
 class ServerCommunicationService {
-  static String url = "http://192.168.1.253:8080";
+  static String url = "http://85.244.139.60:8080";
   static String registerUrl = "/user/register";
   static String loginUrl = "/company/login";
   static String categoriesUrl = "/category/getAll";

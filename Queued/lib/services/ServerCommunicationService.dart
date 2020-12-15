@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import '../domain/category.dart';
 
 class ServerCommunicationService {
-  static String url = "http://192.168.1.72:8080";
+  static String url = "http://85.244.139.60:8080";
   static String registerUrl = "/user/register";
   static String loginUrl = "/user/login";
   static String signinUrl = "/user/register";
