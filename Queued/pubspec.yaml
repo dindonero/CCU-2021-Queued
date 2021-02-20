@@ -59,6 +59,7 @@ flutter:
     - images/login_background.png
     - images/login_background2.png
     - images/login_background3.png
+    - lib/assets/medium.crt
 
 
 

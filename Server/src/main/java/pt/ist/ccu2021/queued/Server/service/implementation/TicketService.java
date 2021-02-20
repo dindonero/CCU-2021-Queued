@@ -106,7 +106,6 @@ public class TicketService implements ITicketService {
     public CounterDto staffNextTicket(int counterId, String staffCounter) throws NoOneWaitingInLineException {
         Ticket ticket = getNextTicket(counterId);
         if (ticket == null) {
-            System.out.println('e');
             throw new NoOneWaitingInLineException(counterId, _counterRepository.findById(counterId).getName());
         }
         ticket.setStaffCounter(staffCounter);
