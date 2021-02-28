@@ -38,3 +38,7 @@ https://flutter.dev/docs/get-started/install
 #### Segunda maneira
   1) Executar o ficheiro ServerApplication no Intellij
   2) Executar os ficheiros da pasta test
+
+## Entrar no psql
+### sudo -i -u postgres
+### psql
