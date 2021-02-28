@@ -40,5 +40,5 @@ https://flutter.dev/docs/get-started/install
   2) Executar os ficheiros da pasta test
 
 ## Entrar no psql
-### sudo -i -u postgres
-### psql
+#### sudo -i -u postgres
+#### psql
